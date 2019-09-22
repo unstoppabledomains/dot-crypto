@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "name": "dot-crypto",
+  "version": "0.0.0",
+  "keywords": [
+    "crypto",
+    "currency",
+    "ethereum",
+    "solidity",
+    "smart contract",
+    "domain"
+  ],
+  "description": "Contracts and tools for .crypto",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unstoppabledomains/.crypto.git"
+  },
+  "homepage": "https://github.com/unstoppabledomains/.crypto/blob/master/README.md",
+  "author": {
+    "name": "Braden Pezeshki",
+    "email": "braden@unstoppabledomains.com"
+  },
+  "scripts": {
+    "format": "prettier --write -l '**/*.{md,ts,json}' --ignore-path .gitignore",
+    "kill": "lsof -ti:8545 | xargs kill",
+    "pretest": "yarn kill && ganache-cli --quiet &",
+    "test": "truffle test",
+    "posttest": "yarn kill"
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "ganache-cli": "^6.7.0",
+    "prettier": "^1.18.2",
+    "truffle": "^5.0.37"
+  }
+}

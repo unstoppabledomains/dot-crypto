@@ -1,0 +1,15 @@
+node_modules/
+build/
+
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.yarn-integrity
+
+pids
+*.pid
+*.seed
+*.pid.lock
