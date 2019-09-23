@@ -34,6 +34,7 @@
     "truffle": "^5.0.37"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^2.3.0"
+    "@openzeppelin/contracts": "^2.3.0",
+    "web3": "^1.2.1"
   }
 }

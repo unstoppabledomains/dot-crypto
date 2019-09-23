@@ -11,7 +11,7 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
     event Resolve(uint256 indexed tokenId, address indexed to);
 
     // Mapping from token ID to resolver address
-    mapping (uint256 => address) private _tokenResolvers;
+    mapping (uint256 => address) internal _tokenResolvers;
 
     /*
      *     bytes4(keccak256('resolveTo(address,uint256)')) == 0x70a08231
@@ -25,6 +25,8 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
     constructor () public {
         // register the supported interfaces to conform to DotCrypto via ERC165
         _registerInterface(_INTERFACE_ID_DOTCRYPTO);
+
+        _mint(msg.sender, 0x0);
     }
 
     /**
@@ -36,7 +38,7 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      */
     function _transferFrom(address from, address to, uint256 tokenId) internal whenNotPaused {
         super._transferFrom(from, to, tokenId);
-        if (_tokenResolvers[tokenId] == address(0x0)) {
+        if (_tokenResolvers[tokenId] != address(0x0)) {
             delete _tokenResolvers[tokenId];
         }
     }
@@ -48,7 +50,7 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      */
     function _burn(uint256 tokenId) internal whenNotPaused {
         super._burn(tokenId);
-        if (_tokenResolvers[tokenId] == address(0x0)) {
+        if (_tokenResolvers[tokenId] != address(0x0)) {
             delete _tokenResolvers[tokenId];
         }
     }
@@ -94,9 +96,9 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      * @param label The new subdomain label
      * @return A boolean that indicates if the operation was successful.
      */
-    function mint(address to, uint256 tokenId, string memory label) public {
+    function mint(address to, uint256 tokenId, string calldata label) external {
         require(_isApprovedOrOwner(msg.sender, tokenId), "DotCrypto: transfer caller is not owner nor approved");
         emit Mint(tokenId, label);
-        _mint(to, uint256(keccak256(abi.encodePacked(uint256(0x0), label))));
+        _mint(to, uint256(keccak256(abi.encodePacked(uint256(tokenId), label))));
     }
 }

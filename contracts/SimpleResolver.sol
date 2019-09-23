@@ -37,7 +37,9 @@ contract SimpleResolver {
     /**
      * @dev Internal function to to set record. As opposed to set, this imposes
      * no restrictions on msg.sender.
-     * @param to address the given token ID will resolve to
+     * @param owner owner address of token
+     * @param key key of record to be set
+     * @param value value of record to be set
      * @param tokenId uint256 ID of the token to be transferred
      */
     function _set(address owner, string memory key, string memory value, uint256 tokenId) internal {
@@ -51,7 +53,7 @@ contract SimpleResolver {
      * @param value The value to set key to.
      * @param tokenId The token id to set.
      */
-    function set(string memory key, string memory value, uint256 tokenId) public whenResolver(tokenId) {
+    function set(string calldata key, string calldata value, uint256 tokenId) external whenResolver(tokenId) {
         address owner = dotCrypto.ownerOf(tokenId);
         // TODO: f is this really necissary?
         require(msg.sender == owner, "SimpleResolver: caller is not the owner");
