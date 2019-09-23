@@ -1,4 +1,4 @@
-var DotCrypto = artifacts.require('./DotCrypto.sol')
+var DotCrypto = artifacts.require('registry/DotCrypto.sol')
 
 module.exports = deployer => {
   deployer.deploy(DotCrypto)

@@ -1,4 +1,4 @@
-const DotCrypto = artifacts.require('DotCrypto.sol')
+const DotCrypto = artifacts.require('registry/DotCrypto.sol')
 const Web3 = require('web3')
 
 async function deployDotCrypto() {
@@ -34,44 +34,17 @@ contract('DotCrypto', () => {
   it('should deploy', async () => {
     const dotCrypto = await deployDotCrypto()
 
-    const rootNodeOwner = await dotCrypto.methods
-      .ownerOf('0x' + '0'.repeat(64))
-      .call()
-    console.log('rootNodeOwner:', rootNodeOwner)
+    // const rootNodeOwner = await dotCrypto.methods
+    //   .ownerOf('0x' + '0'.repeat(64))
+    //   .call()
+    // console.log('rootNodeOwner:', rootNodeOwner)
 
-    await dotCrypto.methods.mint(rootNodeOwner, rootNode, 'crypto').send({
-      from: rootNodeOwner,
-    })
+    // const events = await dotCrypto.getPastEvents({fromBlock: 0})
+    // console.log(
+    //   'events:',
+    //   events.map(({event, returnValues}) => ({event, returnValues})),
+    // )
 
-    const cryptoOwner = await dotCrypto.methods
-      .ownerOf(namehash('crypto'))
-      .call()
-    console.log('cryptoOwner:', cryptoOwner)
-
-    // console.log(Object.keys(dotCrypto.methods))
-
-    await dotCrypto.methods
-      .resolveTo(
-        '0x1234567890123456789012345678901234567890',
-        namehash('crypto'),
-      )
-      .send({from: rootNodeOwner})
-
-    const resolver = await dotCrypto.methods
-      .resolverOf(namehash('crypto'))
-      .call()
-    console.log('resolver:', resolver)
-
-    await dotCrypto.methods.burn(namehash('crypto')).send({
-      from: rootNodeOwner,
-    })
-
-    const events = await dotCrypto.getPastEvents({fromBlock: 0})
-    console.log(
-      'events:',
-      events.map(({event, returnValues}) => ({event, returnValues})),
-    )
-
-    // console.log(Object.keys(dotCrypto.methods))
+    console.log(Object.keys(dotCrypto.methods))
   })
 })

@@ -1,25 +1,25 @@
 pragma solidity ^0.5.0;
 
-import './DotCrypto.sol';
+import '../registry/Registry.sol';
 
 contract SimpleResolver {
 
     event Set(address indexed owner, string indexed key, string value, uint256 indexed tokenId);
 
-    DotCrypto dotCrypto;
+    Registry registry;
 
     // Mapping from owner to token ID to key to value
     mapping (address => mapping (uint256 => mapping (string => string))) internal _records;
 
-    constructor(DotCrypto _dotCrypto) public {
-        dotCrypto = _dotCrypto;
+    constructor(Registry _registry) public {
+        registry = _registry;
     }
 
     /**
      * @dev Throws if called when not the resolver.
      */
     modifier whenResolver(uint256 tokenId) {
-        require(address(this) == dotCrypto.resolverOf(tokenId), "SimpleResolver: caller is not the owner");
+        require(address(this) == registry.resolverOf(tokenId), "SimpleResolver: caller is not the owner");
         _;
     }
 
@@ -30,7 +30,7 @@ contract SimpleResolver {
      * @return The value string.
      */
     function get(string memory key, uint256 tokenId) public view whenResolver(tokenId) returns (string memory) {
-        address owner = dotCrypto.ownerOf(tokenId);
+        address owner = registry.ownerOf(tokenId);
         return _records[owner][tokenId][key];
     }
 
@@ -54,7 +54,7 @@ contract SimpleResolver {
      * @param tokenId The token id to set.
      */
     function set(string calldata key, string calldata value, uint256 tokenId) external whenResolver(tokenId) {
-        address owner = dotCrypto.ownerOf(tokenId);
+        address owner = registry.ownerOf(tokenId);
         // TODO: f is this really necissary?
         require(msg.sender == owner, "SimpleResolver: caller is not the owner");
 

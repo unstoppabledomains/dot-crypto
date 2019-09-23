@@ -1,13 +1,15 @@
 pragma solidity ^0.5.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/introspection/IERC165.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721Metadata.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "@openzeppelin/contracts/lifecycle/Pausable.sol";
+import "./Metadata.sol";
 
-contract DotCrypto is ERC721, ERC721Burnable, Pausable {
+contract Resolution is ERC721 {
 
-    event Mint(uint256 indexed tokenId, string label);
     event Resolve(uint256 indexed tokenId, address indexed to);
 
     // Mapping from token ID to resolver address
@@ -16,17 +18,14 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
     /*
      *     bytes4(keccak256('resolveTo(address,uint256)')) == 0x70a08231
      *     bytes4(keccak256('resolverOf(uint256)')) == 0x6352211e
-     *     bytes4(keccak256('mint(address,uint256,string)')) == 0x095ea7b3
-     *     => 0x70a08231 ^ 0x6352211e ^ 0x095ea7b3 == 0x80ac58cd
+     *     => 0x70a08231 ^ 0x6352211e == 0x80ac58cd
      */
     // TODO: figure out real interface
-    bytes4 private constant _INTERFACE_ID_DOTCRYPTO = 0x80ac58cd;
+    bytes4 private constant _INTERFACE_ID_DOTCRYPTO_RESOLUTION = 0x80ac58cd;
 
     constructor () public {
-        // register the supported interfaces to conform to DotCrypto via ERC165
-        _registerInterface(_INTERFACE_ID_DOTCRYPTO);
-
-        _mint(msg.sender, 0x0);
+        // register the supported interfaces to conform to Resolution via ERC165
+        _registerInterface(_INTERFACE_ID_DOTCRYPTO_RESOLUTION);
     }
 
     /**
@@ -36,7 +35,7 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
      */
-    function _transferFrom(address from, address to, uint256 tokenId) internal whenNotPaused {
+    function _transferFrom(address from, address to, uint256 tokenId) internal {
         super._transferFrom(from, to, tokenId);
         if (_tokenResolvers[tokenId] != address(0x0)) {
             delete _tokenResolvers[tokenId];
@@ -48,7 +47,7 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      * Reverts if the token does not exist.
      * @param tokenId uint256 ID of the token being burned
      */
-    function _burn(uint256 tokenId) internal whenNotPaused {
+    function _burn(uint256 tokenId) internal {
         super._burn(tokenId);
         if (_tokenResolvers[tokenId] != address(0x0)) {
             delete _tokenResolvers[tokenId];
@@ -62,7 +61,7 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      * @param to address the given token ID will resolve to
      * @param tokenId uint256 ID of the token to be transferred
      */
-    function _resolveTo(address to, uint256 tokenId) internal whenNotPaused {
+    function _resolveTo(address to, uint256 tokenId) internal {
         emit Resolve(tokenId, to);
         _tokenResolvers[tokenId] = to;
     }
@@ -74,7 +73,7 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      * @param tokenId uint256 ID of the token to be transferred
      */
     function resolveTo(address to, uint256 tokenId) external {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "DotCrypto: transfer caller is not owner nor approved");
+        require(_isApprovedOrOwner(msg.sender, tokenId), "Resolution: transfer caller is not owner nor approved");
         _resolveTo(to, tokenId);
     }
 
@@ -85,20 +84,7 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      */
     function resolverOf(uint256 tokenId) public view returns (address) {
         address resolver = _tokenResolvers[tokenId];
-        require(resolver != address(0), "DotCrypto: resolver query for nonexistent token");
+        require(resolver != address(0), "Resolution: resolver query for nonexistent token");
         return resolver;
-    }
-
-    /**
-     * @dev Function to mint tokens.
-     * @param to The address that will receive the minted tokens.
-     * @param tokenId The token id to mint.
-     * @param label The new subdomain label
-     * @return A boolean that indicates if the operation was successful.
-     */
-    function mint(address to, uint256 tokenId, string calldata label) external {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "DotCrypto: transfer caller is not owner nor approved");
-        emit Mint(tokenId, label);
-        _mint(to, uint256(keccak256(abi.encodePacked(uint256(tokenId), label))));
     }
 }
