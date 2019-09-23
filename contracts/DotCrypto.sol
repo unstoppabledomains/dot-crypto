@@ -68,7 +68,6 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
 
     /**
      * @dev Sets the resolver of a given token ID to another address.
-     * Usage of this method is discouraged, use `safeResolveTo` whenever possible.
      * Requires the msg.sender to be the owner, approved, or operator.
      * @param to address the given token ID will resolve to
      * @param tokenId uint256 ID of the token to be transferred
