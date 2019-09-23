@@ -62,7 +62,6 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      */
     function _resolveTo(address to, uint256 tokenId) internal whenNotPaused {
         emit Resolve(tokenId, to);
-
         _tokenResolvers[tokenId] = to;
     }
 
@@ -74,7 +73,6 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      */
     function resolveTo(address to, uint256 tokenId) external {
         require(_isApprovedOrOwner(msg.sender, tokenId), "DotCrypto: transfer caller is not owner nor approved");
-
         _resolveTo(to, tokenId);
     }
 
@@ -86,7 +84,6 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
     function resolverOf(uint256 tokenId) public view returns (address) {
         address resolver = _tokenResolvers[tokenId];
         require(resolver != address(0), "DotCrypto: resolver query for nonexistent token");
-
         return resolver;
     }
 
@@ -99,9 +96,7 @@ contract DotCrypto is ERC721, ERC721Burnable, Pausable {
      */
     function mint(address to, uint256 tokenId, string memory label) public {
         require(_isApprovedOrOwner(msg.sender, tokenId), "DotCrypto: transfer caller is not owner nor approved");
-
         emit Mint(tokenId, label);
-
         _mint(to, uint256(keccak256(abi.encodePacked(uint256(0x0), label))));
     }
 }
