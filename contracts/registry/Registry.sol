@@ -34,9 +34,11 @@ contract Registry is ERC721, ERC721Burnable, Metadata, Resolution {
      */
     function _assign(address to, uint256 tokenId, string memory label) internal {
         uint256 childId = uint256(keccak256(abi.encodePacked(uint256(tokenId), keccak256(abi.encodePacked(label)))));
-        _mint(to, childId);
-        // TODO: Should this be here?
-        if (bytes(_tokenURIs[tokenId]).length != 0) {
+
+        if (_exists(childId)) {
+            _transferFrom(ownerOf(tokenId), to, childId);
+        } else {
+            _mint(to, childId);
             _setTokenURI(childId, string(abi.encodePacked(label, ".", _tokenURIs[tokenId])));
         }
     }
@@ -48,7 +50,25 @@ contract Registry is ERC721, ERC721Burnable, Metadata, Resolution {
      * @param label The new subdomain label
      */
     function assign(address to, uint256 tokenId, string calldata label) external {
+        safeAssign(to, tokenId, label, "");
+    }
+
+    /**
+     * @dev Function to mint subdomain tokens.
+     * @param to The address that will receive the minted tokens.
+     * @param tokenId The token id to mint.
+     * @param label The new subdomain label
+     * @param _data bytes data to send along with a safe transfer check
+     */
+    function safeAssign(address to, uint256 tokenId, string memory label, bytes memory _data) public {
         require(_isApprovedOrOwner(msg.sender, tokenId), "Registry: transfer caller is not owner nor approved");
         _assign(to, tokenId, label);
+
+        uint256 childId = uint256(keccak256(abi.encodePacked(uint256(tokenId), keccak256(abi.encodePacked(label)))));
+        if (_exists(childId)) {
+            _checkOnERC721Received(address(0x0), to, tokenId, _data);
+        } else {
+             _checkOnERC721Received(ownerOf(childId), to, tokenId, _data);
+        }
     }
 }
