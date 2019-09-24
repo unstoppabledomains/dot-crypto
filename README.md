@@ -1,30 +1,41 @@
 # .crypto
 
+Contracts and tools for .crypto.
+
 ## Registry Contracts
 
 ### Mine
 
+Before you check out the contracts you should be familiar with ERC721/NFTs.
+
 #### Metadata.sol
+
+Complies with the ERC721 Metadata extension. Basically copy paste of Zeppelin
+ERC721Metadata.sol. The only exception is that the `tokenURI` method appends the
+`dotcrypto:` scheme.
 
 - `name()`
 - `symbol()`
 - `tokenURI(uint256)`
 
-#### Registry.sol
-
-- `assign(address,uint256,string)`
-- `burn(uint256)`
-
-#### DotCrypto.sol
-
-- `assignSLD(address,string)`
-
 #### Resolution.sol
+
+Provides the resolver logic for dot crypto.
 
 - `resolveTo(address,uint256)`
 - `resolverOf(uint256)`
 
+#### Registry.sol
+
+Provides the initial relationship between parent and child nodes. Needs to be
+fixed to use something other than `_mint`. Also lets people burn nodes.
+
+- `assign(address,uint256,string)`
+- `burn(uint256)`
+
 #### SunriseRegistry.sol
+
+Provides logic for trademark sunrise names.
 
 - `openSunrise(address,uint256,string)`
 - `closeSunrise(uint256,bool)`
@@ -32,6 +43,8 @@
 - `withdrawSunriseFundTo(address)`
 
 #### RepresentativeRegistry.sol
+
+Provides logic for representatives to manage a the registry on an account's behalf.
 
 - `assignFor(address,uint256,string,bytes)`
 - `safeTransferFromFor(address,address,uint256,bytes,bytes)`
@@ -43,16 +56,22 @@
 
 #### PauseableRegistry.sol
 
-- `unpause()`
-- `renouncePauser()`
-- `paused()`
-- `pause()`
-- `addPauser(address)`
-- `isPauser(address)`
+Modifies internal registry methods to make them pauseable.
+
+#### DotCrypto.sol
+
+Is `Ownable` and provides the functionality to mint SLD domains.
+
+- `assignSLD(address,string)`
 
 ### Open Zeppelin Contracts
 
+https://docs.openzeppelin.com/contracts/2.x/
+
 #### ERC721.sol
+
+Check out: https://eips.ethereum.org/EIPS/eip-721
+As well as: http://erc721.org
 
 - `getApproved(uint256)`
 - `approve(address,uint256)`
@@ -70,3 +89,12 @@
 - `isOwner()`
 - `transferOwnership(address)`
 - `renounceOwnership()`
+
+#### Pauseable.sol
+
+- `unpause()`
+- `renouncePauser()`
+- `paused()`
+- `pause()`
+- `addPauser(address)`
+- `isPauser(address)`
