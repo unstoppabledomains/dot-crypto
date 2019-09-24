@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 import './Registry.sol';
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 
-contract RepresentitiveRegistry is Registry {
+contract RepresentativeRegistry is Registry {
     using ECDSA for *;
 
     // Mapping from owner to a nonce
@@ -26,7 +26,7 @@ contract RepresentitiveRegistry is Registry {
                 ECDSA.recover(ECDSA.toEthSignedMessageHash(keccak256(abi.encodePacked(hash, nonce))), signature),
                 tokenId
             ),
-            "RepresentitiveRegistry: bad signature"
+            "RepresentativeRegistry: bad signature"
         );
 
         _nonces[owner] += 1;
@@ -68,7 +68,7 @@ contract RepresentitiveRegistry is Registry {
     function safeTransferFromFor(address from, address to, uint256 tokenId, bytes calldata _data, bytes calldata signature) external {
         _checkProxySignature(keccak256(abi.encodePacked(msg.sig, from, to, _data, tokenId)), tokenId, signature);
         _transferFrom(from, to, tokenId);
-        require(_checkOnERC721Received(from, to, tokenId, _data), "RepresentitiveRegistry: transfer to non ERC721Receiver implementer");
+        require(_checkOnERC721Received(from, to, tokenId, _data), "RepresentativeRegistry: transfer to non ERC721Receiver implementer");
     }
 
     // TODO: Should we even keep this version around?
@@ -84,7 +84,7 @@ contract RepresentitiveRegistry is Registry {
     function safeTransferFromFor(address from, address to, uint256 tokenId, bytes calldata signature) external {
         _checkProxySignature(keccak256(abi.encodePacked(msg.sig, from, to, "", tokenId)), tokenId, signature);
         _transferFrom(from, to, tokenId);
-        require(_checkOnERC721Received(from, to, tokenId, ""), "RepresentitiveRegistry: transfer to non ERC721Receiver implementer");
+        require(_checkOnERC721Received(from, to, tokenId, ""), "RepresentativeRegistry: transfer to non ERC721Receiver implementer");
     }
 
     /**

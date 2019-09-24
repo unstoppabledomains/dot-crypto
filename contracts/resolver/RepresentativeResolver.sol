@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 import './SimpleResolver.sol';
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 
-contract RepresentitiveResolver is SimpleResolver {
+contract RepresentativeResolver is SimpleResolver {
     using ECDSA for *;
 
     // Mapping from owner to a nonce
@@ -14,7 +14,7 @@ contract RepresentitiveResolver is SimpleResolver {
 
         require(
             owner == ECDSA.recover(ECDSA.toEthSignedMessageHash(keccak256(abi.encodePacked(hash, nonce))), signature),
-            "RepresentitiveResolver: bad signature"
+            "RepresentativeResolver: bad signature"
         );
 
         _nonces[owner] += 1;

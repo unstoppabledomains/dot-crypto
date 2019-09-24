@@ -22,13 +22,12 @@
   },
   "scripts": {
     "format": "prettier --write -l '**/*.{md,ts,json}' --ignore-path .gitignore",
-    "kill": "lsof -ti:8545 | xargs kill",
-    "pretest": "yarn kill && ganache-cli --quiet &",
-    "test": "truffle test",
-    "posttest": "yarn kill"
+    "test": "truffle test"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "ganache-cli": "^6.7.0",
     "prettier": "^1.18.2",
     "truffle": "^5.0.37"

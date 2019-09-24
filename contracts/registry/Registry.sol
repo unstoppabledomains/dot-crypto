@@ -34,10 +34,11 @@ contract Registry is ERC721, ERC721Burnable, Metadata, Resolution {
      */
     function _assign(address to, uint256 tokenId, string memory label) internal {
         uint256 childId = uint256(keccak256(abi.encodePacked(uint256(tokenId), keccak256(abi.encodePacked(label)))));
+        _mint(to, childId);
+        // TODO: Should this be here?
         if (bytes(_tokenURIs[tokenId]).length != 0) {
             _setTokenURI(childId, string(abi.encodePacked(label, ".", _tokenURIs[tokenId])));
         }
-        _mint(to, childId);
     }
 
     /**

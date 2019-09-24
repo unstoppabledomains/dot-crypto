@@ -1,16 +1,16 @@
 pragma solidity ^0.5.0;
 
-import "./RepresentitiveRegistry.sol";
+import "./RepresentativeRegistry.sol";
 import "./SunriseRegistry.sol";
 import "./PauseableRegistry.sol";
 
-contract DotCrypto is Registry, PauseableRegistry, RepresentitiveRegistry, SunriseRegistry {
+contract DotCrypto is Registry, PauseableRegistry, RepresentativeRegistry, SunriseRegistry {
 
     // TODO: figure out real interface
     bytes4 private constant _INTERFACE_ID_DOTCRYPTO = 0x095ea7b3;
 
     // TODO: real hash
-    uint256 private constant _CRYPTO_HASH = 0x0;
+    uint256 private constant _CRYPTO_HASH = 0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f;
 
     constructor () Metadata(".crypto", "UDC") public {
         // register the supported interfaces to conform to Registry via ERC165
