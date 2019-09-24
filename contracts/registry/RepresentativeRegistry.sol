@@ -100,19 +100,19 @@ contract RepresentativeRegistry is Registry {
         _resolveTo(to, tokenId);
     }
 
-    /**
-     * @dev Mints a token on behalf of another address.
-     * See `assign` for more details.
-     * Requires signature to be signed by the owner, approved, or operator.
-     * @param to The address that will receive the minted tokens.
-     * @param tokenId The token id to mint.
-     * @param label The new subdomain label.
-     * @param signature signature corasponing to `burn` function call.
-     */
-    function assignFor(address to, uint256 tokenId, string calldata label, bytes calldata signature) external {
-        _checkProxySignature(keccak256(abi.encodePacked(msg.sig, to, tokenId, label)), tokenId, signature);
-        _assign(to, tokenId, label);
-    }
+    // /**
+    //  * @dev Mints a token on behalf of another address.
+    //  * See `assign` for more details.
+    //  * Requires signature to be signed by the owner, approved, or operator.
+    //  * @param to The address that will receive the minted tokens.
+    //  * @param tokenId The token id to mint.
+    //  * @param label The new subdomain label.
+    //  * @param signature signature corasponing to `burn` function call.
+    //  */
+    // function assignFor(address to, uint256 tokenId, string calldata label, bytes calldata signature) external {
+    //     _checkProxySignature(keccak256(abi.encodePacked(msg.sig, to, tokenId, label)), tokenId, signature);
+    //     _assign(to, tokenId, label);
+    // }
 
     /**
      * @dev Burns a specific ERC721 token on behalf of another address.

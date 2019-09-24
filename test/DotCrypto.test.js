@@ -34,7 +34,7 @@ function namehash(name) {
 
 describe('DotCrypto', () => {
   contract('', ([coinbase, address2, ...addresses]) => {
-    it('should deploy', () => deployDotCrypto())
+    it.only('should deploy', () => deployDotCrypto())
 
     it('should deploy', async () => {
       const dotCrypto = await deployDotCrypto()

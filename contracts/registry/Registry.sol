@@ -13,10 +13,6 @@ contract Registry is ERC721, ERC721Burnable, Metadata, Resolution {
     // Mapping from token ID to resolver address
     mapping (uint256 => address) internal _tokenResolvers;
 
-    /*
-     *     bytes4(keccak256('assign(address,uint256,string)')) == 0x095ea7b3
-     *     => 0x095ea7b3
-     */
     // TODO: figure out real interface
     bytes4 private constant _INTERFACE_ID_DOTCRYPTO_REGISTRY = 0x095ea7b3;
 
@@ -25,50 +21,47 @@ contract Registry is ERC721, ERC721Burnable, Metadata, Resolution {
         _registerInterface(_INTERFACE_ID_DOTCRYPTO_REGISTRY);
     }
 
-    /**
-     * @dev Internal function to mint subdomain tokens.
-     * As opposed to assign, this imposes no restrictions on msg.sender.
-     * @param to The address that will receive the minted tokens.
-     * @param tokenId The token id to mint.
-     * @param label The new subdomain label
-     */
-    function _assign(address to, uint256 tokenId, string memory label) internal {
-        uint256 childId = uint256(keccak256(abi.encodePacked(uint256(tokenId), keccak256(abi.encodePacked(label)))));
-
-        if (_exists(childId)) {
-            _transferFrom(ownerOf(tokenId), to, childId);
-        } else {
-            _mint(to, childId);
-            _setTokenURI(childId, string(abi.encodePacked(label, ".", _tokenURIs[tokenId])));
-        }
+    function _childId(uint256 tokenId, string memory label) internal pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(uint256(tokenId), keccak256(abi.encodePacked(label)))));
     }
 
-    /**
-     * @dev Function to mint subdomain tokens.
-     * @param to The address that will receive the minted tokens.
-     * @param tokenId The token id to mint.
-     * @param label The new subdomain label
-     */
-    function assign(address to, uint256 tokenId, string calldata label) external {
-        safeAssign(to, tokenId, label, "");
+    function mintChild(address to, uint256 tokenId, string memory label) public {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "Registry: mint mintChild is not owner nor approved");
+        uint256 childId = _childId(tokenId, label);
+        _mint(to, childId);
     }
 
-    /**
-     * @dev Function to mint subdomain tokens.
-     * @param to The address that will receive the minted tokens.
-     * @param tokenId The token id to mint.
-     * @param label The new subdomain label
-     * @param _data bytes data to send along with a safe transfer check
-     */
-    function safeAssign(address to, uint256 tokenId, string memory label, bytes memory _data) public {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "Registry: transfer caller is not owner nor approved");
-        _assign(to, tokenId, label);
+    function safeMintChild(address to, uint256 tokenId, string memory label, bytes memory _data) public {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "Registry: safeMintChild caller is not owner nor approved");
+        uint256 childId = _childId(tokenId, label);
+        _mint(to, childId);
+        _checkOnERC721Received(address(0x0), to, tokenId, _data);
+    }
 
-        uint256 childId = uint256(keccak256(abi.encodePacked(uint256(tokenId), keccak256(abi.encodePacked(label)))));
-        if (_exists(childId)) {
-            _checkOnERC721Received(address(0x0), to, tokenId, _data);
-        } else {
-             _checkOnERC721Received(ownerOf(childId), to, tokenId, _data);
-        }
+    function safeMintChild(address to, uint256 tokenId, string calldata label) external {
+        safeMintChild(to, tokenId, label, "");
+    }
+
+    function burnChild(uint256 tokenId, string calldata label) external {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "Registry: burnChild caller is not owner nor approved");
+        uint256 childId = _childId(tokenId, label);
+        _burn(childId);
+    }
+
+    function transferChildFrom(address from, address to, uint256 tokenId, string calldata label) external {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "Registry: transferChildFrom caller is not owner nor approved");
+        uint256 childId = _childId(tokenId, label);
+        transferFrom(from, to, childId);
+    }
+
+    function safeTransferChildFrom(address from, address to, uint256 tokenId, string memory label, bytes memory _data) public {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "Registry: safeTransferChildFrom caller is not owner nor approved");
+        uint256 childId = _childId(tokenId, label);
+        transferFrom(from, to, childId);
+        _checkOnERC721Received(from, to, childId, _data);
+    }
+
+    function safeTransferChildFrom(address from, address to, uint256 tokenId, string calldata label) external {
+        safeTransferChildFrom(from, to, tokenId, label, "");
     }
 }

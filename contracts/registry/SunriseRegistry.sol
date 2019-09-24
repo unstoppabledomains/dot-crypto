@@ -30,7 +30,6 @@ contract SunriseRegistry is Registry, Ownable {
         _registerInterface(_INTERFACE_ID_DOTCRYPTO_SUNRISE_REGISTRY);
     }
 
-
     // TODO: subtract
     function sunriseOf(uint256 tokenId) external view returns (uint256) {
         uint256 sunrise = _tokenSunrises[tokenId];
@@ -45,11 +44,13 @@ contract SunriseRegistry is Registry, Ownable {
     }
 
     function openSunrise(address to, uint256 tokenId, string calldata label) external payable onlyOwner {
-        // TODO: Requires does token not exist
         // TODO: Requires no previous sunrise
-        _tokenSunriseDeposits[tokenId] = msg.value;
-        emit Sunrise(tokenId, now, msg.value);
-        _assign(to, tokenId, label);
+        uint256 childId = _childId(tokenId, label);
+        _tokenSunriseDeposits[childId] = msg.value;
+        _tokenSunrises[childId] = now;
+        emit Sunrise(childId, now, msg.value);
+        _mint(to, childId);
+        _checkOnERC721Received(address(0x0), to, tokenId, "");
     }
 
     function closeSunrise(uint256 tokenId, bool intent) external onlyOwner {

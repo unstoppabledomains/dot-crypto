@@ -4,7 +4,7 @@ import "./RepresentativeRegistry.sol";
 import "./SunriseRegistry.sol";
 import "./PauseableRegistry.sol";
 
-contract DotCrypto is Registry, PauseableRegistry, RepresentativeRegistry, SunriseRegistry {
+contract DotCrypto is Registry, Ownable /*, PauseableRegistry */ /*, RepresentativeRegistry */ /*, SunriseRegistry */ {
 
     // TODO: figure out real interface
     bytes4 private constant _INTERFACE_ID_DOTCRYPTO = 0x095ea7b3;
@@ -24,11 +24,26 @@ contract DotCrypto is Registry, PauseableRegistry, RepresentativeRegistry, Sunri
      * @param to The address that will receive the sld.
      * @param label The new sld label
      */
-    function assignSLD(address to, string calldata label) external onlyOwner {
-        require(
-            !_exists(uint256(keccak256(abi.encodePacked(uint256(_CRYPTO_HASH), keccak256(abi.encodePacked(label)))))),
-            "DotCrypto: assigning sld token that already exists"
-        );
-        _assign(to, _CRYPTO_HASH, label);
+    function mintSLD(address to, string calldata label) external onlyOwner {
+        uint256 childId = _childId(_CRYPTO_HASH, label);
+        require(!_exists(childId), "DotCrypto: sld token already exists");
+        _mint(to, childId);
+    }
+
+    /**
+     * @dev Administrative function for assigning second level domains (SLDs).
+     * @param to The address that will receive the sld.
+     * @param label The new sld label
+     * @param _data bytes data to send along with a safe transfer check.
+     */
+    function safeMintSLD(address to, string memory label, bytes memory _data) public onlyOwner {
+        uint256 childId = _childId(_CRYPTO_HASH, label);
+        require(!_exists(childId), "DotCrypto: sld token already exists");
+        _mint(to, childId);
+        _checkOnERC721Received(address(0x0), to, childId, _data);
+    }
+
+    function safeMintSLD(address to, string calldata label) external onlyOwner {
+        safeMintSLD(to, label, "");
     }
 }
