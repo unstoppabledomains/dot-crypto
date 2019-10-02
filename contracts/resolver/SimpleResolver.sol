@@ -1,17 +1,19 @@
 pragma solidity ^0.5.0;
 
-import '../registry/Registry.sol';
+import '../registry/Resolution.sol';
+
+// Reverse resolver
 
 contract SimpleResolver {
 
-    event Set(address indexed owner, string indexed key, string value, uint256 indexed tokenId);
+    event Set(address indexed owner, bytes indexed key, bytes value, uint256 indexed tokenId);
 
-    Registry registry;
+    Resolution registry;
 
     // Mapping from owner to token ID to key to value
-    mapping (address => mapping (uint256 => mapping (string => string))) internal _records;
+    mapping (address => mapping (uint256 => mapping (bytes => bytes))) internal _records;
 
-    constructor(Registry _registry) public {
+    constructor(Resolution _registry) public {
         registry = _registry;
     }
 
@@ -27,9 +29,9 @@ contract SimpleResolver {
      * @dev Function to get record.
      * @param key The key to query the value of.
      * @param tokenId The token id to fetch.
-     * @return The value string.
+     * @return The value bytes.
      */
-    function get(string memory key, uint256 tokenId) public view whenResolver(tokenId) returns (string memory) {
+    function get(bytes memory key, uint256 tokenId) public view whenResolver(tokenId) returns (bytes memory) {
         address owner = registry.ownerOf(tokenId);
         return _records[owner][tokenId][key];
     }
@@ -42,7 +44,7 @@ contract SimpleResolver {
      * @param value value of record to be set
      * @param tokenId uint256 ID of the token to be transferred
      */
-    function _set(address owner, string memory key, string memory value, uint256 tokenId) internal {
+    function _set(address owner, bytes memory key, bytes memory value, uint256 tokenId) internal {
         _records[owner][tokenId][key] = value;
         emit Set(owner, key, value, tokenId);
     }
@@ -53,7 +55,7 @@ contract SimpleResolver {
      * @param value The value to set key to.
      * @param tokenId The token id to set.
      */
-    function set(string calldata key, string calldata value, uint256 tokenId) external whenResolver(tokenId) {
+    function set(bytes calldata key, bytes calldata value, uint256 tokenId) external whenResolver(tokenId) {
         address owner = registry.ownerOf(tokenId);
         // TODO: f is this really necissary?
         require(msg.sender == owner, "SimpleResolver: caller is not the owner");

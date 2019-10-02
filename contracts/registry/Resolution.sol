@@ -29,7 +29,8 @@ contract Resolution is ERC721 {
     }
 
     /**
-     * @dev Internal function to transfer ownership of a given token ID to another address.
+     * @dev Internal function to transfer ownership of a given token ID to
+     * another address.
      * As opposed to transferFrom, this imposes no restrictions on msg.sender.
      * @param from current owner of the token
      * @param to address to receive the ownership of the given token ID
@@ -73,7 +74,10 @@ contract Resolution is ERC721 {
      * @param tokenId uint256 ID of the token to be transferred
      */
     function resolveTo(address to, uint256 tokenId) external {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "Resolution: transfer caller is not owner nor approved");
+        require(
+            _isApprovedOrOwner(msg.sender, tokenId),
+            "Resolution: transfer caller is not owner nor approved"
+        );
         _resolveTo(to, tokenId);
     }
 
@@ -84,7 +88,10 @@ contract Resolution is ERC721 {
      */
     function resolverOf(uint256 tokenId) public view returns (address) {
         address resolver = _tokenResolvers[tokenId];
-        require(resolver != address(0), "Resolution: resolver query for nonexistent token");
+        require(
+            resolver != address(0x0),
+            "Resolution: resolver query for nonexistent token"
+        );
         return resolver;
     }
 }

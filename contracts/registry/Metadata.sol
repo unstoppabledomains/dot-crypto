@@ -14,6 +14,9 @@ contract Metadata is ERC165, ERC721, IERC721Metadata {
     // Token symbol
     string private _symbol;
 
+    // URI prefix
+    string private _uriPrefix;
+
     // Optional mapping for token URIs
     mapping(uint256 => string) internal _tokenURIs;
 
@@ -35,6 +38,7 @@ contract Metadata is ERC165, ERC721, IERC721Metadata {
 
         // register the supported interfaces to conform to ERC721 via ERC165
         _registerInterface(_INTERFACE_ID_ERC721_METADATA);
+        _setURIPrefix("dcrypto:");
     }
 
     /**
@@ -60,7 +64,17 @@ contract Metadata is ERC165, ERC721, IERC721Metadata {
      */
     function tokenURI(uint256 tokenId) external view returns (string memory) {
         require(_exists(tokenId), "Metadata: URI query for nonexistent token");
-        return string(abi.encodePacked("dotcrypto:", _tokenURIs[tokenId]));
+        return string(abi.encodePacked(_uriPrefix, _tokenURIs[tokenId]));
+    }
+
+    /**
+     * @dev Internal function to set the token URI for a given token.
+     * Reverts if the token ID does not exist.
+     * @param prefix string to concat with internal URI when getting
+     */
+    function _setURIPrefix(string memory prefix) internal {
+        require(bytes(prefix).length != 0, "Metadata: URI set of nonexistent token");
+        _uriPrefix = prefix;
     }
 
     /**
@@ -79,11 +93,10 @@ contract Metadata is ERC165, ERC721, IERC721Metadata {
      * @dev Internal function to burn a specific token.
      * Reverts if the token does not exist.
      * Deprecated, use _burn(uint256) instead.
-     * @param owner owner of the token to burn
      * @param tokenId uint256 ID of the token being burned by the msg.sender
      */
-    function _burn(address owner, uint256 tokenId) internal {
-        super._burn(owner, tokenId);
+    function _burn(uint256 tokenId) internal {
+        super._burn(tokenId);
         // Clear metadata (if any)
         if (bytes(_tokenURIs[tokenId]).length != 0) {
             delete _tokenURIs[tokenId];

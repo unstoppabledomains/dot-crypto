@@ -8,32 +8,38 @@
     "ethereum",
     "solidity",
     "smart contract",
-    "domain"
+    "domain",
+    "nft",
+    "erc721"
   ],
   "description": "Contracts and tools for .crypto",
   "repository": {
     "type": "git",
-    "url": "https://github.com/unstoppabledomains/.crypto.git"
+    "url": "https://github.com/unstoppabledomains/dot-crypto.git"
   },
-  "homepage": "https://github.com/unstoppabledomains/.crypto/blob/master/README.md",
+  "homepage": "https://github.com/unstoppabledomains/dot-crypto/blob/master/README.md",
   "author": {
     "name": "Braden Pezeshki",
     "email": "braden@unstoppabledomains.com"
   },
   "scripts": {
     "format": "prettier --write -l '**/*.{md,ts,json}' --ignore-path .gitignore",
-    "test": "truffle test"
+    "test": "truffle test",
+    "compile": "solc --abi -o build --allow-paths . @openzeppelin=./node_modules/@openzeppelin/ contracts/**/*.sol",
+    "postcompile": "mkdir -p build && find build -name '*.abi' -exec sh -c 'mv \"$0\" \"${0%.abi}.json\"' {} \\;",
+    "prerpc": "mkdir -p .chaindata",
+    "rpc": "ganache-cli --port 7545 --networkId 4447 --gasLimit 100000000 # --db .chaindata",
+    "rpc:stop": "lsof -ti:8545 | xargs kill",
+    "rpc:clean": "mkdir -p .chaindata && rm -r .chaindata"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
+    "@openzeppelin/contracts": "^2.3.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "ganache-cli": "^6.7.0",
     "prettier": "^1.18.2",
-    "truffle": "^5.0.37"
-  },
-  "dependencies": {
-    "@openzeppelin/contracts": "^2.3.0",
+    "truffle": "^5.0.37",
     "web3": "^1.2.1"
   }
 }
