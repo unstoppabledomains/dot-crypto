@@ -36,7 +36,7 @@ contract RepresentativeResolver is SimpleResolver {
      * @param tokenId The token id to set.
      * @param signature The signature to verify the transaction with.
      */
-    function setFor(string calldata key, string calldata value, uint256 tokenId, bytes calldata signature) external whenResolver(tokenId) {
+    function setFor(bytes calldata key, bytes calldata value, uint256 tokenId, bytes calldata signature) external whenResolver(tokenId) {
         address owner = registry.ownerOf(tokenId);
         _checkProxySignature(owner, keccak256(abi.encodePacked(key, value, tokenId)), signature);
         _set(owner, key, value, tokenId);

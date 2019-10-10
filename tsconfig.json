@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "build"
+  },
+  "include": ["src"]
+}

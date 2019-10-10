@@ -1,6 +1,7 @@
 node_modules/
 build/
 .chaindata/
+static/
 
 logs
 *.log

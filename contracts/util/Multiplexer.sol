@@ -11,7 +11,6 @@ contract Multiplexer is WhitelistedRole {
 
     address internal _account;
 
-    // TODO: whitelist account?
     constructor(address account) public {
         uint256 size;
         // retrieve the size of the code at account, non-zero values are contracts
@@ -21,12 +20,11 @@ contract Multiplexer is WhitelistedRole {
         _account = account;
     }
 
-    // TODO: make this payable?
     /**
     * @dev Fallback function allowing to perform the call to the given account.
     * This function will return whatever the forwarded call returns
     */
-    function () external /* payable */ onlyWhitelisted {
+    function () external payable onlyWhitelisted {
         // Load account into memory
         address account = _account;
 
@@ -42,7 +40,7 @@ contract Multiplexer is WhitelistedRole {
 
             // Call the contract
             // Reference: call(g, a, v, in, insize, out, outsize)
-            let result := call(gas, account, /* callvalue */ 0, ptr, calldatasize, 0, 0)
+            let result := call(gas, account, callvalue, ptr, calldatasize, 0, 0)
 
             // Copy the returndata into ptr
             let size := returndatasize
@@ -54,8 +52,4 @@ contract Multiplexer is WhitelistedRole {
         }
     }
 
-    // TODO: If we make this contract payable
-    // function __withdraw(address payable to) external onlyWhitelisted {
-    //     to.transfer(address(this).balance);
-    // }
 }

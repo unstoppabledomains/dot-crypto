@@ -1,139 +1,98 @@
 pragma solidity ^0.5.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721Metadata.sol";
-import "@openzeppelin/contracts/ownership/Ownable.sol";
-import "@openzeppelin/contracts/lifecycle/Pausable.sol";
-import "./Metadata.sol";
-import "./Resolution.sol";
+import "./ControlledERC721.sol";
+import "./IRegistry.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol";
 
-contract Registry is ERC721, ERC721Burnable, Metadata, Resolution {
+// solium-disable error-reason
+
+contract Registry is IRegistry, ControlledERC721, IERC721Metadata {
+
+    event Resolve(uint256 indexed tokenId, address indexed to);
+    event NewURI(uint256 indexed tokenId, string uri);
 
     // Mapping from token ID to resolver address
     mapping (uint256 => address) internal _tokenResolvers;
 
-    // TODO: figure out real interface
-    bytes4 private constant _INTERFACE_ID_DOTCRYPTO_REGISTRY = 0x095ea7b3;
+    // Optional mapping for token URIs
+    mapping(uint256 => string) internal _tokenURIs;
 
-    /**
-     * @dev Throws if called by any account other than approved or owner.
-     */
-    modifier onlyApprovedOrOwner(uint256 tokenId) {
-        require(
-            _isApprovedOrOwner(msg.sender, tokenId),
-            "Registry: caller is not approved or owner"
-        );
-        _;
-    }
+    string internal _prefix = "urn:udc:";
+
+    // uint256(keccak256(abi.encodePacked(uint256(0x0), keccak256(abi.encodePacked("crypto")))))
+    uint256 private constant _CRYPTO_HASH =
+        0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f;
 
     constructor () public {
-        // register the supported interfaces to conform to Registry via ERC165
-        _registerInterface(_INTERFACE_ID_DOTCRYPTO_REGISTRY);
+        // register the supported interfaces to conform to ERC721 via ERC165
+        _registerInterface(0x5b5e139f); // _INTERFACE_ID_ERC721_METADATA
+        _registerInterface(0x80ac58cd); // _INTERFACE_ID_DOTCRYPTO_RESOLUTION
+
+        _mint(address(0xdead), _CRYPTO_HASH);
+        // _setTokenURI(_CRYPTO_HASH, "crypto.");
+
+        _tokenURIs[_CRYPTO_HASH] = "crypto.";
+        emit NewURI(_CRYPTO_HASH, "crypto.");
     }
 
-    function _childId(
-        uint256 tokenId,
-        string memory label
-    ) internal pure returns (uint256) {
-        require(
-            bytes(label).length != 0,
-            "Registry: label length must be greater than zero"
-        );
-        return uint256(
-            keccak256(
-                abi.encodePacked(tokenId, keccak256(abi.encodePacked(label)))
-            )
-        );
+    function _resolveTo(address to, uint256 tokenId) internal {
+        emit Resolve(tokenId, to);
+        _tokenResolvers[tokenId] = to;
     }
 
-    function _mintChild(
-        address to,
-        uint256 tokenId,
-        string memory label
-    ) internal {
-        uint256 childId = _childId(tokenId, label);
-        _mint(to, childId);
-        _setTokenURI(
-            childId,
-            string(abi.encodePacked(label, ".", _tokenURIs[tokenId]))
-        );
+    function resolveTo(address to, uint256 tokenId) external {
+        require(_isApprovedOrOwner(msg.sender, tokenId));
+        _resolveTo(to, tokenId);
     }
 
-    function mintChild(
-        address to,
-        uint256 tokenId,
-        string memory label
-    ) public onlyApprovedOrOwner(tokenId) {
-        _mintChild(to, tokenId, label);
+    function controlledResolveTo(address to, uint256 tokenId) external onlyController {
+        _resolveTo(to, tokenId);
     }
 
-    function _safeMintChild(
-        address to,
-        uint256 tokenId,
-        string memory label,
-        bytes memory _data
-    ) internal {
-        uint256 childId = _childId(tokenId, label);
-        _mint(to, childId);
-        _setTokenURI(
-            childId,
-            string(abi.encodePacked(label, ".", _tokenURIs[tokenId]))
-        );
-        _checkOnERC721Received(address(0x0), to, tokenId, _data);
+    function resolverOf(uint256 tokenId) external view returns (address) {
+        require(_exists(tokenId));
+        return _tokenResolvers[tokenId];
     }
 
-    function safeMintChild(
-        address to,
-        uint256 tokenId,
-        string calldata label,
-        bytes calldata _data
-    ) external onlyApprovedOrOwner(tokenId) {
-        _safeMintChild(to, tokenId, label, _data);
+    function name() external view returns (string memory) {
+        return ".crypto";
     }
 
-    function safeMintChild(
-        address to,
-        uint256 tokenId,
-        string calldata label
-    ) external onlyApprovedOrOwner(tokenId) {
-        _safeMintChild(to, tokenId, label, "");
+    function symbol() external view returns (string memory) {
+        return "UDC";
     }
 
-    function burnChild(
-        uint256 tokenId,
-        string calldata label
-    ) external onlyApprovedOrOwner(tokenId)  {
-        _burn(_childId(tokenId, label));
+    function tokenURI(uint256 tokenId) external view returns (string memory) {
+        require(_exists(tokenId));
+        return string(abi.encodePacked(_prefix, _tokenURIs[tokenId]));
     }
 
-    function transferChildFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        string calldata label
-    ) external onlyApprovedOrOwner(tokenId) {
-        _transferFrom(from, to, _childId(tokenId, label));
+    function setTokenURI(uint256 tokenId, uint256 parentId, string calldata label) external onlyController {
+        require(_exists(tokenId));
+        _tokenURIs[tokenId] = string(abi.encodePacked(label, ".", _tokenURIs[parentId]));
+        emit NewURI(tokenId, label);
     }
 
-    function safeTransferChildFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        string memory label,
-        bytes memory _data
-    ) public onlyApprovedOrOwner(tokenId) {
-        uint256 childId = _childId(tokenId, label);
-        _transferFrom(from, to, childId);
-        _checkOnERC721Received(from, to, childId, _data);
+    function setTokenURIPrefix(string calldata prefix) external onlyController {
+        _prefix = prefix;
     }
 
-    function safeTransferChildFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        string calldata label
-    ) external {
-        safeTransferChildFrom(from, to, tokenId, label, "");
+    function _transferFrom(address from, address to, uint256 tokenId) internal {
+        super._transferFrom(from, to, tokenId);
+        if (_tokenResolvers[tokenId] != address(0x0)) {
+            delete _tokenResolvers[tokenId];
+        }
     }
+
+    function _burn(uint256 tokenId) internal {
+        super._burn(tokenId);
+        if (_tokenResolvers[tokenId] != address(0x0)) {
+            delete _tokenResolvers[tokenId];
+        }
+        // Clear metadata (if any)
+        if (bytes(_tokenURIs[tokenId]).length != 0) {
+            delete _tokenURIs[tokenId];
+        }
+    }
+
 }

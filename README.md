@@ -4,29 +4,7 @@ Contracts and tools for .crypto.
 
 ## Inheritance Hierarchy
 
-```
-
-                                  +------------+
-                     +------------+ ERC721.sol +---------------+
-                     |            +------------+               |
-                     |                  |                      |
-              +------v-------+   +------v---------+   +--------v-----------+
-              | Metadata.sol |   | Resolution.sol |   | ERC721Burnable.sol |
-              +--------------+   +----------------+   +--------------------+
-                     |                  |             |
-                     |            +-----v------+      |
-                     +----------->|Registry.sol|<-----+
-                            +-----+------------+----------+
-                            |           |                 |
-      +---------------------v  +--------v--------------+  v--------------------------+
-      | SunriseRegistry.sol |  | PauseableRegistry.sol |  |RepresentativeRegistry.sol|
-      +---------------------+  +-----------------------+  +--------------------------+
-                            |         |                   |
-                            |  +------v--------+          |
-                            +->| DotCrypto.sol |<---------+
-                               +---------------+
-
-```
+![Alt text](./inheritance.svg)
 
 ## Registry Contracts
 
@@ -59,7 +37,7 @@ fixed to use something other than `_mint`. Also lets people burn nodes.
 - `assign(address,uint256,string)`
 - `burn(uint256)`
 
-#### SunriseRegistry.sol
+#### RegistrySunrise.sol
 
 Provides logic for trademark sunrise names.
 
@@ -68,7 +46,7 @@ Provides logic for trademark sunrise names.
 - `sunriseOf(uint256)`
 - `withdrawSunriseFundTo(address)`
 
-#### RepresentativeRegistry.sol
+#### RegistryRepresentative.sol
 
 Provides logic for representatives to manage a the registry on an account's behalf.
 

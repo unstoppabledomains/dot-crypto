@@ -1,0 +1,27 @@
+pragma solidity ^0.5.0;
+
+interface IMintingController {
+
+    /**
+     * @dev Returns the root node for the registry.
+     * @return uint256 returns namehash of TLD
+     */
+    function root() external view returns (uint256);
+
+    /**
+     * @dev Minter function that mints a Second Level Domain (SLD).
+     * @param to address to mint the new SLD to.
+     * @param label SLD label to mint.
+     */
+    function mintSLD(address to, string calldata label) external;
+
+    /**
+     * @dev Minter function that safely mints a Second Level Domain (SLD).
+     * Implements a ERC721Reciever check unlike mintSLD.
+     * @param to address to mint the new SLD to.
+     * @param label SLD label to mint.
+     * @param _data bytes data to send along with a safe transfer check
+     */
+    function safeMintSLD(address to, string calldata label, bytes calldata _data) external;
+
+}
