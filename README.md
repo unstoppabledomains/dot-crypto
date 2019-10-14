@@ -6,99 +6,38 @@ Contracts and tools for .crypto.
 
 ![Alt text](./inheritance.svg)
 
-## Registry Contracts
+## High level bullet points
 
-### Mine
+dot-crypto is a name registry similar to ZNS. See https://github.com/unstoppabledomains/zns
 
-Before you check out the contracts you should be familiar with ERC721/NFTs.
+ZNS was inspired by ENS. See https://eips.ethereum.org/EIPS/eip-137.
 
-#### Metadata.sol
+Here are some of the characteristics we share.
 
-Complies with the ERC721 Metadata extension. Basically copy paste of Zeppelin
-ERC721Metadata.sol. The only exception is that the `tokenURI` method appends the
-`dotcrypto:` scheme.
+- Domain storage as a hash, or `uint256`.
 
-- `name()`
-- `symbol()`
-- `tokenURI(uint256)`
+- Subdomain derivation is using the `namehash` alg.
 
-#### Resolution.sol
+- A resolver system.
 
-Provides the resolver logic for dot crypto.
+It differs in a couple important ways.
 
-- `resolveTo(address,uint256)`
-- `resolverOf(uint256)`
+- Domains are `ERC721` Tokens.
 
-#### Registry.sol
+- Minting of domains is centralized.
 
-Provides the initial relationship between parent and child nodes. Needs to be
-fixed to use something other than `_mint`. Also lets people burn nodes.
+- No rent/annual fee on purchased names. Once you own a domain you keep it.
 
-- `assign(address,uint256,string)`
-- `burn(uint256)`
+  - Except for potentially trademarked domains.
 
-#### RegistrySunrise.sol
+- We are trademark "aware". Select names get flagged on minting using the
+  `SunriseController`. We reserve the right to takedown sunrise names for an
+  indeterminate period of time.
 
-Provides logic for trademark sunrise names.
+- Most non-erc721 logic is hosted inside a set of `Controller` contracts.
 
-- `openSunrise(address,uint256,string)`
-- `closeSunrise(uint256,bool)`
-- `sunriseOf(uint256)`
-- `withdrawSunriseFundTo(address)`
+  - The registry has a set of controlled functions to interface with these controllers.
 
-#### RegistryRepresentative.sol
+### Ours
 
-Provides logic for representatives to manage a the registry on an account's behalf.
-
-- `assignFor(address,uint256,string,bytes)`
-- `safeTransferFromFor(address,address,uint256,bytes,bytes)`
-- `resolveToFor(address,uint256,bytes)`
-- `burnFor(uint256,bytes)`
-- `safeTransferFromFor(address,address,uint256,bytes)`
-- `transferFromFor(address,address,uint256,bytes)`
-- `nonceOf(address)`
-
-#### PauseableRegistry.sol
-
-Modifies internal registry methods to make them pauseable.
-
-#### DotCrypto.sol
-
-Is `Ownable` and provides the functionality to mint SLD domains.
-
-- `assignSLD(address,string)`
-
-### Open Zeppelin Contracts
-
-https://docs.openzeppelin.com/contracts/2.x/
-
-#### ERC721.sol
-
-Check out: https://eips.ethereum.org/EIPS/eip-721
-As well as: http://erc721.org
-
-- `getApproved(uint256)`
-- `approve(address,uint256)`
-- `transferFrom(address,address,uint256)`
-- `safeTransferFrom(address,address,uint256)`
-- `ownerOf(uint256)`
-- `balanceOf(address)`
-- `setApprovalForAll(address,bool)`
-- `safeTransferFrom(address,address,uint256,bytes)`
-- `isApprovedForAll(address,address)`
-
-#### Ownable.sol
-
-- `owner()`
-- `isOwner()`
-- `transferOwnership(address)`
-- `renounceOwnership()`
-
-#### Pauseable.sol
-
-- `unpause()`
-- `renouncePauser()`
-- `paused()`
-- `pause()`
-- `addPauser(address)`
-- `isPauser(address)`
+### OpenZeppelin

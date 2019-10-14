@@ -4,10 +4,8 @@ const SignatureController = artifacts.require(
   'controller/SignatureController.sol',
 )
 const SunriseController = artifacts.require('controller/SunriseController.sol')
-const ChildrenController = artifacts.require(
-  'controller/ChildrenController.sol',
-)
 const Web3 = require('web3')
+const EthLib = require('eth-lib')
 
 // TODO: same namehash? notice no keccak256?
 function namehash(name) {
@@ -25,33 +23,13 @@ function namehash(name) {
 contract('SignatureController', ([deployer, user]) => {
   it('transferFromFor', async () => {
     const registry = await Registry.deployed()
-    const mintingController = await MintingController.deployed()
+    // const mintingController = await MintingController.deployed()
     const signatureController = await SignatureController.deployed()
     const sunriseController = await SunriseController.deployed()
-    const childrenController = await ChildrenController.deployed()
 
     const web3 = new Web3(registry.constructor.web3.currentProvider)
 
-    await mintingController.mintSLD(deployer, 'label', {from: deployer})
-
-    await registry.resolveTo(deployer, namehash('label.crypto'))
-    const wClearing = await registry.transferFrom(
-      deployer,
-      user,
-      namehash('label.crypto'),
-    )
-
-    const woClearing = await registry.transferFrom(
-      user,
-      deployer,
-      namehash('label.crypto'),
-      {from: user},
-    )
-
-    console.log('wClearing', wClearing)
-    console.log('woClearing', woClearing)
-
-    return
+    await sunriseController.mintSLD(deployer, 'label', {from: deployer})
 
     let owner = await registry.ownerOf(namehash('label.crypto'))
 
@@ -67,38 +45,42 @@ contract('SignatureController', ([deployer, user]) => {
 
       const nonce = (await signatureController.nonceOf(deployer)).toNumber()
 
-      console.log({nonce})
-
-      console.log(web3.eth.abi.encodeFunctionCall(abiVal, args.concat('0x')))
-
-      const message = web3.eth.abi.encodeParameters(
-        ['bytes32', 'uint256'],
-        [
-          Web3.utils.keccak256(
-            web3.eth.abi.encodeFunctionCall(abiVal, args.concat('0x')),
-          ),
-          nonce,
-        ],
-      )
-
-      console.log(
-        'vh',
-        Web3.utils.keccak256(
-          web3.eth.abi.encodeFunctionCall(abiVal, args.concat('0x')),
-        ),
-      )
+      const ihash = Web3.utils.soliditySha3({
+        type: 'bytes',
+        value: web3.eth.abi.encodeFunctionCall(abiVal, args.concat('0x')),
+      })
 
       const validationHash = await signatureController.getValidation(...args)
-      console.log('vh', validationHash)
+      // Web3.utils.soliditySha3(
+      //   {type: 'bytes32', value: '0x' + '0'.repeat(64)}, // validationHash},
+      //   {type: 'uint256', value: nonce},
+      // )
+      console.log('vh', ihash, validationHash)
+
+      const message = web3.utils.keccak256('0x'.padEnd(64, '0'))
 
       const signature = await web3.eth.sign(
-        Web3.utils.keccak256(message),
+        web3.eth.accounts.hashMessage(message),
         deployer,
       )
 
-      console.log(method, ...args, signature)
+      console.log('signature', message, signature)
+
+      const result = await signatureController.recover(
+        web3.eth.accounts.hashMessage(message),
+        signature,
+      )
+
+      // const recovered = await web3.eth.accounts.recover(message, signature)
+      console.log(
+        'messageHash',
+        web3.eth.accounts.hashMessage(message),
+        result.messageHash,
+      )
+      console.log('recovered', result.recovered)
 
       return signatureController[method](...args, signature)
+      console.log(method, ...args, signature)
     }
 
     const tx = await submitSigTransaction(

@@ -1,24 +1,15 @@
 pragma solidity ^0.5.0;
 
-import './SimpleResolver.sol';
+import './Resolver.sol';
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 
-contract RepresentativeResolver is SimpleResolver {
-    using ECDSA for *;
+contract SignatureResolver is Resolver {
+    using ECDSA for bytes32;
 
     // Mapping from owner to a nonce
     mapping (address => uint256) internal _nonces;
 
-    function _checkProxySignature(address owner, bytes32 hash, bytes memory signature) internal {
-       uint256 nonce = _nonces[owner];
-
-        require(
-            owner == ECDSA.recover(ECDSA.toEthSignedMessageHash(keccak256(abi.encodePacked(hash, nonce))), signature),
-            "RepresentativeResolver: bad signature"
-        );
-
-        _nonces[owner] += 1;
-    }
+    constructor(Registry registry) public Resolver(registry) {}
 
     /**
      * @dev Gets the nonce of the specified address.
@@ -37,8 +28,20 @@ contract RepresentativeResolver is SimpleResolver {
      * @param signature The signature to verify the transaction with.
      */
     function setFor(bytes calldata key, bytes calldata value, uint256 tokenId, bytes calldata signature) external whenResolver(tokenId) {
-        address owner = registry.ownerOf(tokenId);
-        _checkProxySignature(owner, keccak256(abi.encodePacked(key, value, tokenId)), signature);
+        address owner = _registry.ownerOf(tokenId);
+        _validate(owner, keccak256(abi.encodePacked(key, value, tokenId)), signature);
         _set(owner, key, value, tokenId);
     }
+
+    function _validate(address owner, bytes32 hash, bytes memory signature) internal {
+       uint256 nonce = _nonces[owner];
+
+        require(
+            owner == keccak256(abi.encodePacked(hash, nonce)).toEthSignedMessageHash().recover(signature),
+            "SignatureResolver: bad signature"
+        );
+
+        _nonces[owner] += 1;
+    }
+
 }

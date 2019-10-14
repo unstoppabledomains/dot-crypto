@@ -47,55 +47,44 @@ contract SunriseController is ISunriseController, MintingController {
         return _tokenSunrises[tokenId];
     }
 
-    function _setSunrise(uint256 length) internal {
-        _sunrise = now.add(length);
-        emit NewSunrise(_sunrise);
-    }
-
     function setSunrise(uint256 length) public onlyMinter whenSunrise {
         _setSunrise(length);
     }
 
     function mintSunriseSLD(address to, string calldata label) external whenSunrise {
-        uint256 childId = _childId(root(), label);
-        _tokenSunrises[childId] = true;
+        uint256 childId = _registry.childIdOf(_registry.root(), label);
+        require(!_tokenSunrises[childId]);
         mintSLD(to, label);
+        _tokenSunrises[childId] = true;
         emit SunriseMinted(childId);
     }
 
     function safeMintSunriseSLD(address to, string calldata label, bytes calldata _data) external whenSunrise {
-        uint256 childId = _childId(root(), label);
-        _tokenSunrises[childId] = true;
+        uint256 childId = _registry.childIdOf(_registry.root(), label);
+        require(!_tokenSunrises[childId]);
         safeMintSLD(to, label, _data);
+        _tokenSunrises[childId] = true;
         emit SunriseMinted(childId);
-    }
-
-    function mintSLD(address to, string memory label) public {
-        require(!_tokenSunrises[_childId(root(), label)]);
-        super.mintSLD(to, label);
-    }
-
-    function safeMintSLD(address to, string memory label, bytes memory _data) public {
-        require(!_tokenSunrises[_childId(root(), label)]);
-        super.safeMintSLD(to, label, _data);
     }
 
     function resolveSunriseSLD(uint256 tokenId, bool intent) external onlyMinter whenSunrise {
         require(_tokenSunrises[tokenId]);
 
+        delete _tokenSunrises[tokenId];
         // solium-disable-next-line security/no-low-level-calls
         (bool success, ) = address(_registry).call(abi.encodeWithSelector(_registry.ownerOf.selector, tokenId));
         if (success) {
             if (intent) {
-                delete _tokenSunrises[tokenId];
                 emit SunriseRenounced(tokenId);
             } else {
                 _registry.controlledBurn(tokenId);
             }
-        } else {
-            // This means that tokenId was previously burned on the registry
-            delete _tokenSunrises[tokenId];
         }
+    }
+
+    function _setSunrise(uint256 length) internal {
+        _sunrise = now.add(length);
+        emit NewSunrise(_sunrise);
     }
 
 }

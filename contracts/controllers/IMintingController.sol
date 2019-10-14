@@ -3,12 +3,6 @@ pragma solidity ^0.5.0;
 interface IMintingController {
 
     /**
-     * @dev Returns the root node for the registry.
-     * @return uint256 returns namehash of TLD
-     */
-    function root() external view returns (uint256);
-
-    /**
      * @dev Minter function that mints a Second Level Domain (SLD).
      * @param to address to mint the new SLD to.
      * @param label SLD label to mint.

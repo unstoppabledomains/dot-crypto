@@ -24,6 +24,82 @@ contract SignatureController is ISignatureController {
         _registry = registry;
     }
 
+    function nonceOf(address owner) external view returns (uint256) {
+        return _nonces[owner];
+    }
+
+    function getValidation(address from, address to, uint256 tokenId) external pure returns (bytes32) {
+        // recovered = keccak256(abi.encodePacked(hash, nonce)).toEthSignedMessageHash()
+
+        return keccak256(abi.encodeWithSelector(this.transferFromFor.selector, from, to, tokenId, ""));
+    }
+
+    function recover(bytes32 hash, bytes calldata signature) external pure returns (bytes32 messageHash, address recovered) {
+        messageHash = hash.toEthSignedMessageHash();
+        recovered = messageHash.recover(signature);
+    }
+
+    function transferFromFor(address from, address to, uint256 tokenId, bytes memory signature) public {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, tokenId, "")), tokenId, signature);
+        _registry.controlledTransferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFromFor(address from, address to, uint256 tokenId, bytes calldata _data, bytes calldata signature) external {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, _data, tokenId)), tokenId, signature);
+        _registry.controlledSafeTransferFrom(from, to, tokenId, _data);
+    }
+
+    function safeTransferFromFor(address from, address to, uint256 tokenId, bytes calldata signature) external {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, "", tokenId)), tokenId, signature);
+        _registry.controlledSafeTransferFrom(from, to, tokenId, "");
+    }
+
+    function resolveToFor(address to, uint256 tokenId, bytes calldata signature) external {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, to, tokenId)), tokenId, signature);
+        _registry.controlledResolveTo(to, tokenId);
+    }
+
+    function burnFor(uint256 tokenId, bytes calldata signature) external {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, tokenId)), tokenId, signature);
+        _registry.controlledBurn(tokenId);
+    }
+
+    function mintChildFor(address to, uint256 tokenId, string calldata label, bytes calldata signature) external {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, to, tokenId, label)), tokenId, signature);
+        _registry.controlledMintChild(to, tokenId, label);
+    }
+
+    function transferFromChildFor(address from, address to, uint256 tokenId, string memory label, bytes memory signature) public {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, tokenId, label)), tokenId, signature);
+        uint256 childId = _childId(tokenId, label);
+        _registry.controlledTransferFrom(from, to, childId);
+    }
+
+    function safeTransferFromChildFor(
+        address from,
+        address to,
+        uint256 tokenId,
+        string calldata label,
+        bytes calldata _data,
+        bytes calldata signature
+    ) external {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, label, _data, tokenId)), tokenId, signature);
+        uint256 childId = _childId(tokenId, label);
+        _registry.controlledSafeTransferFrom(from, to, childId, _data);
+    }
+
+    function safeTransferFromChildFor(address from, address to, uint256 tokenId, string calldata label, bytes calldata signature) external {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, label, tokenId)), tokenId, signature);
+        uint256 childId = _childId(tokenId, label);
+        _registry.controlledSafeTransferFrom(from, to, childId, "");
+    }
+
+    function burnChildFor(uint256 tokenId, string calldata label, bytes calldata signature) external {
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, tokenId, label)), tokenId, signature);
+        uint256 childId = _childId(tokenId, label);
+        _registry.controlledBurn(childId);
+    }
+
     function _childId(uint256 tokenId, string memory label) internal pure returns (uint256) {
         require(bytes(label).length != 0);
         return uint256(keccak256(abi.encodePacked(tokenId, keccak256(abi.encodePacked(label)))));
@@ -46,83 +122,10 @@ contract SignatureController is ISignatureController {
     function _validate(bytes32 hash, uint256 tokenId, bytes memory signature) internal {
         address owner = _registry.ownerOf(tokenId);
         uint256 nonce = _nonces[owner];
-        address recovered = keccak256(abi.encode(hash, nonce)).toEthSignedMessageHash().recover(signature);
 
-        require(owner == recovered, string(abi.encodePacked(addressToString(recovered), " ", addressToString(owner))));
+        require(owner == keccak256(abi.encodePacked(hash, nonce)).toEthSignedMessageHash().recover(signature));
 
         _nonces[owner] += 1;
-    }
-
-    function nonceOf(address owner) external view returns (uint256) {
-        return _nonces[owner];
-    }
-
-    function getValidation(address from, address to, uint256 tokenId) external pure returns (bytes32) {
-        return keccak256(abi.encode(this.transferFromFor.selector, from, to, tokenId, ""));
-    }
-
-    function transferFromFor(address from, address to, uint256 tokenId, bytes memory signature) public {
-        _validate(keccak256(abi.encode(msg.sig, from, to, tokenId, "")), tokenId, signature);
-        _registry.controlledTransferFrom(from, to, tokenId);
-    }
-
-
-    function safeTransferFromFor(address from, address to, uint256 tokenId, bytes calldata _data, bytes calldata signature) external {
-        _validate(keccak256(abi.encode(msg.sig, from, to, _data, tokenId)), tokenId, signature);
-        _registry.controlledSafeTransferFrom(from, to, tokenId, _data);
-    }
-
-    function safeTransferFromFor(address from, address to, uint256 tokenId, bytes calldata signature) external {
-        _validate(keccak256(abi.encode(msg.sig, from, to, "", tokenId)), tokenId, signature);
-        _registry.controlledSafeTransferFrom(from, to, tokenId, "");
-    }
-
-    function resolveToFor(address to, uint256 tokenId, bytes calldata signature) external {
-        _validate(keccak256(abi.encode(msg.sig, to, tokenId)), tokenId, signature);
-        _registry.controlledResolveTo(to, tokenId);
-    }
-
-    function burnFor(uint256 tokenId, bytes calldata signature) external {
-        _validate(keccak256(abi.encode(msg.sig, tokenId)), tokenId, signature);
-        _registry.controlledBurn(tokenId);
-    }
-
-    function mintChildFor(address to, uint256 tokenId, string calldata label, bytes calldata signature) external {
-        _validate(keccak256(abi.encode(msg.sig, to, tokenId, label)), tokenId, signature);
-        uint256 childId = _childId(tokenId, label);
-        _registry.controlledMint(to, childId);
-        _registry.setTokenURI(childId, tokenId, label);
-    }
-
-    function transferFromChildFor(address from, address to, uint256 tokenId, string memory label, bytes memory signature) public {
-        _validate(keccak256(abi.encode(msg.sig, from, to, tokenId, label)), tokenId, signature);
-        uint256 childId = _childId(tokenId, label);
-        _registry.controlledTransferFrom(from, to, childId);
-    }
-
-    function safeTransferFromChildFor(
-        address from,
-        address to,
-        uint256 tokenId,
-        string calldata label,
-        bytes calldata _data,
-        bytes calldata signature
-    ) external {
-        _validate(keccak256(abi.encode(msg.sig, from, to, label, _data, tokenId)), tokenId, signature);
-        uint256 childId = _childId(tokenId, label);
-        _registry.controlledSafeTransferFrom(from, to, childId, _data);
-    }
-
-    function safeTransferFromChildFor(address from, address to, uint256 tokenId, string calldata label, bytes calldata signature) external {
-        _validate(keccak256(abi.encode(msg.sig, from, to, label, tokenId)), tokenId, signature);
-        uint256 childId = _childId(tokenId, label);
-        _registry.controlledSafeTransferFrom(from, to, childId, "");
-    }
-
-    function burnChildFor(uint256 tokenId, string calldata label, bytes calldata signature) external {
-        _validate(keccak256(abi.encode(msg.sig, tokenId, label)), tokenId, signature);
-        uint256 childId = _childId(tokenId, label);
-        _registry.controlledBurn(childId);
     }
 
 }

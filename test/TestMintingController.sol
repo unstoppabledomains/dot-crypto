@@ -19,10 +19,6 @@ contract TestMintingController is RegistryTestBase {
     registry.renounceController();
   }
 
-  function test_construction() external {
-    Assert.equal(minting.root(), root, "good root");
-  }
-
   function test_mintSLD() external {
     minting.mintSLD(address(this), "label");
 
