@@ -1,4 +1,4 @@
-const Registry = artifacts.require('registry/Root.sol')
+const Registry = artifacts.require('registry/Registry.sol')
 // const MintingController = artifacts.require('controller/MintingController.sol')
 const SignatureController = artifacts.require(
   'controller/SignatureController.sol',
@@ -7,7 +7,7 @@ const SunriseController = artifacts.require('controller/SunriseController.sol')
 const Multiplexer = artifacts.require('util/Multiplexer.sol')
 const SignatureResolver = artifacts.require('resolver/SignatureResolver.sol')
 
-module.exports = deployer => {
+module.exports = (deployer, network, accounts) => {
   return deployer.deploy(Registry).then(async registry => {
     const signatureController = await deployer.deploy(
       SignatureController,

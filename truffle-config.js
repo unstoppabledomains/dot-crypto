@@ -1,5 +1,8 @@
 // const HDWalletProvider = require('@truffle/hdwallet-provider')
 
+const fs = require('fs')
+const path = require('path')
+
 module.exports = {
   networks: {
     // development: {
@@ -23,14 +26,17 @@ module.exports = {
       host: 'localhost',
       port: 7545,
       network_id: '4447',
-      gas: 6721975,
+      gas: 4700000, // 6721975,
     },
   },
-  solc: {
-    version: '0.5.11',
-    optimizer: {
-      enabled: true,
-      runs: 1,
+  compilers: {
+    solc: {
+      version: '0.5.11',
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
     },
   },
+  contracts_build_directory: '.truffle_artifacts',
 }

@@ -22,16 +22,15 @@
     "name": "Braden Pezeshki",
     "email": "braden@unstoppabledomains.com"
   },
+  "bin": "bin/cli.js",
   "scripts": {
     "format": "prettier --write -l '**/*.{md,ts,json}' --ignore-path .gitignore",
     "test": "truffle test",
-    "precompile": "mkdir -p abi && rm -r abi && mkdir -p abi/bin abi/json",
-    "compile": "solc --abi --bin --gas -o abi --allow-paths . @openzeppelin=./node_modules/@openzeppelin contracts/**/*.sol --optimize --optimize-runs 200",
-    "postcompile": "find abi -name '*.bin' -exec sh -c 'mv \"$0\" abi/bin;' {} \\; && find abi -name '*.abi' -exec sh -c 'mv \"$0\" \"abi/json/$(basename ${0%.abi}.json)\";' {} \\;",
-    "prebuild": "yarn compile",
+    "compile": "./compile.sh",
+    "prebuild": "yarn compile && rm -rf build",
     "build": "tsc",
     "watch": "tsc --watch",
-    "rpc:ganache": "ganache-cli --port 7545 --networkId 4447 --gasLimit 6721975",
+    "rpc:ganache": "ganache-cli --port 7545 --networkId 4447 --gasLimit 6721975 --quiet &",
     "rpc:geth": "geth -dev -rpc -rpcport 7545 -verbosity 0 --miner.gastarget 8000000 &",
     "rpc:stop": "lsof -ti:7545 | xargs kill"
   },
@@ -42,7 +41,7 @@
     "chai-as-promised": "^7.1.1",
     "ganache-cli": "^6.7.0",
     "prettier": "^1.18.2",
-    "solc": "0.5.8",
+    "solc": "0.5.11",
     "truffle": "^5.0.39",
     "typescript": "^3.6.3"
   },

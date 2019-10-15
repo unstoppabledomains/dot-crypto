@@ -48,9 +48,16 @@ contract Metadata is Root, IERC721Metadata {
     /// Internal
 
     function _setTokenURI(uint256 tokenId, string memory label) internal {
+        // TODO: Maybe don't
+        require(bytes(label).length <= 63 && bytes(label).length != 0);
+
         uint256 childId = _childId(tokenId, label);
         require(_exists(childId));
-        _tokenURIs[childId] = string(abi.encodePacked(label, ".", _tokenURIs[tokenId]));
+        bytes memory domain = abi.encodePacked(label, ".", _tokenURIs[tokenId]);
+
+        // TODO: Maybe don't
+        require(domain.length <= 254);
+        _tokenURIs[childId] = string(domain);
         emit NewURI(childId, label);
     }
 

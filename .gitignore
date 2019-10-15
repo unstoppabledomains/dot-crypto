@@ -1,7 +1,7 @@
 node_modules/
 build/
 .chaindata/
-static/
+.truffle_artifacts/
 abi/
 
 logs

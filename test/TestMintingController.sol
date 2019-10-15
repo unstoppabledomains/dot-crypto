@@ -34,7 +34,7 @@ contract TestMintingController is RegistryTestBase {
 
   function test_metadata() external {
     string memory rootURI = registry.tokenURI(root);
-    Assert.equal(rootURI, "urn:udc:crypto.", "DotCrypto root tokenURI is ok");
+    Assert.equal(rootURI, "urn:udc:crypto", "DotCrypto root tokenURI is ok");
 
     (bool success, ) = address(registry).call(abi.encodeWithSelector(registry.tokenURI.selector, uint256(0x1)));
     Assert.isFalse(success, "should fail to get non existent tokenURI");
@@ -42,7 +42,7 @@ contract TestMintingController is RegistryTestBase {
     minting.mintSLD(address(this), "label");
 
     string memory tokURI = registry.tokenURI(tok);
-    Assert.equal(tokURI, "urn:udc:label.crypto.", "DotCrypto tok tokenURI is ok");
+    Assert.equal(tokURI, "urn:udc:label.crypto", "DotCrypto tok tokenURI is ok");
 
     registry.burn(tok);
 

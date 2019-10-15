@@ -45,6 +45,7 @@ contract Resolution is ControlledERC721 {
 
     function _transferFrom(address from, address to, uint256 tokenId) internal {
         super._transferFrom(from, to, tokenId);
+        // Clear resolver (if any)
         if (_tokenResolvers[tokenId] != address(0x0)) {
             delete _tokenResolvers[tokenId];
         }
@@ -52,6 +53,7 @@ contract Resolution is ControlledERC721 {
 
     function _burn(uint256 tokenId) internal {
         super._burn(tokenId);
+        // Clear resolver (if any)
         if (_tokenResolvers[tokenId] != address(0x0)) {
             delete _tokenResolvers[tokenId];
         }

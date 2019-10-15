@@ -18,20 +18,6 @@ const cli = yargs
   })
   .commandDir('cmd')
   .epilog('Made with ' + chalk.red('♥') + ' by Unstoppable Domains')
-  .command(
-    'hello [name]',
-    'welcome ter yargs!',
-    yargs => {
-      yargs.positional('name', {
-        type: 'string',
-        default: 'Cambi',
-        describe: 'the name to say hello to',
-      })
-    },
-    function(argv) {
-      console.log('hello', argv.name, 'welcome to yargs!')
-    },
-  )
   .option('verbose', {
     type: 'boolean',
     alias: 'v',
@@ -59,5 +45,3 @@ const cli = yargs
   .showHelpOnFail(false)
 
 cli.argv
-
-console.log(yargs.argv)
