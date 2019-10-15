@@ -12,7 +12,10 @@ contract Children is Metadata {
         _mintChild(to, tokenId, label);
     }
 
-    function safeMintChild(address to, uint256 tokenId, string calldata label, bytes calldata _data) external onlyApprovedOrOwner(tokenId) {
+    function safeMintChild(address to, uint256 tokenId, string calldata label, bytes calldata _data)
+        external
+        onlyApprovedOrOwner(tokenId)
+    {
         _safeMintChild(to, tokenId, label, _data);
     }
 
@@ -20,13 +23,19 @@ contract Children is Metadata {
         _mintChild(to, tokenId, label);
     }
 
-    function controlledSafeMintChild(address to, uint256 tokenId, string calldata label, bytes calldata _data) external onlyController {
+    function controlledSafeMintChild(address to, uint256 tokenId, string calldata label, bytes calldata _data)
+        external
+        onlyController
+    {
         _safeMintChild(to, tokenId, label, _data);
     }
 
     /// Transfering
 
-    function transferFromChild(address from, address to, uint256 tokenId, string memory label) public onlyApprovedOrOwner(tokenId) {
+    function transferFromChild(address from, address to, uint256 tokenId, string memory label)
+        public
+        onlyApprovedOrOwner(tokenId)
+    {
         _transferFrom(from, to, _childId(tokenId, label));
     }
 

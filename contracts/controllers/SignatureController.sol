@@ -4,7 +4,7 @@ import "./ISignatureController.sol";
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 import "../registry/Registry.sol";
 
-// solium-disable error-reason,security/no-block-members
+// solium-disable error-reason
 
 /**
  * @title SignatureController
@@ -34,17 +34,29 @@ contract SignatureController is ISignatureController {
         return keccak256(abi.encodeWithSelector(this.transferFromFor.selector, from, to, tokenId, ""));
     }
 
-    function recover(bytes32 hash, bytes calldata signature) external pure returns (bytes32 messageHash, address recovered) {
+    function recover(bytes32 hash, bytes calldata signature)
+        external
+        pure
+        returns (bytes32 messageHash, address recovered)
+    {
         messageHash = hash.toEthSignedMessageHash();
         recovered = messageHash.recover(signature);
     }
 
-    function transferFromFor(address from, address to, uint256 tokenId, bytes memory signature) public {
+    function transferFromFor(address from, address to, uint256 tokenId, bytes calldata signature) external {
         _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, tokenId, "")), tokenId, signature);
         _registry.controlledTransferFrom(from, to, tokenId);
     }
 
-    function safeTransferFromFor(address from, address to, uint256 tokenId, bytes calldata _data, bytes calldata signature) external {
+    function safeTransferFromFor(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes calldata _data,
+        bytes calldata signature
+    )
+        external
+    {
         _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, _data, tokenId)), tokenId, signature);
         _registry.controlledSafeTransferFrom(from, to, tokenId, _data);
     }
@@ -69,7 +81,15 @@ contract SignatureController is ISignatureController {
         _registry.controlledMintChild(to, tokenId, label);
     }
 
-    function transferFromChildFor(address from, address to, uint256 tokenId, string memory label, bytes memory signature) public {
+    function transferFromChildFor(
+        address from,
+        address to,
+        uint256 tokenId,
+        string memory label,
+        bytes memory signature
+    )
+        public
+    {
         _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, tokenId, label)), tokenId, signature);
         uint256 childId = _childId(tokenId, label);
         _registry.controlledTransferFrom(from, to, childId);
@@ -82,13 +102,23 @@ contract SignatureController is ISignatureController {
         string calldata label,
         bytes calldata _data,
         bytes calldata signature
-    ) external {
+    )
+        external
+    {
         _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, label, _data, tokenId)), tokenId, signature);
         uint256 childId = _childId(tokenId, label);
         _registry.controlledSafeTransferFrom(from, to, childId, _data);
     }
 
-    function safeTransferFromChildFor(address from, address to, uint256 tokenId, string calldata label, bytes calldata signature) external {
+    function safeTransferFromChildFor(
+        address from,
+        address to,
+        uint256 tokenId,
+        string calldata label,
+        bytes calldata signature
+    )
+        external
+    {
         _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, label, tokenId)), tokenId, signature);
         uint256 childId = _childId(tokenId, label);
         _registry.controlledSafeTransferFrom(from, to, childId, "");

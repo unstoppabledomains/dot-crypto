@@ -20,21 +20,24 @@ contract ControlledERC721 is ControllerRole, ERC721, ERC721Burnable {
         _;
     }
 
+    function isApprovedOrOwner(address spender, uint256 tokenId) external view returns (bool) {
+        return _isApprovedOrOwner(spender, tokenId);
+    }
+
     function controlledTransferFrom(address from, address to, uint256 tokenId) external onlyController {
         _transferFrom(from, to, tokenId);
     }
 
-    function controlledSafeTransferFrom(address from, address to, uint256 tokenId, bytes calldata _data) external onlyController {
+    function controlledSafeTransferFrom(address from, address to, uint256 tokenId, bytes calldata _data)
+        external
+        onlyController
+    {
         _transferFrom(from, to, tokenId);
         require(_checkOnERC721Received(from, to, tokenId, _data));
     }
 
     function controlledBurn(uint256 tokenId) external onlyController {
         _burn(tokenId);
-    }
-
-    function isApprovedOrOwner(address spender, uint256 tokenId) external view returns (bool) {
-        return _isApprovedOrOwner(spender, tokenId);
     }
 
 }

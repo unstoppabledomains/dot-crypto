@@ -4,8 +4,6 @@ import "@openzeppelin/contracts/access/roles/MinterRole.sol";
 import "./IMintingController.sol";
 import "../registry/Registry.sol";
 
-// solium-disable error-reason,security/no-block-members
-
 /**
  * @title MintingController
  * @dev Defines the functions for distribution of Second Level Domains (SLD)s.

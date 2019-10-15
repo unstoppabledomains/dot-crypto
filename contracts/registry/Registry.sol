@@ -6,8 +6,6 @@ import "./Resolution.sol";
 import "./Metadata.sol";
 import "./Children.sol";
 
-// solium-disable error-reason
+// solium-disable error-reason,no-empty-blocks
 
-contract Registry is /* IRegistry,  */Metadata, Resolution, Children {
-
-}
+contract Registry is /* IRegistry, */ Metadata, Resolution, Children {}
