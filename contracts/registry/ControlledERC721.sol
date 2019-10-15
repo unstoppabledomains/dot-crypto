@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.5.11;
 
 // import "./stripped_openzeppelin/ERC721.sol";
 // import "./stripped_openzeppelin/ERC721Burnable.sol";
