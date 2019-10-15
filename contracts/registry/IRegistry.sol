@@ -88,6 +88,6 @@ contract IRegistry {
      * @dev Controlled function to set the token URI Prefix for all tokens.
      * @param prefix string URI to assign
      */
-    function setTokenURIPrefix(string calldata prefix) external;
+    function controlledSetTokenURIPrefix(string calldata prefix) external;
 
 }

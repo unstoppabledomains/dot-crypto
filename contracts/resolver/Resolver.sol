@@ -57,7 +57,7 @@ contract Resolver {
         address owner = _registry.ownerOf(tokenId);
         // TODO: f is this necissary?
         require(msg.sender == owner, "SimpleResolver: caller is not the owner");
-
+        _registry.sync(tokenId, uint256(keccak256(key)));
         _set(owner, key, value, tokenId);
     }
 }

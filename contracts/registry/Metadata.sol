@@ -7,8 +7,8 @@ import "./Root.sol";
 
 contract Metadata is Root, IERC721Metadata {
 
-    event Resolve(uint256 indexed tokenId, address indexed to);
     event NewURI(uint256 indexed tokenId, string uri);
+    event NewURIPrefix(string prefix);
 
     // Mapping from token ID to resolver address
     mapping (uint256 => address) internal _tokenResolvers;
@@ -21,9 +21,8 @@ contract Metadata is Root, IERC721Metadata {
     constructor () public {
         // register the supported interfaces to conform to ERC721 via ERC165
         _registerInterface(0x5b5e139f); // ERC721 Metadata Interface
-
-        _mint(address(0xdead), root());
-        _setTokenURI(0, "crypto");
+        _tokenURIs[root()] = "crypto";
+        emit NewURI(root(), "crypto");
     }
 
     /// ERC721 Metadata ext.
@@ -41,8 +40,9 @@ contract Metadata is Root, IERC721Metadata {
         return string(abi.encodePacked(_prefix, _tokenURIs[tokenId]));
     }
 
-    function setTokenURIPrefix(string calldata prefix) external onlyController {
+    function controlledSetTokenURIPrefix(string calldata prefix) external onlyController {
         _prefix = prefix;
+        emit NewURIPrefix(prefix);
     }
 
     /// Internal

@@ -13,6 +13,11 @@ contract Root is ControlledERC721 {
     uint256 private constant _CRYPTO_HASH =
         0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f;
 
+    constructor () public {
+        _mint(address(0xdead), _CRYPTO_HASH);
+    }
+
+
     function root() public pure returns (uint256) {
         return _CRYPTO_HASH;
     }
@@ -22,7 +27,7 @@ contract Root is ControlledERC721 {
         return uint256(keccak256(abi.encodePacked(tokenId, keccak256(abi.encodePacked(label)))));
     }
 
-    function childIdOf(uint256 tokenId, string calldata label) external pure returns (uint256) {
+    function childOf(uint256 tokenId, string calldata label) external pure returns (uint256) {
         return _childId(tokenId, label);
     }
 

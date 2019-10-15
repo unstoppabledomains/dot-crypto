@@ -25,17 +25,15 @@
   "scripts": {
     "format": "prettier --write -l '**/*.{md,ts,json}' --ignore-path .gitignore",
     "test": "truffle test",
-    "precompile": "mkdir -p static && rm -r static",
-    "compile": "solc --overwrite --abi --bin --gas -o static --allow-paths . @openzeppelin=./node_modules/@openzeppelin/ contracts/**/*.sol --optimize --optimize-runs 200",
-    "postcompile": "mkdir -p static && find static -name '*.abi' -exec sh -c 'mv \"$0\" \"${0%.abi}.json\"' {} \\;",
+    "precompile": "mkdir -p abi && rm -r abi && mkdir -p abi/bin abi/json",
+    "compile": "solc --abi --bin --gas -o abi --allow-paths . @openzeppelin=./node_modules/@openzeppelin contracts/**/*.sol --optimize --optimize-runs 200",
+    "postcompile": "find abi -name '*.bin' -exec sh -c 'mv \"$0\" abi/bin;' {} \\; && find abi -name '*.abi' -exec sh -c 'mv \"$0\" \"abi/json/$(basename ${0%.abi}.json)\";' {} \\;",
     "prebuild": "yarn compile",
     "build": "tsc",
     "watch": "tsc --watch",
-    "prerpc:geth": "exit; mkdir -p .chaindata",
     "rpc:ganache": "ganache-cli --port 7545 --networkId 4447 --gasLimit 6721975",
     "rpc:geth": "geth -dev -rpc -rpcport 7545 -verbosity 0 --miner.gastarget 8000000 &",
-    "rpc:stop": "lsof -ti:7545 | xargs kill",
-    "rpc:clean": "mkdir -p .chaindata && rm -r .chaindata"
+    "rpc:stop": "lsof -ti:7545 | xargs kill"
   },
   "devDependencies": {
     "@openzeppelin/contracts": "2.3.0",

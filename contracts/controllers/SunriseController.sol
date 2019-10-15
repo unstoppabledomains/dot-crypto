@@ -52,7 +52,7 @@ contract SunriseController is ISunriseController, MintingController {
     }
 
     function mintSunriseSLD(address to, string calldata label) external whenSunrise {
-        uint256 childId = _registry.childIdOf(_registry.root(), label);
+        uint256 childId = _registry.childOf(_registry.root(), label);
         require(!_tokenSunrises[childId]);
         mintSLD(to, label);
         _tokenSunrises[childId] = true;
@@ -60,7 +60,7 @@ contract SunriseController is ISunriseController, MintingController {
     }
 
     function safeMintSunriseSLD(address to, string calldata label, bytes calldata _data) external whenSunrise {
-        uint256 childId = _registry.childIdOf(_registry.root(), label);
+        uint256 childId = _registry.childOf(_registry.root(), label);
         require(!_tokenSunrises[childId]);
         safeMintSLD(to, label, _data);
         _tokenSunrises[childId] = true;

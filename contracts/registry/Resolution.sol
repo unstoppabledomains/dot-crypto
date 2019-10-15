@@ -9,14 +9,14 @@ import "@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol";
 contract Resolution is ControlledERC721 {
 
     event Resolve(uint256 indexed tokenId, address indexed to);
+    event Sync(address indexed resolver, uint256 indexed updateId);
 
     // Mapping from token ID to resolver address
     mapping (uint256 => address) internal _tokenResolvers;
 
     /// Resolution
 
-    function resolveTo(address to, uint256 tokenId) external {
-        require(_isApprovedOrOwner(msg.sender, tokenId));
+    function resolveTo(address to, uint256 tokenId) external onlyApprovedOrOwner(tokenId) {
         _resolveTo(to, tokenId);
     }
 
@@ -28,6 +28,11 @@ contract Resolution is ControlledERC721 {
         address resolver = _tokenResolvers[tokenId];
         require(resolver != address(0));
         return resolver;
+    }
+
+    function sync(uint256 tokenId, uint256 updateId) external {
+        require(_tokenResolvers[tokenId] == msg.sender);
+        emit Sync(msg.sender, updateId);
     }
 
     /// Internal
