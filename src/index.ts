@@ -16,7 +16,6 @@ const cli = yargs
       console.info()
     }
   })
-  .commandDir('cmd')
   .epilog('Made with ' + chalk.red('♥') + ' by Unstoppable Domains')
   .option('verbose', {
     type: 'boolean',
@@ -42,6 +41,7 @@ const cli = yargs
     }
     process.exit(1)
   })
-  .showHelpOnFail(false)
+  // .showHelpOnFail(true)
+  .commandDir('cmd')
 
 cli.argv

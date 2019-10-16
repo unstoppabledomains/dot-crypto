@@ -4,7 +4,9 @@
     "noImplicitAny": false,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "outDir": "build"
+    "outDir": "build",
+    "rootDirs": ["src", "abi"],
+    "preserveSymlinks": true
   },
   "include": ["src"]
 }

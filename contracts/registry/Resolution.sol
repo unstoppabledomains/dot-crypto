@@ -1,12 +1,12 @@
 pragma solidity 0.5.11;
 
-import "./ControlledERC721.sol";
+import "./Root.sol";
 import "./IRegistry.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol";
 
 // solium-disable error-reason
 
-contract Resolution is ControlledERC721 {
+contract Resolution is Root {
 
     event Resolve(uint256 indexed tokenId, address indexed to);
     event Sync(address indexed resolver, uint256 indexed updateId);

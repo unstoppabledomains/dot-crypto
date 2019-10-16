@@ -46,8 +46,10 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
+    "@types/web3": "^1.0.20",
     "@types/yargs": "^13.0.3",
     "chalk": "^2.4.2",
+    "ganache-core": "^2.8.0",
     "web3": "^1.2.1",
     "yargs": "^14.0.0"
   }

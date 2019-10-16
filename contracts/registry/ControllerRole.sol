@@ -13,8 +13,8 @@ contract ControllerRole {
     using Roles for Roles.Role;
 
     // NOTE: Commented out standard Role events to save gas.
-    event ControllerAdded(address indexed account);
-    event ControllerRemoved(address indexed account);
+    // event ControllerAdded(address indexed account);
+    // event ControllerRemoved(address indexed account);
 
     Roles.Role private _controllers;
 
@@ -41,12 +41,12 @@ contract ControllerRole {
 
     function _addController(address account) internal {
         _controllers.add(account);
-        emit ControllerAdded(account);
+        // emit ControllerAdded(account);
     }
 
     function _removeController(address account) internal {
         _controllers.remove(account);
-        emit ControllerRemoved(account);
+        // emit ControllerRemoved(account);
     }
 
 }
