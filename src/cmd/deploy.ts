@@ -63,12 +63,12 @@ export const builder = (y: typeof yargs) =>
     // },
   })
 
+function sleep(ms = 1000) {
+  return new Promise(r => setTimeout(r, ms))
+}
+
 export const handler = async argv => {
-  const web3 = new Web3(
-    argv.url,
-    // 'http://localhost:7545',
-    // 'https://mainnet.infura.io',
-  )
+  const web3 = new Web3(argv.url)
 
   if (!/^(?:0x)?[a-f\d]{64}$/.test(argv.privateKey)) {
     throw new Error('Bad private key')
@@ -76,76 +76,56 @@ export const handler = async argv => {
 
   const account = web3.eth.accounts.privateKeyToAccount(
     argv.privateKey.replace(/^(?:0x)?/, '0x'),
-    // '0xac818f8ea6d0eae11901c0fba3f1e20732988953cc1d8bd88f9be39d4ee9ed10', // ganache
-    // '0xdca3eddd09a0dd2ab33da69357a68c7b791f65cc61ee8367ba017191356c1161', // Metamask
   )
 
-  function sleep(ms = 1000) {
-    return new Promise(r => setTimeout(r, ms))
-  }
+  const gasPrice = Web3.utils.toWei(argv.gasPrice.toString(), 'gwei')
+  const netId = await web3.eth.net.getId()
 
-  async function sendTransaction(
-    tx: any = {
-      gasPrice: Web3.utils.toWei('1', 'gwei'),
-    },
-  ) {
+  async function sendTransaction(tx: any = {}) {
     const signed = await account.signTransaction({
       ...tx,
+      gasPrice,
       gas: await web3.eth.estimateGas({...tx, from: account.address}),
     })
 
     const result = await web3.eth.sendSignedTransaction(signed.rawTransaction)
 
-    console.log(
-      `Check etherscan: https://etherscan.io/tx/${result.transactionHash}`,
-    )
+    if (netId === 1) {
+      console.log(
+        `Check etherscan: https://etherscan.io/tx/${result.transactionHash}`,
+      )
+    }
     console.log('transactionHash:', result.transactionHash)
+
+    return result.transactionHash
   }
 
   async function deployContract({
     jsonInterface = [],
     bin,
     args = [],
-    tx = {
-      gasPrice: Web3.utils.toWei('1', 'gwei'),
-    },
+    tx = {},
   }: {
     jsonInterface: any[]
     bin: string
     args?: any[]
-    tx?: {
-      value?: string | number
-      gasPrice?: string | number
-    }
+    tx?: {value?: string | number}
   }) {
     const contract = new web3.eth.Contract(jsonInterface)
 
-    const unsigned = {
-      ...tx,
+    const transactionHash = await sendTransaction({
       data: contract
         .deploy({
           data: '0x' + bin,
           arguments: args,
         })
         .encodeABI(),
-    }
-
-    const signed = await account.signTransaction({
-      ...unsigned,
-      gas: await web3.eth.estimateGas({...unsigned, from: account.address}),
     })
-
-    const result = await web3.eth.sendSignedTransaction(signed.rawTransaction)
-
-    console.log(
-      `Check etherscan: https://etherscan.io/tx/${result.transactionHash}`,
-    )
-    console.log('transactionHash:', result.transactionHash)
 
     let receipt
     do {
       try {
-        receipt = await web3.eth.getTransactionReceipt(result.transactionHash)
+        receipt = await web3.eth.getTransactionReceipt(transactionHash)
       } catch (error) {
         console.error(error.message)
         receipt = null
@@ -169,7 +149,6 @@ export const handler = async argv => {
     return contract
   }
 
-  const gasPrice = Web3.utils.toWei(argv.gasPrice.toString(), 'gwei')
   let step = argv.step
 
   let registry, signature, sunrise, multiplexer, resolver
@@ -229,7 +208,6 @@ export const handler = async argv => {
             join(__dirname, '../../abi/bin/Registry.bin'),
             'utf8',
           ),
-          tx: {gasPrice},
         })
 
         break
@@ -248,7 +226,6 @@ export const handler = async argv => {
             'utf8',
           ),
           args: [registry.options.address],
-          tx: {gasPrice},
         })
 
         break
@@ -283,7 +260,6 @@ export const handler = async argv => {
             'utf8',
           ),
           args: [registry.options.address, 60 * 60 * 24 * 365],
-          tx: {gasPrice},
         })
 
         break
@@ -332,7 +308,6 @@ export const handler = async argv => {
             'utf8',
           ),
           args: [sunrise.options.address],
-          tx: {gasPrice},
         })
 
         break
@@ -381,7 +356,6 @@ export const handler = async argv => {
             'utf8',
           ),
           args: [registry.options.address],
-          tx: {gasPrice},
         })
 
         // break
