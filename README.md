@@ -16,7 +16,7 @@ Also install the 0.5.11 Solidity toolchain. [Install Page](https://solidity.read
 
 We also provide a deployment/interaction cli found in `src`. To use this cli, install, then:
 
-```
+```sh
 yarn build
 ```
 
@@ -40,7 +40,7 @@ Using the config `dot-crypto` will deploy a new set of contracts and overwrite t
 
 This also means that if you keep track of the step you can pause and resume deployment. e.g.
 
-```
+```sh
 > dot-crypto
 ...
 Step 4: ...
@@ -53,7 +53,7 @@ Step 4: ...
 After deployment you can use the `call` command like this.
 
 ```sh
-dot-crypto call sunriseController mintSLD label
+dot-crypto call sunriseController mintSLD 0x1a5363cA3ceeF73b1544732e3264F6D600cF678E label
 ```
 
 ```sh
