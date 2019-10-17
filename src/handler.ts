@@ -266,7 +266,7 @@ export const handler = async argv => {
           args: [registry.options.address],
         })
 
-        config.adddresses.SignatureController = registry.options.address
+        config.adddresses.SignatureController = signature.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -306,7 +306,7 @@ export const handler = async argv => {
           args: [registry.options.address, 60 * 60 * 24 * 365],
         })
 
-        config.adddresses.SunriseController = registry.options.address
+        config.adddresses.SunriseController = sunrise.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -360,7 +360,7 @@ export const handler = async argv => {
           args: [sunrise.options.address],
         })
 
-        config.adddresses.Multiplexer = registry.options.address
+        config.adddresses.Multiplexer = multiplexer.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -414,7 +414,7 @@ export const handler = async argv => {
           args: [registry.options.address],
         })
 
-        config.adddresses.SignatureResolver = registry.options.address
+        config.adddresses.SignatureResolver = resolver.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),

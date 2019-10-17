@@ -212,22 +212,24 @@ export const handler = async argv => {
     : web3.utils.fromWei(argv.value.toString(), 'ether')
 
   if (isView) {
-    console.log(
-      await web3.eth.call({
-        value,
-        gasPrice,
-        from: account ? account.address : undefined,
-        data: contract.methods[argv.method](...argv.params).encodeABI(),
-      }),
-    )
-
-    console.log(
-      await contract.methods[argv.method](...argv.params).call({
-        value,
-        gasPrice,
-        from: account ? account.address : undefined,
-      }),
-    )
+    const resp = await contract.methods[argv.method](...argv.params).call({
+      value,
+      gasPrice,
+      from: account ? account.address : undefined,
+    })
+    if (typeof resp !== 'object') {
+      process.stdout.write(resp.toString() + '\n')
+    } else {
+      process.stdout.write(
+        Object.keys(resp)
+          .filter(v => /^\d+$/.test(v))
+          .reduce((a, v) => {
+            a[v] = resp[v].toString()
+            return a
+          }, [])
+          .join(' ') + '\n',
+      )
+    }
   } else {
     console.log(
       `Calling ${argv.contractName}.${argv.method}(${
