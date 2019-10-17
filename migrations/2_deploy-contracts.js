@@ -6,6 +6,7 @@ const SignatureController = artifacts.require(
 const SunriseController = artifacts.require('controller/SunriseController.sol')
 const Multiplexer = artifacts.require('util/Multiplexer.sol')
 const SignatureResolver = artifacts.require('resolver/SignatureResolver.sol')
+const Simple = artifacts.require('util/Simple.sol')
 
 module.exports = (deployer, network, accounts) => {
   return deployer.deploy(Registry).then(async registry => {
@@ -20,12 +21,23 @@ module.exports = (deployer, network, accounts) => {
     )
     await registry.addController(signatureController.address)
     await registry.addController(sunriseController.address)
-    await registry.renounceController()
+
+    if (network === 'live') {
+      await registry.renounceController()
+    }
+
     const multiplexer = await deployer.deploy(
       Multiplexer,
       sunriseController.address,
     )
+    await multiplexer.addWhitelisted(accounts[0])
     await sunriseController.addMinter(multiplexer.address)
+
+    if (network === 'live') {
+      await sunriseController.renounceMinter()
+    }
+
     await deployer.deploy(SignatureResolver, registry.address)
+    const simple = await deployer.deploy(Simple)
   })
 }

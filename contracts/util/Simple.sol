@@ -13,4 +13,8 @@ contract Simple {
     nbr = _nbr;
     sender = _sender;
   }
+
+  function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
+    return 0x150b7a02;
+  }
 }
