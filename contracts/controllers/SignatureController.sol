@@ -28,12 +28,6 @@ contract SignatureController is ISignatureController {
         return _nonces[owner];
     }
 
-    function getValidation(address from, address to, uint256 tokenId) external pure returns (bytes32) {
-        // recovered = keccak256(abi.encodePacked(hash, nonce)).toEthSignedMessageHash()
-
-        return keccak256(abi.encodeWithSelector(this.transferFromFor.selector, from, to, tokenId, ""));
-    }
-
     function recover(bytes32 hash, bytes calldata signature)
         external
         pure
@@ -133,20 +127,6 @@ contract SignatureController is ISignatureController {
     function _childId(uint256 tokenId, string memory label) internal pure returns (uint256) {
         require(bytes(label).length != 0);
         return uint256(keccak256(abi.encodePacked(tokenId, keccak256(abi.encodePacked(label)))));
-    }
-
-    function addressToString(address _addr) public pure returns(string memory) {
-        bytes32 value = bytes32(uint256(_addr));
-        bytes memory alphabet = "0123456789abcdef";
-
-        bytes memory str = new bytes(42);
-        str[0] = '0';
-        str[1] = 'x';
-        for (uint i = 0; i < 20; i++) {
-            str[2+i*2] = alphabet[uint(uint8(value[i + 12] >> 4))];
-            str[3+i*2] = alphabet[uint(uint8(value[i + 12] & 0x0f))];
-        }
-        return string(str);
     }
 
     function _validate(bytes32 hash, uint256 tokenId, bytes memory signature) internal {

@@ -19,19 +19,6 @@ contract TestMintingController is RegistryTestBase {
     registry.renounceController();
   }
 
-  function test_mintSLD() external {
-    minting.mintSLD(address(this), "label");
-
-    Assert.equal(registry.ownerOf(tok), address(this), "minted SLD to address(this)");
-    (bool success, ) = address(minting).call(abi.encodeWithSelector(minting.mintSLD.selector, address(this), tok));
-    Assert.isFalse(success, "should fail mint owned SLD");
-
-    registry.burn(tok);
-    minting.mintSLD(address(this), "label");
-
-    Assert.equal(registry.ownerOf(tok), address(this), "minted burnt SLD to address(this)");
-  }
-
   function test_metadata() external {
     string memory rootURI = registry.tokenURI(root);
     Assert.equal(rootURI, "urn:udc:crypto", "DotCrypto root tokenURI is ok");
@@ -48,6 +35,20 @@ contract TestMintingController is RegistryTestBase {
 
     (success, ) = address(registry).call(abi.encodeWithSelector(registry.tokenURI.selector, uint256(tok)));
     Assert.isFalse(success, "should fail to get non existent tokenURI");
+  }
+
+
+  function tests() external {
+    minting.mintSLD(address(this), "label");
+
+    Assert.equal(registry.ownerOf(tok), address(this), "minted SLD to address(this)");
+    (bool success, ) = address(minting).call(abi.encodeWithSelector(minting.mintSLD.selector, address(this), tok));
+    Assert.isFalse(success, "should fail mint owned SLD");
+
+    registry.burn(tok);
+    minting.mintSLD(address(this), "label");
+
+    Assert.equal(registry.ownerOf(tok), address(this), "minted burnt SLD to address(this)");
   }
 
 }

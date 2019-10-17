@@ -5,10 +5,12 @@ import multiplexerJsonInterface = require('./abi/json/Multiplexer.json')
 import resolverJsonInterface = require('./abi/json/SignatureResolver.json')
 
 import {existsSync, readFileSync} from 'fs'
-import {join} from 'path'
+import {isAbsolute, join} from 'path'
 import ask from './ask.js'
 import Web3 = require('web3')
 import yargs = require('yargs')
+
+const config = require('../.cli-config.json')
 
 export const command = 'call <contract-name> <method> [params...]'
 
@@ -26,19 +28,19 @@ export const builder = (y: typeof yargs) =>
       url: {
         type: 'string',
         desc: 'Ethereum-RPC URL to use for deployment',
-        default: 'https://mainnet.infura.io',
+        default: config.url,
       },
       'private-key': {
         alias: 'k',
         type: 'string',
         desc: 'Private key to use for deployment',
-        // demandOption: true,
+        default: config.privateKey,
       },
       to: {
         alias: 'at',
         type: 'string',
         desc: 'Address to interact with',
-        demandOption: true,
+        // demandOption: true,
       },
       value: {
         alias: 'v',
@@ -54,10 +56,6 @@ export const builder = (y: typeof yargs) =>
         type: 'number',
         desc: 'Gas price in gwei to use for all transactions.',
         default: 1,
-      },
-      call: {
-        type: 'boolean',
-        desc: 'Call method instead of sending a transaction',
       },
     })
     .positional('contract-name', {
@@ -79,7 +77,24 @@ function sleep(ms = 1000) {
 
 export const handler = async argv => {
   const web3: Web3 = new Web3(argv.url)
+
   const gasPrice = Web3.utils.toWei(argv.gasPrice.toString(), 'gwei')
+
+  const defaultTo =
+    config.adddresses[
+      argv.contractName.charAt(0).toUpperCase() + argv.contractName.substr(1)
+    ]
+
+  if (!argv.to && defaultTo) {
+    argv.to = defaultTo
+  }
+
+  if (
+    argv.contractName.charAt(0).toUpperCase() + argv.contractName.substr(1) ===
+    'Multiplexer'
+  ) {
+    argv.contractName = 'SunriseController'
+  }
 
   const abiPath = join(
     __dirname,
@@ -105,9 +120,22 @@ export const handler = async argv => {
     throw new Error(`Method '${argv.method}' does not exist.`)
   }
 
+  const methodAbi = abi.find(v => v.name === argv.method)
+
+  const isView =
+    methodAbi.stateMutability === 'pure' || methodAbi.stateMutability === 'view'
+
+  const pkPath = isAbsolute(argv.privateKey)
+    ? argv.privateKey
+    : join(__dirname, '..', argv.privateKey)
+
+  if (existsSync(pkPath)) {
+    argv.privateKey = readFileSync(pkPath, 'utf8')
+  }
+
   let account
   if (
-    argv.call
+    isView
       ? !(!argv.privateKey || /^(?:0x)?[a-f\d]{64}$/.test(argv.privateKey))
       : !/^(?:0x)?[a-f\d]{64}$/.test(argv.privateKey)
   ) {
@@ -183,7 +211,16 @@ export const handler = async argv => {
     ? argv.value.toString()
     : web3.utils.fromWei(argv.value.toString(), 'ether')
 
-  if (argv.call) {
+  if (isView) {
+    console.log(
+      await web3.eth.call({
+        value,
+        gasPrice,
+        from: account ? account.address : undefined,
+        data: contract.methods[argv.method](...argv.params).encodeABI(),
+      }),
+    )
+
     console.log(
       await contract.methods[argv.method](...argv.params).call({
         value,

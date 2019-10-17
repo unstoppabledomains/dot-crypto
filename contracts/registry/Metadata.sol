@@ -20,9 +20,9 @@ contract Metadata is Root, IERC721Metadata {
 
     constructor () public {
         // register the supported interfaces to conform to ERC721 via ERC165
-        // _registerInterface(0x5b5e139f); // ERC721 Metadata Interface
-        // _tokenURIs[root()] = "crypto";
-        // emit NewURI(root(), "crypto");
+        _registerInterface(0x5b5e139f); // ERC721 Metadata Interface
+        _tokenURIs[root()] = "crypto";
+        emit NewURI(root(), "crypto");
     }
 
     /// ERC721 Metadata ext.

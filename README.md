@@ -38,6 +38,74 @@ It differs in a couple important ways.
 
   - The registry has a set of controlled functions to interface with these controllers.
 
-### Ours
+## Developing
 
-### OpenZeppelin
+### Installation
+
+First install the dependencies.
+
+```sh
+yarn install
+```
+
+Also install the 0.5.11 Solidity toolchain. [Install Page](https://solidity.readthedocs.io/en/v0.5.11/installing-solidity.html).
+
+We also provide a deployment/interaction cli found in `src`. To use this cli, install, then:
+
+```
+yarn build
+```
+
+```sh
+yarn link
+```
+
+You should now have a `dot-crypto` executable in your `$PATH`.
+
+Now try:
+
+```sh
+dot-crypto --help
+```
+
+### Tests
+
+Run a ganache server in the background.
+
+```sh
+yarn rpc:ganache
+```
+
+Run the tests.
+
+```sh
+yarn test
+```
+
+### CLI
+
+The cli has some configuration inside `.cli-config.json`. Feel free to change these to fit you're needs.
+
+Using the config `dot-crypto` will deploy a new set of contracts and overwrite the `.cli-config.json` file.
+
+This also means that if you keep track of the step you can pause and resume deployment. e.g.
+
+```
+> dot-crypto
+...
+Step 4: ...
+^C
+
+> dot-crypto --step 4
+... Resuming deployment
+```
+
+After deployment you can use the `call` command like this.
+
+```sh
+dot-crypto call sunriseController mintSLD label
+```
+
+```sh
+dot-crypto call registry ownerOf $(dot-crypto call registry childOf $(dot-crypto call registry root) label)
+```

@@ -9,10 +9,10 @@ if [[ ${solc_version:9:6} != '0.5.11' ]]; then
   exit 1
 fi
 
-rm -r abi
+mkdir -p abi && rm -r abi
 mkdir -p abi/bin abi/json
 
-solc --overwrite --abi --bin -o abi --allow-paths . @openzeppelin=./node_modules/@openzeppelin contracts/**/*.sol --optimize --optimize-runs 200 >/dev/null
+solc --abi --bin -o abi --allow-paths . @openzeppelin=./node_modules/@openzeppelin contracts/**/*.sol --optimize --optimize-runs 200 >/dev/null
 
 find abi -name '*.bin' -type f -size 0 -empty -delete
 find abi -name '*.bin' -exec sh -c 'mv "$0" abi/bin 2>/dev/null' {} \;

@@ -7,13 +7,13 @@ const cli = yargs
   .demandCommand()
   .middleware(argv => {
     if (process.env.NODE_ENV === 'development') argv.verbose = true
-    if (argv.verbose) {
-      console.info()
-      Object.keys(argv).forEach(k => {
-        console.info(k.charAt(0).toUpperCase() + k.slice(1) + ':', argv[k])
-      })
-      console.info()
-    }
+    // if (argv.verbose) {
+    //   console.info()
+    //   Object.keys(argv).forEach(k => {
+    //     console.info(k.charAt(0).toUpperCase() + k.slice(1) + ':', argv[k])
+    //   })
+    //   console.info()
+    // }
   })
   .epilog('Made with ' + chalk.red('♥') + ' by Unstoppable Domains')
   .option('verbose', {

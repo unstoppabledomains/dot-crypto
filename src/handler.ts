@@ -1,15 +1,17 @@
-import registryJsonInterface = require('./abi/json/Registry.json')
-import signatureJsonInterface = require('./abi/json/SignatureController.json')
-import sunriseJsonInterface = require('./abi/json/SunriseController.json')
-import multiplexerJsonInterface = require('./abi/json/Multiplexer.json')
-import resolverJsonInterface = require('./abi/json/SignatureResolver.json')
+const registryJsonInterface = require('../abi/json/Registry.json')
+const signatureJsonInterface = require('../abi/json/SignatureController.json')
+const sunriseJsonInterface = require('../abi/json/SunriseController.json')
+const multiplexerJsonInterface = require('../abi/json/Multiplexer.json')
+const resolverJsonInterface = require('../abi/json/SignatureResolver.json')
 
 import chalk from 'chalk'
-import {readFileSync} from 'fs'
-import {join} from 'path'
+import {existsSync, readFileSync, writeFileSync} from 'fs'
+import {isAbsolute, join} from 'path'
 import ask from './ask.js'
 import Web3 = require('web3')
 import yargs = require('yargs')
+
+const config = require('../.cli-config.json')
 
 export const command = '$0 [...options]'
 
@@ -35,34 +37,39 @@ export const builder = (y: typeof yargs) =>
     url: {
       type: 'string',
       desc: 'Ethereum-RPC URL to use for deployment',
-      default: 'https://mainnet.infura.io',
+      default: config.url,
     },
     'private-key': {
       alias: 'k',
       type: 'string',
       desc: 'Private key to use for deployment',
-      demandOption: true,
+      default: config.privateKey,
     },
     registry: {
       type: 'string',
       desc: 'Address used for registry when continuing after Step 1',
+      default: config.adddresses.Registry,
     },
     signature: {
       type: 'string',
       desc: 'Address used for signature when continuing after Step 2',
+      default: config.adddresses.SignatureController,
     },
     sunrise: {
       type: 'string',
       desc: 'Address used for sunrise when continuing after Step 4',
+      default: config.adddresses.SunriseController,
     },
     multiplexer: {
       type: 'string',
       desc: 'Address used for multiplexer when continuing after Step 7',
+      default: config.adddresses.Multiplexer,
     },
-    // resolver: {
-    //   type: 'string',
-    //   desc: "Address used for resolver when continuing after Step 10"
-    // },
+    resolver: {
+      type: 'string',
+      desc: 'Address used for resolver when continuing after Step 10',
+      default: config.adddresses.SignatureResolver,
+    },
   })
 
 function sleep(ms = 1000) {
@@ -71,6 +78,14 @@ function sleep(ms = 1000) {
 
 export const handler = async argv => {
   const web3: Web3 = new Web3(argv.url)
+
+  const pkPath = isAbsolute(argv.privateKey)
+    ? argv.privateKey
+    : join(__dirname, '..', argv.privateKey)
+
+  if (existsSync(pkPath)) {
+    argv.privateKey = readFileSync(pkPath, 'utf8')
+  }
 
   if (!/^(?:0x)?[a-f\d]{64}$/.test(argv.privateKey)) {
     throw new Error('Bad private key')
@@ -227,6 +242,12 @@ export const handler = async argv => {
           bin: readFileSync(join(__dirname, '../abi/bin/Registry.bin'), 'utf8'),
         })
 
+        config.adddresses.Registry = registry.options.address
+        writeFileSync(
+          join(__dirname, '../.cli-config.json'),
+          JSON.stringify(config),
+        )
+
         break
       }
       case 2: {
@@ -244,6 +265,12 @@ export const handler = async argv => {
           ),
           args: [registry.options.address],
         })
+
+        config.adddresses.SignatureController = registry.options.address
+        writeFileSync(
+          join(__dirname, '../.cli-config.json'),
+          JSON.stringify(config),
+        )
 
         break
       }
@@ -278,6 +305,12 @@ export const handler = async argv => {
           ),
           args: [registry.options.address, 60 * 60 * 24 * 365],
         })
+
+        config.adddresses.SunriseController = registry.options.address
+        writeFileSync(
+          join(__dirname, '../.cli-config.json'),
+          JSON.stringify(config),
+        )
 
         break
       }
@@ -327,6 +360,12 @@ export const handler = async argv => {
           args: [sunrise.options.address],
         })
 
+        config.adddresses.Multiplexer = registry.options.address
+        writeFileSync(
+          join(__dirname, '../.cli-config.json'),
+          JSON.stringify(config),
+        )
+
         break
       }
       case 8: {
@@ -374,6 +413,12 @@ export const handler = async argv => {
           ),
           args: [registry.options.address],
         })
+
+        config.adddresses.SignatureResolver = registry.options.address
+        writeFileSync(
+          join(__dirname, '../.cli-config.json'),
+          JSON.stringify(config),
+        )
 
         // break
       }
