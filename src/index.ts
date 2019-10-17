@@ -26,6 +26,7 @@ const cli = yargs
   .alias('help', 'h')
   // .showHelpOnFail(true)
   .command(require('./handler'))
+  .command(require('./send'))
   .fail((msg, err) => {
     if (err || !msg) {
       console.error('Error:', err.message || 'unknown')

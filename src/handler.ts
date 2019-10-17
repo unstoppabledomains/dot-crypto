@@ -7,6 +7,7 @@ import resolverJsonInterface = require('./abi/json/SignatureResolver.json')
 import chalk from 'chalk'
 import {readFileSync} from 'fs'
 import {join} from 'path'
+import ask from './ask.js'
 import Web3 = require('web3')
 import yargs = require('yargs')
 
@@ -69,7 +70,7 @@ function sleep(ms = 1000) {
 }
 
 export const handler = async argv => {
-  const web3 = new Web3(argv.url)
+  const web3: Web3 = new Web3(argv.url)
 
   if (!/^(?:0x)?[a-f\d]{64}$/.test(argv.privateKey)) {
     throw new Error('Bad private key')
@@ -89,16 +90,55 @@ export const handler = async argv => {
       gas: await web3.eth.estimateGas({...tx, from: account.address}),
     })
 
-    const result = await web3.eth.sendSignedTransaction(signed.rawTransaction)
+    const transactionHash: string = await new Promise((resolve, reject) => {
+      web3.currentProvider.send(
+        {
+          id: 1,
+          jsonrpc: '2.0',
+          method: 'eth_sendRawTransaction',
+          params: [signed.rawTransaction],
+        },
+        ((err, resp) => {
+          if (err) {
+            reject(err)
+          } else if (resp.error) {
+            reject(new Error(resp.error.message))
+          } else {
+            resolve(resp.result)
+          }
+        }) as any,
+      )
+    })
 
     if (netId === 1) {
-      console.log(
-        `Check etherscan: https://etherscan.io/tx/${result.transactionHash}`,
-      )
+      console.log(`Check etherscan: https://etherscan.io/tx/${transactionHash}`)
     }
-    console.log('transactionHash:', result.transactionHash)
+    console.log('transactionHash:', transactionHash)
 
-    return result.transactionHash
+    process.stdout.write('Waiting for confirmation...')
+
+    let receipt
+    do {
+      try {
+        receipt = await web3.eth.getTransactionReceipt(transactionHash)
+      } catch (error) {
+        receipt = null
+      }
+
+      if (!receipt) {
+        process.stdout.write('.')
+      }
+
+      await sleep(argv.sleep)
+    } while (!receipt)
+
+    console.log()
+
+    if (!receipt.status) {
+      throw new Error('bad receipt status')
+    }
+
+    return receipt
   }
 
   async function deployContract({
@@ -114,7 +154,7 @@ export const handler = async argv => {
   }) {
     const contract = new web3.eth.Contract(jsonInterface)
 
-    const transactionHash = await sendTransaction({
+    const receipt = await sendTransaction({
       data: contract
         .deploy({
           data: '0x' + bin,
@@ -122,26 +162,6 @@ export const handler = async argv => {
         })
         .encodeABI(),
     })
-
-    let receipt
-    do {
-      try {
-        receipt = await web3.eth.getTransactionReceipt(transactionHash)
-      } catch (error) {
-        console.error(error.message)
-        receipt = null
-      }
-
-      if (!receipt) {
-        console.log('Waiting for confirmation...')
-      }
-
-      await sleep(argv.sleep)
-    } while (!receipt)
-
-    if (!receipt.status) {
-      throw new Error('bad receipt status')
-    }
 
     contract.options.address = receipt.contractAddress
 
@@ -192,9 +212,8 @@ export const handler = async argv => {
     resolver = new web3.eth.Contract(resolverJsonInterface, argv.resolver)
   }
 
-  console.log(
-    "You're deploying a .crypto registry! This will take a little while. Please be patient.",
-  )
+  await ask("You're deploying a .crypto registry! Continue?")
+  console.log('This will take a little while. Please be patient.')
   console.log()
 
   while (true) {
