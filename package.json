@@ -24,6 +24,7 @@
   },
   "bin": "bin/cli.js",
   "scripts": {
+    "setup": "yarn && yarn link && yarn build && dot-crypto --help",
     "format": "prettier --write -l '**/*.{md,ts,json}' --ignore-path .gitignore",
     "test": "truffle test",
     "compile": "./compile.sh",

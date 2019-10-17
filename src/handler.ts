@@ -1,15 +1,16 @@
-import registryJsonInterface = require('../abi/json/Registry.json')
-import signatureJsonInterface = require('../abi/json/SignatureController.json')
-import sunriseJsonInterface = require('../abi/json/SunriseController.json')
-import multiplexerJsonInterface = require('../abi/json/Multiplexer.json')
-import resolverJsonInterface = require('../abi/json/SignatureResolver.json')
+import registryJsonInterface = require('./abi/json/Registry.json')
+import signatureJsonInterface = require('./abi/json/SignatureController.json')
+import sunriseJsonInterface = require('./abi/json/SunriseController.json')
+import multiplexerJsonInterface = require('./abi/json/Multiplexer.json')
+import resolverJsonInterface = require('./abi/json/SignatureResolver.json')
 
-import Web3 = require('web3')
+import chalk from 'chalk'
 import {readFileSync} from 'fs'
 import {join} from 'path'
+import Web3 = require('web3')
 import yargs = require('yargs')
 
-export const command = 'deploy [...options]'
+export const command = '$0 [...options]'
 
 export const desc = 'Deploy a full set of .crypto contracts'
 
@@ -197,17 +198,14 @@ export const handler = async argv => {
   console.log()
 
   while (true) {
-    process.stdout.write(`[Step ${step}]: `)
+    process.stdout.write(`${chalk.cyanBright('Step ' + step)}: `)
     switch (step) {
       case 1: {
         console.log('Deploying Registry...')
 
         registry = await deployContract({
           jsonInterface: registryJsonInterface,
-          bin: readFileSync(
-            join(__dirname, '../../abi/bin/Registry.bin'),
-            'utf8',
-          ),
+          bin: readFileSync(join(__dirname, '../abi/bin/Registry.bin'), 'utf8'),
         })
 
         break
@@ -222,7 +220,7 @@ export const handler = async argv => {
         signature = await deployContract({
           jsonInterface: signatureJsonInterface,
           bin: readFileSync(
-            join(__dirname, '../../abi/bin/SignatureController.bin'),
+            join(__dirname, '../abi/bin/SignatureController.bin'),
             'utf8',
           ),
           args: [registry.options.address],
@@ -256,7 +254,7 @@ export const handler = async argv => {
         sunrise = await deployContract({
           jsonInterface: sunriseJsonInterface,
           bin: readFileSync(
-            join(__dirname, '../../abi/bin/SunriseController.bin'),
+            join(__dirname, '../abi/bin/SunriseController.bin'),
             'utf8',
           ),
           args: [registry.options.address, 60 * 60 * 24 * 365],
@@ -304,7 +302,7 @@ export const handler = async argv => {
         multiplexer = await deployContract({
           jsonInterface: multiplexerJsonInterface,
           bin: readFileSync(
-            join(__dirname, '../../abi/bin/Multiplexer.bin'),
+            join(__dirname, '../abi/bin/Multiplexer.bin'),
             'utf8',
           ),
           args: [sunrise.options.address],
@@ -352,7 +350,7 @@ export const handler = async argv => {
         resolver = await deployContract({
           jsonInterface: resolverJsonInterface,
           bin: readFileSync(
-            join(__dirname, '../../abi/bin/SignatureResolver.bin'),
+            join(__dirname, '../abi/bin/SignatureResolver.bin'),
             'utf8',
           ),
           args: [registry.options.address],
@@ -361,8 +359,11 @@ export const handler = async argv => {
         // break
       }
       default: {
-        console.log('Done.\n')
-        console.log("You've deployed a .crypto registry!")
+        console.log(`${chalk.cyanBright(`${step} Complete`)}.`)
+        console.log()
+        console.log(`${chalk.green('Deployment Complete')}!`)
+        console.log()
+        console.log('Here are the addresses:')
         console.log()
         console.log('    Registry:', registry.options.address)
         console.log('    Signature Controller:', signature.options.address)
@@ -375,7 +376,7 @@ export const handler = async argv => {
       }
     }
 
-    console.log(`[Step ${step}]: Done.\n`)
+    console.log(`${chalk.cyanBright(`${step} Complete`)}.\n`)
     step++
     await sleep(argv.sleep)
   }

@@ -4,7 +4,6 @@ const pkg = require('../package.json')
 
 const cli = yargs
   .scriptName(pkg.name)
-  .usage('$0 <cmd> [args]')
   .demandCommand()
   .middleware(argv => {
     if (process.env.NODE_ENV === 'development') argv.verbose = true
@@ -25,23 +24,17 @@ const cli = yargs
   .version()
   .help()
   .alias('help', 'h')
+  // .showHelpOnFail(true)
+  .command(require('./handler'))
   .fail((msg, err) => {
     if (err || !msg) {
       console.error('Error:', err.message || 'unknown')
-    } else if (msg.startsWith('Not enough non-option arguments:')) {
-      cli.showHelp()
-      console.error()
-      console.error(msg)
-    } else if (msg.startsWith('Missing required arguments:')) {
-      cli.showHelp()
-      console.error()
-      console.error(msg)
-    } else {
-      console.error(msg)
     }
+
+    cli.showHelp()
+    console.error()
+    console.error(msg)
     process.exit(1)
   })
-  // .showHelpOnFail(true)
-  .commandDir('cmd')
 
 cli.argv
