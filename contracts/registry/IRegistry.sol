@@ -55,9 +55,10 @@ contract IRegistry {
      * Requires the msg.sender to be controller.
      * Requires the token ID to not exist.
      * @param to address the given token ID will be minted to
+     * @param label string that is a subdomain
      * @param tokenId uint256 ID of the token to be minted
      */
-    function controlledMint(address to, uint256 tokenId) external;
+    function controlledMintChild(address to, uint256 tokenId, string calldata label) external;
 
     /**
      * @dev Controlled function to burn a given token ID.
@@ -74,15 +75,6 @@ contract IRegistry {
      * @param tokenId uint256 ID of the token to be transferred
      */
     function controlledResolveTo(address to, uint256 tokenId) external;
-
-    /**
-     * @dev Controlled function to set the token URI for a given token.
-     * Reverts if the token ID does not exist.
-     * @param tokenId uint256 ID of the token to set its URI
-     * @param parentId uint256 ID of the token to prepend label to
-     * @param label string to prepend parentURI with
-     */
-    function setTokenURI(uint256 tokenId, uint256 parentId, string calldata label) external;
 
     /**
      * @dev Controlled function to set the token URI Prefix for all tokens.

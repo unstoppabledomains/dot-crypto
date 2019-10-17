@@ -8,4 +8,4 @@ import "./Children.sol";
 
 // solium-disable no-empty-blocks
 
-contract Registry is /* IRegistry, */ Metadata, Resolution, Children {}
+contract Registry is IRegistry, Resolution, Children {}
