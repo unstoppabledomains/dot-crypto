@@ -17,7 +17,6 @@ contract Root is ControlledERC721 {
         _mint(address(0xdead), _CRYPTO_HASH);
     }
 
-
     function root() public pure returns (uint256) {
         return _CRYPTO_HASH;
     }
