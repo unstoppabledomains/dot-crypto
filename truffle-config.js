@@ -25,8 +25,8 @@ module.exports = {
     development: {
       host: 'localhost',
       port: 7545,
-      network_id: '4447',
-      gas: 6721975,
+      network_id: '1337',
+      gas: 4401670,
     },
   },
   compilers: {

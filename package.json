@@ -31,7 +31,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "rpc:ganache": "ganache-cli --port 7545 --networkId 4447 --gasLimit 8000000 --allowUnlimitedContractSize --quiet &",
-    "rpc:geth": "geth -dev -rpc -rpcport 7545 -verbosity 0 --miner.gastarget 8000000 &",
+    "rpc:geth": "geth -dev -dev.period 0 -rpc -rpcport 7545 --miner.gastarget 0x2014103 -keystore geth -password '' -verbosity 0 &",
     "rpc:stop": "lsof -ti:7545 | xargs kill"
   },
   "devDependencies": {
