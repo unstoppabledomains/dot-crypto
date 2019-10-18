@@ -1,12 +1,12 @@
 pragma solidity 0.5.11;
 
 /**
- * @title ChildrenController
+ * @title Children
  * @dev Defines the parent/child relationship between domain tokens.
  * Parent/Child is defined same as ENS namehash function defined in EIP137.
  * See https://eips.ethereum.org/EIPS/eip-137
  */
-contract IChildrenController {
+contract IChildren {
 
     /**
      * @dev Mints a new a child token.

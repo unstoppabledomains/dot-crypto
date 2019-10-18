@@ -1,10 +1,11 @@
 pragma solidity 0.5.11;
 
 import "./Metadata.sol";
+import "./IChildren.sol";
 
 // solium-disable error-reason
 
-contract Children is Metadata {
+contract Children is IChildren, Metadata {
 
     /// Minting
 
