@@ -1,1 +1,11 @@
-{"url":"http://localhost:7545/","privateKey":"./geth.key","_url":"https://mainnet.infura.io/","_privateKey":"./mainnet.key","adddresses":{"Registry":"0xE87b4894fc71Cd826f32Bd76b23Bf5D743e8e0c1","SignatureController":"0x34467e86F65935eE31955DD3aB026Be391205D69","SunriseController":"0x95C45aAe4D03EFD35487e7AFb89CDca7bac534E3","Multiplexer":"0xE354e3d2fe98828E38C471fb16bF7A72d2Cf9Bda","SignatureResolver":"0x853bDCd6E6F036783f93b967143361a69aC10D60"}}
+{
+  "url": "http://localhost:7545/",
+  "privateKey": "./ganache.key",
+  "adddresses": {
+    "Registry": "0xE87b4894fc71Cd826f32Bd76b23Bf5D743e8e0c1",
+    "SignatureController": "0x34467e86F65935eE31955DD3aB026Be391205D69",
+    "SunriseController": "0x95C45aAe4D03EFD35487e7AFb89CDca7bac534E3",
+    "Multiplexer": "0xE354e3d2fe98828E38C471fb16bF7A72d2Cf9Bda",
+    "SignatureResolver": "0x853bDCd6E6F036783f93b967143361a69aC10D60"
+  }
+}

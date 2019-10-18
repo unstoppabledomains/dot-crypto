@@ -25,14 +25,15 @@
   "bin": "bin/cli.js",
   "scripts": {
     "format": "prettier --write -l '**/*.{md,ts,json}' --ignore-path .gitignore",
-    "test": "truffle test",
+    "rpc:ganache": "ganache-cli --port 7545 --networkId 4447 --gasLimit 440167000 --allowUnlimitedContractSize --quiet &",
+    "test:ganache": "truffle test --network ganache test/*.ganache.js",
+    "rpc:geth": "geth -dev -dev.period 0 -rpc -rpcport 7545 --miner.gastarget 0x2014103 -keystore geth -password '' -verbosity 0 &",
+    "test:geth": "truffle test --network devgeth test/*.geth.js",
+    "rpc:stop": "lsof -ti:7545 | xargs kill",
     "compile": "./compile.sh",
     "prebuild": "yarn compile && rm -rf build",
     "build": "tsc",
-    "watch": "tsc --watch",
-    "rpc:ganache": "ganache-cli --port 7545 --networkId 4447 --gasLimit 8000000 --allowUnlimitedContractSize --quiet &",
-    "rpc:geth": "geth -dev -dev.period 0 -rpc -rpcport 7545 --miner.gastarget 0x2014103 -keystore geth -password '' -verbosity 0 &",
-    "rpc:stop": "lsof -ti:7545 | xargs kill"
+    "watch": "tsc --watch"
   },
   "devDependencies": {
     "@openzeppelin/contracts": "2.3.0",
