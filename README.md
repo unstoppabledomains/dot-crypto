@@ -34,6 +34,12 @@ dot-crypto --help
 
 ### CLI
 
+First compile the contracts.
+
+```sh
+yarn compile
+```
+
 The cli has some configuration inside `.cli-config.json`. Feel free to change these to fit you're needs.
 
 Using the config `dot-crypto` will deploy a new set of contracts and overwrite the `.cli-config.json` file.
@@ -62,6 +68,10 @@ dot-crypto call registry ownerOf $(dot-crypto call registry childOf $(dot-crypto
 
 ### Tests
 
+Ganache doesn't recover signatures correctly! As a result the tests are split up into `ganache-cli` and `geth -dev` tests.
+
+### Run Ganache Tests
+
 Run a ganache server in the background.
 
 ```sh
@@ -71,16 +81,38 @@ yarn rpc:ganache
 Run the tests.
 
 ```sh
-yarn test
+yarn test:ganache
 ```
 
-## Inheritance Hierarchy
+Stop ganache server.
 
-![Alt text](./inheritance.svg)
+```sh
+yarn rpc:stop
+```
+
+### Run Geth Tests
+
+Run a geth dev server in the background.
+
+```sh
+yarn rpc:geth
+```
+
+Run the tests.
+
+```sh
+yarn test:geth
+```
+
+Stop geth server.
+
+```sh
+yarn rpc:stop
+```
 
 ## High level bullet points
 
-dot-crypto is a name registry similar to ZNS. See https://github.com/unstoppabledomains/zns
+`dot-crypto` is a name registry similar to ZNS. See https://github.com/unstoppabledomains/zns
 
 ZNS was inspired by ENS. See https://eips.ethereum.org/EIPS/eip-137.
 
