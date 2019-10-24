@@ -128,7 +128,7 @@ It differs in a couple important ways.
 
 - Domains are `ERC721` Tokens.
 
-- Minting of domains is centralized.
+- Minting of domains is controlled.
 
 - No rent/annual fee on purchased names. Once you own a domain you keep it.
 
