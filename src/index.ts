@@ -2,6 +2,15 @@ import chalk from 'chalk'
 import yargs = require('yargs')
 const pkg = require('../package.json')
 
+yargs.parserConfiguration({
+  // "short-option-groups": true,
+  // "camel-case-expansion": true,
+  // "dot-notation": true,
+  'parse-numbers': false,
+  // "boolean-negation": true,
+  // "deep-merge-config": false
+})
+
 const cli = yargs
   .scriptName(pkg.name)
   .demandCommand()
@@ -34,7 +43,7 @@ const cli = yargs
 
     cli.showHelp()
     console.error()
-    console.error(msg)
+    console.error(msg, err)
     process.exit(1)
   })
 

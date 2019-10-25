@@ -1,11 +1,11 @@
 {
-  "url": "http://localhost:7545/",
-  "privateKey": "./ganache.key",
+  "url": "https://mainnet.infura.io",
+  "privateKey": "./mainnet.key",
   "adddresses": {
-    "Registry": "0xE87b4894fc71Cd826f32Bd76b23Bf5D743e8e0c1",
-    "SignatureController": "0x34467e86F65935eE31955DD3aB026Be391205D69",
-    "SunriseController": "0x95C45aAe4D03EFD35487e7AFb89CDca7bac534E3",
-    "Multiplexer": "0xE354e3d2fe98828E38C471fb16bF7A72d2Cf9Bda",
-    "SignatureResolver": "0x853bDCd6E6F036783f93b967143361a69aC10D60"
+    "Registry": "0x4158485d4754D0F6D8D9b740bd37eD89b6891f35",
+    "SignatureController": "0xaA0B1E8ffEc1594AD4a0efFb28CDbED0d8E78d49",
+    "SunriseController": "0x9Bbf6eDE6BCaAAbC9745612aCC90ea0447Eb2b24",
+    "Multiplexer": "0xCEcdE66A2CAeE691d0E1Bd2f26367e8478427117",
+    "SignatureResolver": "0x651958B9a12cF1350Acd66dC43a1ACB09e2d6A26"
   }
 }

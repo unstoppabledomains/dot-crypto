@@ -1,8 +1,8 @@
-import registryJsonInterface = require('./abi/json/Registry.json')
-import signatureJsonInterface = require('./abi/json/SignatureController.json')
-import sunriseJsonInterface = require('./abi/json/SunriseController.json')
-import multiplexerJsonInterface = require('./abi/json/Multiplexer.json')
-import resolverJsonInterface = require('./abi/json/SignatureResolver.json')
+const registryJsonInterface = require('../abi/json/Registry.json')
+const signatureJsonInterface = require('../abi/json/SignatureController.json')
+const sunriseJsonInterface = require('../abi/json/SunriseController.json')
+const multiplexerJsonInterface = require('../abi/json/Multiplexer.json')
+const resolverJsonInterface = require('../abi/json/SignatureResolver.json')
 
 import {existsSync, readFileSync} from 'fs'
 import {isAbsolute, join} from 'path'
@@ -217,8 +217,9 @@ export const handler = async argv => {
       gasPrice,
       from: account ? account.address : undefined,
     })
-    if (typeof resp !== 'object') {
-      process.stdout.write(resp.toString() + '\n')
+
+    if (resp == null || typeof resp !== 'object') {
+      process.stdout.write((resp == null ? 'null' : resp).toString() + '\n')
     } else {
       process.stdout.write(
         Object.keys(resp)
