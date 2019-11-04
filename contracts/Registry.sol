@@ -17,7 +17,7 @@ contract Registry is IRegistry, ControllerRole, ERC721, ERC721Burnable {
     // Optional mapping for token URIs
     mapping(uint256 => string) internal _tokenURIs;
 
-    string internal _prefix = "urn:udc:";
+    string internal _prefix;
 
     // Mapping from token ID to resolver address
     mapping (uint256 => address) internal _tokenResolvers;
@@ -179,17 +179,14 @@ contract Registry is IRegistry, ControllerRole, ERC721, ERC721Burnable {
     }
 
     function _setTokenURI(uint256 tokenId, string memory label) internal {
-        // TODO: Maybe don't
-        require(bytes(label).length <= 63 && bytes(label).length != 0);
+        require(bytes(label).length != 0);
 
         uint256 childId = _childId(tokenId, label);
         require(_exists(childId));
         bytes memory domain = abi.encodePacked(label, ".", _tokenURIs[tokenId]);
 
-        // TODO: Maybe don't
-        require(domain.length <= 254);
         _tokenURIs[childId] = string(domain);
-        emit NewURI(childId, label);
+        emit NewURI(childId, string(domain));
     }
 
     function _mintChild(address to, uint256 tokenId, string memory label) internal {
