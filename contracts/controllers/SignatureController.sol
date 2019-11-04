@@ -115,7 +115,12 @@ contract SignatureController is ISignatureController {
         address owner = _registry.ownerOf(tokenId);
         uint256 nonce = _nonces[owner];
 
-        require(owner == keccak256(abi.encodePacked(hash, nonce)).toEthSignedMessageHash().recover(signature));
+        require(
+            _registry.isApprovedOrOwner(
+                keccak256(abi.encodePacked(hash, nonce)).toEthSignedMessageHash().recover(signature),
+                tokenId
+            )
+        );
 
         _nonces[owner] += 1;
     }
