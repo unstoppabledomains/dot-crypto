@@ -30,6 +30,7 @@ contract SignatureResolver is Resolver {
     function setFor(bytes calldata key, bytes calldata value, uint256 tokenId, bytes calldata signature) external whenResolver(tokenId) {
         address owner = _registry.ownerOf(tokenId);
         _validate(owner, keccak256(abi.encodePacked(key, value, tokenId)), signature);
+         _registry.sync(tokenId, uint256(keccak256(key)));
         _set(owner, key, value, tokenId);
     }
 
