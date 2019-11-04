@@ -10,9 +10,6 @@ contract Metadata is Root, IERC721Metadata {
     event NewURI(uint256 indexed tokenId, string uri);
     event NewURIPrefix(string prefix);
 
-    // Mapping from token ID to resolver address
-    mapping (uint256 => address) internal _tokenResolvers;
-
     // Optional mapping for token URIs
     mapping(uint256 => string) internal _tokenURIs;
 
