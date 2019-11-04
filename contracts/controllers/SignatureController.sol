@@ -70,10 +70,10 @@ contract SignatureController is ISignatureController {
         address from,
         address to,
         uint256 tokenId,
-        string memory label,
-        bytes memory signature
+        string calldata label,
+        bytes calldata signature
     )
-        public
+        external
     {
         _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, tokenId, label, "")), tokenId, signature);
         _registry.controlledTransferFrom(from, to, _registry.childOf(tokenId, label));
