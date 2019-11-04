@@ -2,7 +2,7 @@ pragma solidity 0.5.11;
 
 import "@openzeppelin/contracts/access/roles/WhitelistedRole.sol";
 import "../controllers/IMintingController.sol";
-import "../registry/Registry.sol";
+import "../Registry.sol";
 
 /**
  * @title WhitelistedMinter

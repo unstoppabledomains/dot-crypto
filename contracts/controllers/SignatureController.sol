@@ -2,7 +2,7 @@ pragma solidity 0.5.11;
 
 import "./ISignatureController.sol";
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
-import "../registry/Registry.sol";
+import "../Registry.sol";
 
 // solium-disable error-reason
 

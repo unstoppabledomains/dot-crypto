@@ -1,6 +1,6 @@
 pragma solidity 0.5.11;
 
-import '../registry/Registry.sol';
+import '../Registry.sol';
 
 contract Resolver {
 
