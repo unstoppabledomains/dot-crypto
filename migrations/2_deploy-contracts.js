@@ -10,40 +10,39 @@ const WhitelistedMinter = artifacts.require('util/WhitelistedMinter.sol')
 const SignatureResolver = artifacts.require('resolver/SignatureResolver.sol')
 const Simple = artifacts.require('util/Simple.sol')
 
-module.exports = (deployer, network, accounts) => {
-  return deployer.deploy(Registry).then(async registry => {
-    const signatureController = await deployer.deploy(
-      SignatureController,
-      registry.address,
-    )
-    const sunriseController = await deployer.deploy(
-      MintingController,
-      registry.address,
-    )
-    const uriPrefixController = await deployer.deploy(
-      URIPrefixController,
-      registry.address,
-    )
-    await registry.addController(signatureController.address)
-    await registry.addController(sunriseController.address)
-    await registry.addController(uriPrefixController.address)
+module.exports = async (deployer, network, accounts) => {
+  const registry = await deployer.deploy(Registry)
+  const signatureController = await deployer.deploy(
+    SignatureController,
+    registry.address,
+  )
+  const sunriseController = await deployer.deploy(
+    MintingController,
+    registry.address,
+  )
+  const uriPrefixController = await deployer.deploy(
+    URIPrefixController,
+    registry.address,
+  )
+  await registry.addController(signatureController.address)
+  await registry.addController(sunriseController.address)
+  await registry.addController(uriPrefixController.address)
 
-    if (network === 'live') {
-      await registry.renounceController()
-    }
+  if (network === 'live') {
+    await registry.renounceController()
+  }
 
-    const whitelistedMinter = await deployer.deploy(
-      WhitelistedMinter,
-      sunriseController.address,
-    )
-    await whitelistedMinter.addWhitelisted(accounts[0])
-    await sunriseController.addMinter(whitelistedMinter.address)
+  const whitelistedMinter = await deployer.deploy(
+    WhitelistedMinter,
+    sunriseController.address,
+  )
+  await whitelistedMinter.addWhitelisted(accounts[0])
+  await sunriseController.addMinter(whitelistedMinter.address)
 
-    if (network === 'live') {
-      await sunriseController.renounceMinter()
-    }
+  if (network === 'live') {
+    await sunriseController.renounceMinter()
+  }
 
-    await deployer.deploy(SignatureResolver, registry.address)
-    const simple = await deployer.deploy(Simple)
-  })
+  await deployer.deploy(SignatureResolver, registry.address)
+  const simple = await deployer.deploy(Simple)
 }
