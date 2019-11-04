@@ -1,7 +1,6 @@
 pragma solidity 0.5.11;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract IRegistry is IERC721Metadata {
 

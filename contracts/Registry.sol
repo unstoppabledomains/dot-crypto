@@ -1,7 +1,6 @@
 pragma solidity 0.5.11;
 
 import "./IRegistry.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "./util/ControllerRole.sol";
 
@@ -12,7 +11,7 @@ import "./util/ControllerRole.sol";
  * @dev An ERC721 Token see https://eips.ethereum.org/EIPS/eip-721. With
  * additional functions so other trusted contracts to interact with the tokens.
  */
-contract Registry is IRegistry, ControllerRole, ERC721, ERC721Burnable {
+contract Registry is IRegistry, ControllerRole, ERC721Burnable {
 
     // Optional mapping for token URIs
     mapping(uint256 => string) internal _tokenURIs;
