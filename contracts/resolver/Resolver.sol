@@ -2,6 +2,8 @@ pragma solidity 0.5.11;
 
 import '../Registry.sol';
 
+// solium-disable error-reason
+
 contract Resolver {
 
     event Set(address indexed owner, bytes indexed key, bytes value, uint256 indexed tokenId);
@@ -55,8 +57,7 @@ contract Resolver {
      */
     function set(bytes calldata key, bytes calldata value, uint256 tokenId) external whenResolver(tokenId) {
         address owner = _registry.ownerOf(tokenId);
-        // TODO: f is this necissary?
-        require(msg.sender == owner, "SimpleResolver: caller is not the owner");
+        require(_registry.isApprovedOrOwner(msg.sender, tokenId));
         _registry.sync(tokenId, uint256(keccak256(key)));
         _set(owner, key, value, tokenId);
     }

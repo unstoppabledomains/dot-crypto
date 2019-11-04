@@ -3,6 +3,8 @@ pragma solidity 0.5.11;
 import './Resolver.sol';
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 
+// solium-disable error-reason
+
 contract SignatureResolver is Resolver {
     using ECDSA for bytes32;
 
@@ -29,20 +31,22 @@ contract SignatureResolver is Resolver {
      */
     function setFor(bytes calldata key, bytes calldata value, uint256 tokenId, bytes calldata signature) external whenResolver(tokenId) {
         address owner = _registry.ownerOf(tokenId);
-        _validate(owner, keccak256(abi.encodePacked(key, value, tokenId)), signature);
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, key, value, tokenId)), tokenId, signature);
          _registry.sync(tokenId, uint256(keccak256(key)));
         _set(owner, key, value, tokenId);
     }
 
-    function _validate(address owner, bytes32 hash, bytes memory signature) internal {
-       uint256 nonce = _nonces[owner];
+    function _validate(bytes32 hash, uint256 tokenId, bytes memory signature) internal {
+        address owner = _registry.ownerOf(tokenId);
+        uint256 nonce = _nonces[owner];
 
         require(
-            owner == keccak256(abi.encodePacked(hash, nonce)).toEthSignedMessageHash().recover(signature),
-            "SignatureResolver: bad signature"
+            _registry.isApprovedOrOwner(
+                keccak256(abi.encodePacked(hash, nonce)).toEthSignedMessageHash().recover(signature),
+                tokenId
+            )
         );
 
         _nonces[owner] += 1;
     }
-
 }
