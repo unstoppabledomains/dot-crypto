@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol";
 contract Resolution is Root {
 
     event Resolve(uint256 indexed tokenId, address indexed to);
-    event Sync(address indexed resolver, uint256 indexed updateId);
+    event Sync(address indexed resolver, uint256 indexed updateId, uint256 indexed tokenId);
 
     // Mapping from token ID to resolver address
     mapping (uint256 => address) internal _tokenResolvers;
@@ -32,7 +32,7 @@ contract Resolution is Root {
 
     function sync(uint256 tokenId, uint256 updateId) external {
         require(_tokenResolvers[tokenId] == msg.sender);
-        emit Sync(msg.sender, updateId);
+        emit Sync(msg.sender, updateId, tokenId);
     }
 
     /// Internal
