@@ -47,7 +47,7 @@ contract SignatureController is ISignatureController {
     }
 
     function safeTransferFromFor(address from, address to, uint256 tokenId, bytes calldata signature) external {
-        _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, "", tokenId)), tokenId, signature);
+        _validate(keccak256(abi.encodeWithSelector(msg.sig, from, to, tokenId, "")), tokenId, signature);
         _registry.controlledSafeTransferFrom(from, to, tokenId, "");
     }
 
