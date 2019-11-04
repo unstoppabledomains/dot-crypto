@@ -1,10 +1,12 @@
-const Registry = artifacts.require('registry/Registry.sol')
-// const MintingController = artifacts.require('controller/MintingController.sol')
+const Registry = artifacts.require('Registry.sol')
+const URIPrefixController = artifacts.require(
+  'controller/URIPrefixController.sol',
+)
 const SignatureController = artifacts.require(
   'controller/SignatureController.sol',
 )
-const SunriseController = artifacts.require('controller/SunriseController.sol')
-const Multiplexer = artifacts.require('util/Multiplexer.sol')
+const MintingController = artifacts.require('controller/MintingController.sol')
+const WhitelistedMinter = artifacts.require('util/WhitelistedMinter.sol')
 const SignatureResolver = artifacts.require('resolver/SignatureResolver.sol')
 const Simple = artifacts.require('util/Simple.sol')
 
@@ -15,23 +17,27 @@ module.exports = (deployer, network, accounts) => {
       registry.address,
     )
     const sunriseController = await deployer.deploy(
-      SunriseController,
+      MintingController,
       registry.address,
-      60 * 60 * 24 * 365,
+    )
+    const uriPrefixController = await deployer.deploy(
+      URIPrefixController,
+      registry.address,
     )
     await registry.addController(signatureController.address)
     await registry.addController(sunriseController.address)
+    await registry.addController(uriPrefixController.address)
 
     if (network === 'live') {
       await registry.renounceController()
     }
 
-    const multiplexer = await deployer.deploy(
-      Multiplexer,
+    const whitelistedMinter = await deployer.deploy(
+      WhitelistedMinter,
       sunriseController.address,
     )
-    await multiplexer.addWhitelisted(accounts[0])
-    await sunriseController.addMinter(multiplexer.address)
+    await whitelistedMinter.addWhitelisted(accounts[0])
+    await sunriseController.addMinter(whitelistedMinter.address)
 
     if (network === 'live') {
       await sunriseController.renounceMinter()

@@ -1,5 +1,5 @@
 const Registry = artifacts.require('registry/Registry.sol')
-const SunriseController = artifacts.require('controller/SunriseController.sol')
+const MintingController = artifacts.require('controller/MintingController.sol')
 const Simple = artifacts.require('util/Simple.sol')
 
 const chai = require('chai')
@@ -12,7 +12,7 @@ contract('MintingController', ([coinbase, ...accounts]) => {
 
   beforeEach(async () => {
     registry = await Registry.deployed()
-    mintingController = await SunriseController.deployed()
+    mintingController = await MintingController.deployed()
   })
 
   it('minting SLDs', async () => {

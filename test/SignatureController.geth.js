@@ -2,7 +2,7 @@ const Registry = artifacts.require('registry/Registry.sol')
 const SignatureController = artifacts.require(
   'controller/SignatureController.sol',
 )
-const SunriseController = artifacts.require('controller/SunriseController.sol')
+const MintingController = artifacts.require('controller/MintingController.sol')
 const Web3 = require('web3')
 
 const chai = require('chai')
@@ -36,18 +36,18 @@ async function submitSigTransaction(web3, method, ...args) {
 }
 
 contract('SignatureController', ([coinbase, ...accounts]) => {
-  let sunriseController, registry, web3
+  let mintingController, registry, web3
 
   beforeEach(async () => {
     registry = await Registry.deployed()
-    sunriseController = await SunriseController.deployed()
+    mintingController = await MintingController.deployed()
     signatureController = await SignatureController.deployed()
     web3 = new Web3(registry.constructor.web3.currentProvider)
     web3.defaultAccount = coinbase
   })
 
   it('should transfer using transferFromFor', async () => {
-    await sunriseController.mintSLD(coinbase, 'transferFromFor-label')
+    await mintingController.mintSLD(coinbase, 'transferFromFor-label')
 
     const tok = await registry.childOf(
       await registry.root(),
@@ -81,7 +81,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
   })
 
   it('should transfer using safeTransferFromFor', async () => {
-    await sunriseController.mintSLD(coinbase, 'safeTransferFromFor-label')
+    await mintingController.mintSLD(coinbase, 'safeTransferFromFor-label')
 
     const tok = await registry.childOf(
       await registry.root(),
@@ -117,7 +117,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
   })
 
   it('should resolve using resolveToFor', async () => {
-    await sunriseController.mintSLD(coinbase, 'resolveTo-label')
+    await mintingController.mintSLD(coinbase, 'resolveTo-label')
 
     const tok = await registry.childOf(await registry.root(), 'resolveTo-label')
 
@@ -152,7 +152,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
   })
 
   it('should burn using burnFor', async () => {
-    await sunriseController.mintSLD(coinbase, 'burnFor-label')
+    await mintingController.mintSLD(coinbase, 'burnFor-label')
 
     const tok = await registry.childOf(await registry.root(), 'burnFor-label')
 
@@ -171,7 +171,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
   })
 
   it('should mint using mintChildFor', async () => {
-    await sunriseController.mintSLD(coinbase, 'mintChildFor-label')
+    await mintingController.mintSLD(coinbase, 'mintChildFor-label')
 
     const tok = await registry.childOf(
       await registry.root(),
@@ -211,7 +211,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
   })
 
   it('should mint using transferFromChildFor', async () => {
-    await sunriseController.mintSLD(coinbase, 'transferFromChildFor-label')
+    await mintingController.mintSLD(coinbase, 'transferFromChildFor-label')
 
     const tok = await registry.childOf(
       await registry.root(),
@@ -256,7 +256,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
   })
 
   it('should mint using safeTransferFromChildFor', async () => {
-    await sunriseController.mintSLD(coinbase, 'safeTransferFromChildFor-label')
+    await mintingController.mintSLD(coinbase, 'safeTransferFromChildFor-label')
 
     const tok = await registry.childOf(
       await registry.root(),
@@ -303,7 +303,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
   })
 
   it('should mint using burnChildFor', async () => {
-    await sunriseController.mintSLD(coinbase, 'burnChildFor-label')
+    await mintingController.mintSLD(coinbase, 'burnChildFor-label')
 
     const tok = await registry.childOf(
       await registry.root(),

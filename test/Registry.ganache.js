@@ -1,6 +1,5 @@
-const Registry = artifacts.require('registry/Registry.sol')
-const SunriseController = artifacts.require('controller/SunriseController.sol')
-const Multiplexer = artifacts.require('util/Multiplexer.sol')
+const Registry = artifacts.require('Registry.sol')
+const MintingController = artifacts.require('controller/MintingController.sol')
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
@@ -8,11 +7,11 @@ chai.use(chaiAsPromised)
 const assert = chai.assert
 
 contract('Registry', function([coinbase, ...accounts]) {
-  let sunriseController, registry
+  let mintingController, registry
 
   beforeEach(async () => {
     registry = await Registry.deployed()
-    sunriseController = await SunriseController.deployed()
+    mintingController = await MintingController.deployed()
   })
 
   it('should construct itself correctly', async () => {
@@ -34,7 +33,7 @@ contract('Registry', function([coinbase, ...accounts]) {
     // should fail to set resolver of non existent token
     await assert.isRejected(registry.resolveTo(accounts[0], tok))
 
-    await sunriseController.mintSLD(coinbase, 'resolution')
+    await mintingController.mintSLD(coinbase, 'resolution')
 
     // should fail to get non existent resolver
     await assert.isRejected(registry.resolverOf(tok))
@@ -52,7 +51,7 @@ contract('Registry', function([coinbase, ...accounts]) {
     // should fail to get non existent resolver after burn
     await assert.isRejected(registry.resolverOf(tok))
 
-    await sunriseController.mintSLD(coinbase, 'resolution')
+    await mintingController.mintSLD(coinbase, 'resolution')
 
     await registry.resolveTo(accounts[0], tok)
 
@@ -68,7 +67,7 @@ contract('Registry', function([coinbase, ...accounts]) {
   it('should mint children', async () => {
     const tok = await registry.childOf(await registry.root(), 'otherlabel')
 
-    await sunriseController.mintSLD(coinbase, 'otherlabel')
+    await mintingController.mintSLD(coinbase, 'otherlabel')
 
     await registry.mintChild(coinbase, tok, '3ld')
 
@@ -117,7 +116,7 @@ contract('Registry', function([coinbase, ...accounts]) {
       registry.transferFromChild(coinbase, accounts[0], 1),
     )
 
-    await sunriseController.mintSLD(coinbase, 'transfer')
+    await mintingController.mintSLD(coinbase, 'transfer')
 
     await registry.mintChild(coinbase, tok, '3ld')
 
@@ -151,7 +150,7 @@ contract('Registry', function([coinbase, ...accounts]) {
     // should fail to burn non-existing token
     await assert.isRejected(registry.burnChild(1))
 
-    await sunriseController.mintSLD(coinbase, 'burn')
+    await mintingController.mintSLD(coinbase, 'burn')
 
     await registry.mintChild(coinbase, tok, '3ld')
 
@@ -173,17 +172,17 @@ contract('Registry', function([coinbase, ...accounts]) {
   it('should mint/burn/transfer metadata', async () => {
     assert.equal(
       await registry.tokenURI(await registry.root()),
-      'urn:udc:crypto',
+      'crypto',
       'good root token URI',
     )
 
     const tok = await registry.childOf(await registry.root(), 'label')
 
-    await sunriseController.mintSLD(coinbase, 'label')
+    await mintingController.mintSLD(coinbase, 'label')
 
     assert.equal(
       await registry.tokenURI(tok),
-      'urn:udc:label.crypto',
+      'label.crypto',
       'good sld token URI',
     )
 
@@ -196,7 +195,7 @@ contract('Registry', function([coinbase, ...accounts]) {
 
     assert.equal(
       await registry.tokenURI(threeldTok),
-      'urn:udc:3ld.label.crypto',
+      '3ld.label.crypto',
       'good 3ld token URI',
     )
 
@@ -209,7 +208,7 @@ contract('Registry', function([coinbase, ...accounts]) {
   it('should set URI prefix', async () => {
     assert.equal(
       await registry.tokenURI(await registry.root()),
-      'urn:udc:crypto',
+      'crypto',
       'good root token URI',
     )
 
@@ -221,11 +220,11 @@ contract('Registry', function([coinbase, ...accounts]) {
       'good URI prefix',
     )
 
-    await registry.controlledSetTokenURIPrefix('urn:udc:')
+    await registry.controlledSetTokenURIPrefix('')
 
     assert.equal(
       await registry.tokenURI(await registry.root()),
-      'urn:udc:crypto',
+      'crypto',
       'good URI prefix',
     )
   })

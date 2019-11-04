@@ -1,5 +1,5 @@
 const Registry = artifacts.require('registry/Registry.sol')
-const SunriseController = artifacts.require('controller/SunriseController.sol')
+const MintingController = artifacts.require('controller/MintingController.sol')
 const SignatureResolver = artifacts.require('resolver/SignatureResolver.sol')
 
 const Web3 = require('web3')
@@ -10,11 +10,11 @@ chai.use(chaiAsPromised)
 const assert = chai.assert
 
 contract('Registry', function([coinbase, ...accounts]) {
-  let sunriseController, registry, resolver
+  let mintingController, registry, resolver
 
   beforeEach(async () => {
     registry = await Registry.deployed()
-    sunriseController = await SunriseController.deployed()
+    mintingController = await MintingController.deployed()
     resolver = await SignatureResolver.deployed()
   })
 
@@ -26,7 +26,7 @@ contract('Registry', function([coinbase, ...accounts]) {
       resolver.set(Web3.utils.toHex('key'), Web3.utils.toHex('value'), tok),
     )
 
-    await sunriseController.mintSLD(coinbase, 'label')
+    await mintingController.mintSLD(coinbase, 'label')
 
     // should fail to get name if not resolving to name
     await assert.isRejected(
