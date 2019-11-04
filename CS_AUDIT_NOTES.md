@@ -4,7 +4,7 @@
 
 1. Locked token possible when sent to Registry contract
 
-   - For now I don't care, could be fixed with an addition to the Minting Controller
+   - For now I don't think I care, could be fixed with an addition to the Minting Controller
 
 ## Trust
 
