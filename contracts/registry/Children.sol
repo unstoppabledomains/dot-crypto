@@ -13,6 +13,10 @@ contract Children is IChildren, Metadata {
         _mintChild(to, tokenId, label);
     }
 
+    function safeMintChild(address to, uint256 tokenId, string calldata label) external onlyApprovedOrOwner(tokenId) {
+        _safeMintChild(to, tokenId, label, "");
+    }
+
     function safeMintChild(address to, uint256 tokenId, string calldata label, bytes calldata _data)
         external
         onlyApprovedOrOwner(tokenId)
