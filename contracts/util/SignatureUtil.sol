@@ -35,7 +35,7 @@ contract SignatureUtil {
 
         require(
             _registry.isApprovedOrOwner(
-                keccak256(abi.encodePacked(hash, address(_registry), nonce)).toEthSignedMessageHash().recover(signature),
+                keccak256(abi.encodePacked(hash, address(this), nonce)).toEthSignedMessageHash().recover(signature),
                 tokenId
             )
         );

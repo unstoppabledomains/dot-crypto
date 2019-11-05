@@ -38,7 +38,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
         },
         {
           type: 'address',
-          value: registry.address,
+          value: signatureController.address,
         },
         {
           type: 'uint256',
