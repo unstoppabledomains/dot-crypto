@@ -10,33 +10,8 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 const assert = chai.assert
 
-async function submitSigTransaction(web3, method, ...args) {
-  const abiVal = signatureController.constructor._json.abi.find(
-    v => v.name === method,
-  )
-
-  const nonce = await signatureController.nonceOf(web3.defaultAccount)
-
-  const signature = await web3.eth.sign(
-    Web3.utils.keccak256(
-      Web3.utils.keccak256(
-        web3.eth.abi
-          .encodeFunctionCall(abiVal, args.concat('0x'))
-          // abi.encodeWithSelector appends an extra null word bc of the existence of a string
-          // web3.eth.abi.encodeFunctionCall doesn't do this for us
-          .concat('0'.repeat(64)),
-      ) + nonce.toString(16).padStart(64, '0'),
-    ),
-    web3.defaultAccount,
-  )
-
-  // console.log(method, ...args, signature)
-
-  return signatureController[method](...args, signature)
-}
-
 contract('SignatureController', ([coinbase, ...accounts]) => {
-  let mintingController, registry, web3
+  let registry, mintingController, signatureController, web3
 
   beforeEach(async () => {
     registry = await Registry.deployed()
@@ -45,6 +20,36 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     web3 = new Web3(registry.constructor.web3.currentProvider)
     web3.defaultAccount = coinbase
   })
+
+  async function submitSigTransaction(web3, method, ...args) {
+    const abiVal = registry.constructor._json.abi.find(v => v.name === method)
+
+    const nonce = await signatureController.nonceOf(web3.defaultAccount)
+
+    // console.log(method, ...args)
+
+    const signature = await web3.eth.sign(
+      Web3.utils.soliditySha3(
+        {
+          type: 'bytes32',
+          value: Web3.utils.keccak256(
+            web3.eth.abi.encodeFunctionCall(abiVal, args),
+          ),
+        },
+        {
+          type: 'address',
+          value: registry.address,
+        },
+        {
+          type: 'uint256',
+          value: nonce,
+        },
+      ),
+      web3.defaultAccount,
+    )
+
+    return signatureController[method + 'For'](...args, signature)
+  }
 
   it('should transfer using transferFromFor', async () => {
     await mintingController.mintSLD(coinbase, 'transferFromFor-label')
@@ -56,7 +61,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
 
     await submitSigTransaction(
       web3,
-      'transferFromFor',
+      'transferFrom',
       coinbase,
       '0x1234567890123456789012345678901234567890',
       tok.toString(),
@@ -72,7 +77,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await assert.isRejected(
       submitSigTransaction(
         web3,
-        'transferFromFor',
+        'transferFrom',
         coinbase,
         '0x1234567890123456789012345678901234567890',
         tok.toString(),
@@ -90,11 +95,10 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
 
     await submitSigTransaction(
       web3,
-      'safeTransferFromFor',
+      'safeTransferFrom',
       coinbase,
       '0x1234567890123456789012345678901234567890',
       tok.toString(),
-      '0x12345678',
     )
 
     assert.equal(
@@ -107,11 +111,10 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await assert.isRejected(
       submitSigTransaction(
         web3,
-        'safeTransferFromFor',
+        'safeTransferFrom',
         coinbase,
         '0x1234567890123456789012345678901234567890',
         tok.toString(),
-        '0x12345678',
       ),
     )
   })
@@ -123,7 +126,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
 
     await submitSigTransaction(
       web3,
-      'resolveToFor',
+      'resolveTo',
       '0x1234567890123456789012345678901234567890',
       tok.toString(),
     )
@@ -144,7 +147,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await assert.isRejected(
       submitSigTransaction(
         web3,
-        'resolveToFor',
+        'resolveTo',
         '0x1234567890123456789012345678901234567890',
         tok.toString(),
       ),
@@ -156,7 +159,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
 
     const tok = await registry.childOf(await registry.root(), 'burnFor-label')
 
-    await submitSigTransaction(web3, 'burnFor', tok.toString())
+    await submitSigTransaction(web3, 'burn', tok.toString())
 
     assert.equal(
       await registry.ownerOf(tok),
@@ -165,9 +168,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     )
 
     // should fail to burn non existent token
-    await assert.isRejected(
-      submitSigTransaction(web3, 'burnFor', tok.toString()),
-    )
+    await assert.isRejected(submitSigTransaction(web3, 'burn', tok.toString()))
   })
 
   it('should mint using mintChildFor', async () => {
@@ -180,7 +181,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
 
     await submitSigTransaction(
       web3,
-      'mintChildFor',
+      'mintChild',
       coinbase,
       tok.toString(),
       'label',
@@ -202,7 +203,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await assert.isRejected(
       submitSigTransaction(
         web3,
-        'mintChildFor',
+        'mintChild',
         coinbase,
         tok.toString(),
         'label',
@@ -223,7 +224,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
 
     await submitSigTransaction(
       web3,
-      'transferFromChildFor',
+      'transferFromChild',
       coinbase,
       '0x1234567890123456789012345678901234567890',
       tok.toString(),
@@ -246,7 +247,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await assert.isRejected(
       submitSigTransaction(
         web3,
-        'transferFromChildFor',
+        'transferFromChild',
         coinbase,
         '0x1234567890123456789012345678901234567890',
         tok.toString(),
@@ -268,7 +269,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
 
     await submitSigTransaction(
       web3,
-      'safeTransferFromChildFor',
+      'safeTransferFromChild',
       coinbase,
       '0x1234567890123456789012345678901234567890',
       tok.toString(),
@@ -292,7 +293,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await assert.isRejected(
       submitSigTransaction(
         web3,
-        'safeTransferFromChildFor',
+        'safeTransferFromChild',
         coinbase,
         '0x1234567890123456789012345678901234567890',
         tok.toString(),
@@ -313,7 +314,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
 
     await registry.mintChild(coinbase, tok, 'label')
 
-    await submitSigTransaction(web3, 'burnChildFor', tok.toString(), 'label')
+    await submitSigTransaction(web3, 'burnChild', tok.toString(), 'label')
 
     assert.equal(
       await registry.ownerOf(threeld),
@@ -329,7 +330,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
 
     // should fail to mint token without permission
     await assert.isRejected(
-      submitSigTransaction(web3, 'burnChildFor', tok.toString(), 'label'),
+      submitSigTransaction(web3, 'burnChild', tok.toString(), 'label'),
     )
   })
 })
