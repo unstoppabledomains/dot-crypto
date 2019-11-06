@@ -17,9 +17,9 @@ contract SignatureResolver is Resolver, SignatureUtil {
      * @param tokenId The token id to set.
      * @param signature The signature to verify the transaction with.
      */
-    function setFor(bytes calldata key, bytes calldata value, uint256 tokenId, bytes calldata signature) external whenResolver(tokenId) {
+    function setFor(string calldata key, string calldata value, uint256 tokenId, bytes calldata signature) external whenResolver(tokenId) {
         _validate(keccak256(abi.encodeWithSelector(this.set.selector, key, value, tokenId)), tokenId, signature);
-         _registry.sync(tokenId, uint256(keccak256(key)));
+         _registry.sync(tokenId, uint256(keccak256(bytes(key))));
         _set(_registry.ownerOf(tokenId), key, value, tokenId);
     }
 

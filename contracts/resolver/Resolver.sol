@@ -6,12 +6,12 @@ import '../Registry.sol';
 
 contract Resolver {
 
-    event Set(address indexed owner, bytes indexed key, bytes value, uint256 indexed tokenId);
+    event Set(address indexed owner, string indexed key, string value, uint256 indexed tokenId);
 
     Registry internal _registry;
 
     // Mapping from owner to token ID to key to value
-    mapping (address => mapping (uint256 => mapping (bytes => bytes))) internal _records;
+    mapping (address => mapping (uint256 => mapping (string => string))) internal _records;
 
     constructor(Registry registry) public {
         _registry = registry;
@@ -29,9 +29,9 @@ contract Resolver {
      * @dev Function to get record.
      * @param key The key to query the value of.
      * @param tokenId The token id to fetch.
-     * @return The value bytes.
+     * @return The value string.
      */
-    function get(bytes memory key, uint256 tokenId) public view whenResolver(tokenId) returns (bytes memory) {
+    function get(string memory key, uint256 tokenId) public view whenResolver(tokenId) returns (string memory) {
         address owner = _registry.ownerOf(tokenId);
         return _records[owner][tokenId][key];
     }
@@ -44,7 +44,7 @@ contract Resolver {
      * @param value value of record to be set
      * @param tokenId uint256 ID of the token
      */
-    function _set(address owner, bytes memory key, bytes memory value, uint256 tokenId) internal {
+    function _set(address owner, string memory key, string memory value, uint256 tokenId) internal {
         _records[owner][tokenId][key] = value;
         emit Set(owner, key, value, tokenId);
     }
@@ -55,10 +55,10 @@ contract Resolver {
      * @param value The value to set key to.
      * @param tokenId The token id to set.
      */
-    function set(bytes calldata key, bytes calldata value, uint256 tokenId) external whenResolver(tokenId) {
+    function set(string calldata key, string calldata value, uint256 tokenId) external whenResolver(tokenId) {
         address owner = _registry.ownerOf(tokenId);
         require(_registry.isApprovedOrOwner(msg.sender, tokenId));
-        _registry.sync(tokenId, uint256(keccak256(key)));
+        _registry.sync(tokenId, uint256(keccak256(bytes(key))));
         _set(owner, key, value, tokenId);
     }
 }
