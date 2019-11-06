@@ -1,19 +1,24 @@
 pragma solidity 0.5.11;
 
-import "@openzeppelin/contracts/access/roles/WhitelistedRole.sol";
+import "./BulkWhitelistedRole.sol";
 import "../controllers/IMintingController.sol";
+import "../controllers/MintingController.sol";
 import "../Registry.sol";
 
 /**
  * @title WhitelistedMinter
  * @dev Defines the functions for distribution of Second Level Domains (SLD)s.
  */
-contract WhitelistedMinter is IMintingController, WhitelistedRole {
+contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
 
-    IMintingController internal _mintingController;
+    MintingController internal _mintingController;
 
-    constructor (IMintingController mintingController) public {
+    constructor (MintingController mintingController) public {
         _mintingController = mintingController;
+    }
+
+    function renounceMinter() external {
+        _mintingController.renounceMinter();
     }
 
     function mintSLD(address to, string calldata label) external onlyWhitelisted {
