@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity 0.5.12;
 
 import "./IRegistry.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";

@@ -4,8 +4,8 @@ set -e
 
 solc_version=$(solc --version | grep Version)
 
-if [[ ${solc_version:9:6} != '0.5.11' ]]; then
-  echo "Bad solc version ${solc_version:9}. Use 0.5.11"
+if [[ ${solc_version:9:6} != '0.5.12' ]]; then
+  echo "Bad solc version ${solc_version:9}. Use 0.5.12"
   exit 1
 fi
 

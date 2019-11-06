@@ -12,7 +12,7 @@ First install the dependencies.
 yarn install
 ```
 
-Also install the 0.5.11 Solidity toolchain. [Install Page](https://solidity.readthedocs.io/en/v0.5.11/installing-solidity.html).
+Also install the 0.5.12 Solidity toolchain. [Install Page](https://solidity.readthedocs.io/en/v0.5.12/installing-solidity.html).
 
 We also provide a deployment/interaction cli found in `src`. To use this cli, install, then:
 
