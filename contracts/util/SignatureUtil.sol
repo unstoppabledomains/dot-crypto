@@ -33,9 +33,11 @@ contract SignatureUtil {
         address owner = _registry.ownerOf(tokenId);
         uint256 nonce = _nonces[owner];
 
+        address signer = keccak256(abi.encodePacked(hash, address(this), nonce)).toEthSignedMessageHash().recover(signature);
         require(
+            signer != address(0) &&
             _registry.isApprovedOrOwner(
-                keccak256(abi.encodePacked(hash, address(this), nonce)).toEthSignedMessageHash().recover(signature),
+                signer,
                 tokenId
             )
         );
