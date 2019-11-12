@@ -1,17 +1,30 @@
-const registryJsonInterface = require('../abi/json/Registry.json')
-const signatureJsonInterface = require('../abi/json/SignatureController.json')
-const sunriseJsonInterface = require('../abi/json/SunriseController.json')
-const multiplexerJsonInterface = require('../abi/json/Multiplexer.json')
-const resolverJsonInterface = require('../abi/json/SignatureResolver.json')
-
 import chalk from 'chalk'
 import {existsSync, readFileSync, writeFileSync} from 'fs'
 import {isAbsolute, join} from 'path'
+import * as Web3 from 'web3'
 import ask from './ask.js'
-import Web3 = require('web3')
 import yargs = require('yargs')
 
 const config = require('../.cli-config.json')
+
+const registryJsonInterface = JSON.parse(
+  readFileSync(join(__dirname, '../abi/json/Registry.json'), 'utf8'),
+)
+const signatureJsonInterface = JSON.parse(
+  readFileSync(join(__dirname, '../abi/json/SignatureController.json'), 'utf8'),
+)
+const mintingJsonInterface = JSON.parse(
+  readFileSync(join(__dirname, '../abi/json/MintingController.json'), 'utf8'),
+)
+const whitelistedMinterJsonInterface = JSON.parse(
+  readFileSync(join(__dirname, '../abi/json/WhitelistedMinter.json'), 'utf8'),
+)
+const resolverJsonInterface = JSON.parse(
+  readFileSync(join(__dirname, '../abi/json/SignatureResolver.json'), 'utf8'),
+)
+const uriPrefixJsonInterface = JSON.parse(
+  readFileSync(join(__dirname, '../abi/json/URIPrefixController.json'), 'utf8'),
+)
 
 export const command = '$0 [...options]'
 
@@ -55,19 +68,24 @@ export const builder = (y: typeof yargs) =>
       desc: 'Address used for signature when continuing after Step 2',
       default: config.adddresses.SignatureController,
     },
-    sunrise: {
+    minting: {
       type: 'string',
-      desc: 'Address used for sunrise when continuing after Step 4',
-      default: config.adddresses.SunriseController,
+      desc: 'Address used for minting when continuing after Step 4',
+      default: config.adddresses.MintingController,
     },
-    multiplexer: {
+    'whitelisted-minter': {
       type: 'string',
-      desc: 'Address used for multiplexer when continuing after Step 7',
-      default: config.adddresses.Multiplexer,
+      desc: 'Address used for whitelistedMinter when continuing after Step 7',
+      default: config.adddresses.WhitelistedMinter,
+    },
+    'uri-prefix': {
+      type: 'string',
+      desc: 'Address used for UriPrefix when continuing after Step 10',
+      default: config.adddresses.UriPrefixController,
     },
     resolver: {
       type: 'string',
-      desc: 'Address used for resolver when continuing after Step 10',
+      desc: 'Address used for resolver when continuing after Step 11',
       default: config.adddresses.SignatureResolver,
     },
   })
@@ -77,7 +95,7 @@ function sleep(ms = 1000) {
 }
 
 export const handler = async argv => {
-  const web3: Web3 = new Web3(argv.url)
+  const web3: Web3.default = new (Web3 as any)(argv.url)
 
   const pkPath = isAbsolute(argv.privateKey)
     ? argv.privateKey
@@ -95,7 +113,7 @@ export const handler = async argv => {
     argv.privateKey.replace(/^(?:0x)?/, '0x'),
   )
 
-  const gasPrice = Web3.utils.toWei(argv.gasPrice.toString(), 'gwei')
+  const gasPrice = web3.utils.toWei(argv.gasPrice.toString(), 'gwei')
   const netId = await web3.eth.net.getId()
 
   async function sendTransaction(tx: any = {}) {
@@ -106,7 +124,7 @@ export const handler = async argv => {
     })
 
     const transactionHash: string = await new Promise((resolve, reject) => {
-      web3.currentProvider.send(
+      ;(web3 as any).currentProvider.send(
         {
           id: 1,
           jsonrpc: '2.0',
@@ -187,7 +205,7 @@ export const handler = async argv => {
 
   let step = argv.step
 
-  let registry, signature, sunrise, multiplexer, resolver
+  let registry, signature, minting, whitelistedMinter, uriPrefix, resolver
 
   if (argv.registry) {
     if (!web3.utils.isAddress(argv.registry)) {
@@ -203,21 +221,28 @@ export const handler = async argv => {
     signature = new web3.eth.Contract(signatureJsonInterface, argv.signature)
   }
 
-  if (argv.sunrise) {
-    if (!web3.utils.isAddress(argv.sunrise)) {
-      throw new Error('Bad sunrise address')
+  if (argv.minting) {
+    if (!web3.utils.isAddress(argv.minting)) {
+      throw new Error('Bad minting address')
     }
-    sunrise = new web3.eth.Contract(sunriseJsonInterface, argv.sunrise)
+    minting = new web3.eth.Contract(mintingJsonInterface, argv.minting)
   }
 
-  if (argv.multiplexer) {
-    if (!web3.utils.isAddress(argv.multiplexer)) {
-      throw new Error('Bad multiplexer address')
+  if (argv.whitelistedMinter) {
+    if (!web3.utils.isAddress(argv.whitelistedMinter)) {
+      throw new Error('Bad whitelistedMinter address')
     }
-    multiplexer = new web3.eth.Contract(
-      multiplexerJsonInterface,
-      argv.multiplexer,
+    whitelistedMinter = new web3.eth.Contract(
+      whitelistedMinterJsonInterface,
+      argv.whitelistedMinter,
     )
+  }
+
+  if (argv.uriPrefix) {
+    if (!web3.utils.isAddress(argv.uriPrefix)) {
+      throw new Error('Bad uriPrefix address')
+    }
+    uriPrefix = new web3.eth.Contract(uriPrefixJsonInterface, argv.uriPrefix)
   }
 
   if (argv.resolver) {
@@ -291,22 +316,22 @@ export const handler = async argv => {
         break
       }
       case 4: {
-        console.log('Deploying SunriseController...')
+        console.log('Deploying MintingController...')
 
         if (![registry, signature].every(v => v)) {
           throw new Error('Fill out all the required contracts')
         }
 
-        sunrise = await deployContract({
-          jsonInterface: sunriseJsonInterface,
+        minting = await deployContract({
+          jsonInterface: mintingJsonInterface,
           bin: readFileSync(
-            join(__dirname, '../abi/bin/SunriseController.bin'),
+            join(__dirname, '../abi/bin/MintingController.bin'),
             'utf8',
           ),
-          args: [registry.options.address, 60 * 60 * 24 * 365],
+          args: [registry.options.address],
         })
 
-        config.adddresses.SunriseController = sunrise.options.address
+        config.adddresses.MintingController = minting.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -315,16 +340,16 @@ export const handler = async argv => {
         break
       }
       case 5: {
-        console.log('Adding SunriseController as a controller...')
+        console.log('Adding MintingController as a controller...')
 
-        if (![registry, signature, sunrise].every(v => v)) {
+        if (![registry, signature, minting].every(v => v)) {
           throw new Error('Fill out all the required contracts')
         }
 
         await sendTransaction({
           to: registry.options.address,
           data: registry.methods
-            .addController(sunrise.options.address)
+            .addController(minting.options.address)
             .encodeABI(),
         })
 
@@ -333,7 +358,7 @@ export const handler = async argv => {
       case 6: {
         console.log('Renouncing controllership...')
 
-        if (![registry, signature, sunrise].every(v => v)) {
+        if (![registry, signature, minting].every(v => v)) {
           throw new Error('Fill out all the required contracts')
         }
 
@@ -345,22 +370,22 @@ export const handler = async argv => {
         break
       }
       case 7: {
-        console.log('Deploying Multiplexer...')
+        console.log('Deploying WhitelistedMinter...')
 
-        if (![registry, signature, sunrise].every(v => v)) {
+        if (![registry, signature, minting].every(v => v)) {
           throw new Error('Fill out all the required contracts')
         }
 
-        multiplexer = await deployContract({
-          jsonInterface: multiplexerJsonInterface,
+        whitelistedMinter = await deployContract({
+          jsonInterface: whitelistedMinterJsonInterface,
           bin: readFileSync(
-            join(__dirname, '../abi/bin/Multiplexer.bin'),
+            join(__dirname, '../abi/bin/WhitelistedMinter.bin'),
             'utf8',
           ),
-          args: [sunrise.options.address],
+          args: [minting.options.address],
         })
 
-        config.adddresses.Multiplexer = multiplexer.options.address
+        config.adddresses.WhitelistedMinter = whitelistedMinter.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -371,37 +396,63 @@ export const handler = async argv => {
       case 8: {
         console.log('Adding coinbase as whitelisted...')
 
-        if (![registry, signature, sunrise, multiplexer].every(v => v)) {
+        if (![registry, signature, minting, whitelistedMinter].every(v => v)) {
           throw new Error('Fill out all the required contracts')
         }
 
         await sendTransaction({
-          to: multiplexer.options.address,
-          data: multiplexer.methods.addWhitelisted(account.address).encodeABI(),
+          to: whitelistedMinter.options.address,
+          data: whitelistedMinter.methods
+            .addWhitelisted(account.address)
+            .encodeABI(),
         })
 
         break
       }
       case 9: {
-        console.log('Adding Multiplexer as a minter...')
+        console.log('Adding WhitelistedMinter as a minter...')
 
-        if (![registry, signature, sunrise, multiplexer].every(v => v)) {
+        if (![registry, signature, minting, whitelistedMinter].every(v => v)) {
           throw new Error('Fill out all the required contracts')
         }
 
         await sendTransaction({
-          to: sunrise.options.address,
-          data: sunrise.methods
-            .addMinter(multiplexer.options.address)
+          to: minting.options.address,
+          data: minting.methods
+            .addMinter(whitelistedMinter.options.address)
             .encodeABI(),
         })
 
         break
       }
       case 10: {
+        console.log('Deploying URIPrefixController...')
+
+        if (![registry, signature, minting, whitelistedMinter].every(v => v)) {
+          throw new Error('Fill out all the required contracts')
+        }
+
+        uriPrefix = await deployContract({
+          jsonInterface: uriPrefixJsonInterface,
+          bin: readFileSync(
+            join(__dirname, '../abi/bin/URIPrefixController.bin'),
+            'utf8',
+          ),
+          args: [registry.options.address],
+        })
+
+        config.adddresses.URIPrefix = uriPrefix.options.address
+        writeFileSync(
+          join(__dirname, '../.cli-config.json'),
+          JSON.stringify(config),
+        )
+
+        break
+      }
+      case 11: {
         console.log('Deploying SignatureResolver...')
 
-        if (![registry, signature, sunrise, multiplexer].every(v => v)) {
+        if (![registry, signature, minting, whitelistedMinter].every(v => v)) {
           throw new Error('Fill out all the required contracts')
         }
 
@@ -431,9 +482,16 @@ export const handler = async argv => {
         console.log()
         console.log('    Registry:', registry.options.address)
         console.log('    Signature Controller:', signature.options.address)
-        console.log('    Sunrise Controller:', sunrise.options.address)
-        console.log('    Multiplexer:', multiplexer.options.address)
-        console.log('    Multiplexed minter address:', account.address)
+        console.log('    Sunrise Controller:', minting.options.address)
+        console.log(
+          '    Whitelisted Minter:',
+          whitelistedMinter.options.address,
+        )
+        console.log(
+          "    Whitelisted Minter's whitelisted admin address:",
+          account.address,
+        )
+        console.log('    URI Prefix Controller:', uriPrefix.options.address)
         console.log('    Signature Resolver:', resolver.options.address)
         console.log()
         return

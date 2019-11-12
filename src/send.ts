@@ -1,13 +1,7 @@
-const registryJsonInterface = require('../abi/json/Registry.json')
-const signatureJsonInterface = require('../abi/json/SignatureController.json')
-const sunriseJsonInterface = require('../abi/json/SunriseController.json')
-const multiplexerJsonInterface = require('../abi/json/Multiplexer.json')
-const resolverJsonInterface = require('../abi/json/SignatureResolver.json')
-
 import {existsSync, readFileSync} from 'fs'
 import {isAbsolute, join} from 'path'
+import * as Web3 from 'web3'
 import ask from './ask.js'
-import Web3 = require('web3')
 import yargs = require('yargs')
 
 const config = require('../.cli-config.json')
@@ -76,9 +70,9 @@ function sleep(ms = 1000) {
 }
 
 export const handler = async argv => {
-  const web3: Web3 = new Web3(argv.url)
+  const web3: Web3.default = new (Web3 as any)(argv.url)
 
-  const gasPrice = Web3.utils.toWei(argv.gasPrice.toString(), 'gwei')
+  const gasPrice = web3.utils.toWei(argv.gasPrice.toString(), 'gwei')
 
   const defaultTo =
     config.adddresses[
@@ -87,13 +81,6 @@ export const handler = async argv => {
 
   if (!argv.to && defaultTo) {
     argv.to = defaultTo
-  }
-
-  if (
-    argv.contractName.charAt(0).toUpperCase() + argv.contractName.substr(1) ===
-    'Multiplexer'
-  ) {
-    argv.contractName = 'SunriseController'
   }
 
   const abiPath = join(
@@ -157,7 +144,7 @@ export const handler = async argv => {
     })
 
     const transactionHash: string = await new Promise((resolve, reject) => {
-      web3.currentProvider.send(
+      ;(web3 as any).currentProvider.send(
         {
           id: 1,
           jsonrpc: '2.0',
@@ -251,7 +238,7 @@ export const handler = async argv => {
       let total = gasEstimate * Number(gasPrice) + value
 
       if (total > 10 ** 9) {
-        const ether = Number(Web3.utils.fromWei(total, 'ether'))
+        const ether = Number(web3.utils.fromWei(total, 'ether'))
         total = `${
           ether.toFixed(6) === '0.000000' ? '~0' : ether.toFixed(6)
         } ether`
