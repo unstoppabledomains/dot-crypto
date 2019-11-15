@@ -123,8 +123,8 @@ export const handler = async argv => {
   let account
   if (
     isView
-      ? !(!argv.privateKey || /^(?:0x)?[a-f\d]{64}$/.test(argv.privateKey))
-      : !/^(?:0x)?[a-f\d]{64}$/.test(argv.privateKey)
+      ? !(!argv.privateKey || /^(?:0x)?[a-fA-F\d]{64}$/.test(argv.privateKey))
+      : !/^(?:0x)?[a-fA-F\d]{64}$/.test(argv.privateKey)
   ) {
     throw new Error('Bad private key')
   }
