@@ -13,9 +13,6 @@ contract SignatureUtil {
 
     Registry internal _registry;
 
-    // Mapping from owner to token ID to key to value
-    mapping (address => mapping (uint256 => mapping (bytes => bytes))) internal _records;
-
     constructor(Registry registry) public {
         _registry = registry;
     }
