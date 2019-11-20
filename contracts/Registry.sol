@@ -124,7 +124,7 @@ contract Registry is IRegistry, ControllerRole, ERC721Burnable {
     ) public onlyApprovedOrOwner(tokenId) {
         uint256 childId = _childId(tokenId, label);
         _transferFrom(from, to, childId);
-        require(_checkOnERC721Received(address(0), to, childId, _data));
+        require(_checkOnERC721Received(from, to, childId, _data));
     }
 
     function safeTransferFromChild(address from, address to, uint256 tokenId, string calldata label) external {
