@@ -7,7 +7,7 @@ const SignatureController = artifacts.require(
 )
 const MintingController = artifacts.require('controller/MintingController.sol')
 const WhitelistedMinter = artifacts.require('util/WhitelistedMinter.sol')
-const SignatureResolver = artifacts.require('resolver/SignatureResolver.sol')
+const Resolver = artifacts.require('Resolver.sol')
 const Simple = artifacts.require('util/Simple.sol')
 
 module.exports = (deployer, network, accounts) => {
@@ -44,7 +44,7 @@ module.exports = (deployer, network, accounts) => {
       await sunriseController.renounceMinter()
     }
 
-    await deployer.deploy(SignatureResolver, registry.address)
+    await deployer.deploy(Resolver, registry.address)
     const simple = await deployer.deploy(Simple)
 
     console.log('Migrated!')

@@ -20,7 +20,7 @@ const whitelistedMinterJsonInterface = JSON.parse(
   readFileSync(join(__dirname, '../abi/json/WhitelistedMinter.json'), 'utf8'),
 )
 const resolverJsonInterface = JSON.parse(
-  readFileSync(join(__dirname, '../abi/json/SignatureResolver.json'), 'utf8'),
+  readFileSync(join(__dirname, '../abi/json/Resolver.json'), 'utf8'),
 )
 const uriPrefixJsonInterface = JSON.parse(
   readFileSync(join(__dirname, '../abi/json/URIPrefixController.json'), 'utf8'),
@@ -86,7 +86,7 @@ export const builder = (y: typeof yargs) =>
     resolver: {
       type: 'string',
       desc: 'Address used for resolver when continuing after Step 11',
-      default: config.adddresses.SignatureResolver,
+      default: config.adddresses.Resolver,
     },
   })
 
@@ -441,7 +441,7 @@ export const handler = async argv => {
           args: [registry.options.address],
         })
 
-        config.adddresses.URIPrefix = uriPrefix.options.address
+        config.adddresses.URIPrefixController = uriPrefix.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -450,7 +450,7 @@ export const handler = async argv => {
         break
       }
       case 11: {
-        console.log('Deploying SignatureResolver...')
+        console.log('Deploying Resolver...')
 
         if (![registry, signature, minting, whitelistedMinter].every(v => v)) {
           throw new Error('Fill out all the required contracts')
@@ -459,13 +459,13 @@ export const handler = async argv => {
         resolver = await deployContract({
           jsonInterface: resolverJsonInterface,
           bin: readFileSync(
-            join(__dirname, '../abi/bin/SignatureResolver.bin'),
+            join(__dirname, '../abi/bin/Resolver.bin'),
             'utf8',
           ),
           args: [registry.options.address],
         })
 
-        config.adddresses.SignatureResolver = resolver.options.address
+        config.adddresses.Resolver = resolver.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),

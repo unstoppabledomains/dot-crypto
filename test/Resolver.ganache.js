@@ -1,6 +1,6 @@
 const Registry = artifacts.require('registry/Registry.sol')
 const MintingController = artifacts.require('controller/MintingController.sol')
-const SignatureResolver = artifacts.require('resolver/SignatureResolver.sol')
+const Resolver = artifacts.require('Resolver.sol')
 
 const Web3 = require('web3')
 
@@ -15,7 +15,7 @@ contract('Registry', function([coinbase, ...accounts]) {
   beforeEach(async () => {
     registry = await Registry.deployed()
     mintingController = await MintingController.deployed()
-    resolver = await SignatureResolver.deployed()
+    resolver = await Resolver.deployed()
   })
 
   it('should resolve tokens', async () => {
