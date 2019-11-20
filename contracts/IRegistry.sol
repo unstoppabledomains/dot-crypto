@@ -44,7 +44,7 @@ contract IRegistry is IERC721Metadata {
      * Requires the token ID to not exist.
      * @param to address the given token ID will be minted to
      * @param label string that is a subdomain
-     * @param tokenId uint256 ID of the token to be minted
+     * @param @param tokenId uint256 ID of the parent token
      */
     function controlledMintChild(address to, uint256 tokenId, string calldata label) external;
 
