@@ -19,7 +19,7 @@ contract('Registry', function([coinbase, ...accounts]) {
   })
 
   it('should resolve tokens', async () => {
-    const tok = await registry.childOf(await registry.root(), 'label')
+    const tok = await registry.childIdOf(await registry.root(), 'label')
 
     // should fail to set name if not owner
     await assert.isRejected(resolver.set('key', 'value', tok))

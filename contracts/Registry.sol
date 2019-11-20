@@ -70,7 +70,7 @@ contract Registry is IRegistry, ControllerRole, ERC721Burnable {
         return _CRYPTO_HASH;
     }
 
-    function childOf(uint256 tokenId, string calldata label) external pure returns (uint256) {
+    function childIdOf(uint256 tokenId, string calldata label) external pure returns (uint256) {
         return _childId(tokenId, label);
     }
 

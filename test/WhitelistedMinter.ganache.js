@@ -20,7 +20,7 @@ contract('WhitelistedMinter', function([coinbase, ...accounts]) {
   it('should safely mint SLDs', async () => {
     await whitelistedMinter.safeMintSLD(coinbase, 'label')
 
-    const tok = await registry.childOf(await registry.root(), 'label')
+    const tok = await registry.childIdOf(await registry.root(), 'label')
 
     assert.equal(
       coinbase,

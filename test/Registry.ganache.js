@@ -25,7 +25,7 @@ contract('Registry', function([coinbase, ...accounts]) {
   })
 
   it('should resolve properly', async () => {
-    const tok = await registry.childOf(await registry.root(), 'resolution')
+    const tok = await registry.childIdOf(await registry.root(), 'resolution')
 
     // should fail to get resolver of non existent token
     await assert.isRejected(registry.resolverOf(1))
@@ -65,13 +65,13 @@ contract('Registry', function([coinbase, ...accounts]) {
   })
 
   it('should mint children', async () => {
-    const tok = await registry.childOf(await registry.root(), 'otherlabel')
+    const tok = await registry.childIdOf(await registry.root(), 'otherlabel')
 
     await mintingController.mintSLD(coinbase, 'otherlabel')
 
     await registry.mintChild(coinbase, tok, '3ld')
 
-    const threeld = await registry.childOf(tok, '3ld')
+    const threeld = await registry.childIdOf(tok, '3ld')
 
     assert.equal(
       coinbase,
@@ -81,7 +81,7 @@ contract('Registry', function([coinbase, ...accounts]) {
 
     await registry.mintChild(coinbase, threeld, '4ld')
 
-    const fourld = await registry.childOf(threeld, '4ld')
+    const fourld = await registry.childIdOf(threeld, '4ld')
 
     assert.equal(
       coinbase,
@@ -109,7 +109,7 @@ contract('Registry', function([coinbase, ...accounts]) {
   })
 
   it('should transfer children', async () => {
-    const tok = await registry.childOf(await registry.root(), 'transfer')
+    const tok = await registry.childIdOf(await registry.root(), 'transfer')
 
     // should fail to transfer non-existing token
     await assert.isRejected(
@@ -122,7 +122,7 @@ contract('Registry', function([coinbase, ...accounts]) {
 
     await registry.transferFromChild(coinbase, accounts[0], tok, '3ld')
 
-    const threeld = await registry.childOf(tok, '3ld')
+    const threeld = await registry.childIdOf(tok, '3ld')
 
     assert.equal(
       accounts[0],
@@ -145,7 +145,7 @@ contract('Registry', function([coinbase, ...accounts]) {
   })
 
   it('should burn children', async () => {
-    const tok = await registry.childOf(await registry.root(), 'burn')
+    const tok = await registry.childIdOf(await registry.root(), 'burn')
 
     // should fail to burn non-existing token
     await assert.isRejected(registry.burnChild(1))
@@ -154,7 +154,7 @@ contract('Registry', function([coinbase, ...accounts]) {
 
     await registry.mintChild(coinbase, tok, '3ld')
 
-    const threeld = await registry.childOf(tok, '3ld')
+    const threeld = await registry.childIdOf(tok, '3ld')
 
     await registry.burnChild(tok, '3ld')
 
@@ -176,7 +176,7 @@ contract('Registry', function([coinbase, ...accounts]) {
       'good root token URI',
     )
 
-    const tok = await registry.childOf(await registry.root(), 'label')
+    const tok = await registry.childIdOf(await registry.root(), 'label')
 
     await mintingController.mintSLD(coinbase, 'label')
 
@@ -189,7 +189,7 @@ contract('Registry', function([coinbase, ...accounts]) {
     // should fail to get non existent tokenURI
     await assert.isRejected(registry.tokenURI(1))
 
-    const threeldTok = await registry.childOf(tok, '3ld')
+    const threeldTok = await registry.childIdOf(tok, '3ld')
 
     await registry.mintChild(coinbase, tok, '3ld')
 

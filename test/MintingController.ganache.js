@@ -18,7 +18,7 @@ contract('MintingController', ([coinbase, ...accounts]) => {
   it('minting SLDs', async () => {
     await mintingController.mintSLD(coinbase, 'label')
 
-    const tok = await registry.childOf(await registry.root(), 'label')
+    const tok = await registry.childIdOf(await registry.root(), 'label')
 
     assert.equal(
       coinbase,
@@ -44,7 +44,7 @@ contract('MintingController', ([coinbase, ...accounts]) => {
   })
 
   it('safe minting SLDs', async () => {
-    const tok = await registry.childOf(await registry.root(), 'label')
+    const tok = await registry.childIdOf(await registry.root(), 'label')
 
     await registry.burn(tok)
 

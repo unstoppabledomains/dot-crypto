@@ -125,7 +125,7 @@ contract SignatureController is ISignatureController, SignatureUtil {
             tokenId,
             signature
         );
-        _registry.controlledTransferFrom(from, to, _registry.childOf(tokenId, label));
+        _registry.controlledTransferFrom(from, to, _registry.childIdOf(tokenId, label));
     }
 
     /*
@@ -146,7 +146,7 @@ contract SignatureController is ISignatureController, SignatureUtil {
             tokenId,
             signature
         );
-        _registry.controlledSafeTransferFrom(from, to, _registry.childOf(tokenId, label), _data);
+        _registry.controlledSafeTransferFrom(from, to, _registry.childIdOf(tokenId, label), _data);
     }
 
     /*
@@ -166,7 +166,7 @@ contract SignatureController is ISignatureController, SignatureUtil {
             tokenId,
             signature
         );
-        _registry.controlledSafeTransferFrom(from, to, _registry.childOf(tokenId, label), "");
+        _registry.controlledSafeTransferFrom(from, to, _registry.childIdOf(tokenId, label), "");
     }
 
     /*
@@ -178,7 +178,7 @@ contract SignatureController is ISignatureController, SignatureUtil {
             tokenId,
             signature
         );
-        _registry.controlledBurn(_registry.childOf(tokenId, label));
+        _registry.controlledBurn(_registry.childIdOf(tokenId, label));
     }
 
     /*
