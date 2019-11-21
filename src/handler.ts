@@ -105,7 +105,7 @@ export const handler = async argv => {
     argv.privateKey = readFileSync(pkPath, 'utf8')
   }
 
-  if (!/^(?:0x)?[a-f\d]{64}$/.test(argv.privateKey)) {
+  if (!/^(?:0x)?[a-fA-F\d]{64}$/.test(argv.privateKey)) {
     throw new Error('Bad private key')
   }
 
