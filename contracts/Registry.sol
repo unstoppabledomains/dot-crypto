@@ -177,21 +177,17 @@ contract Registry is IRegistry, ControllerRole, ERC721Burnable {
         return uint256(keccak256(abi.encodePacked(tokenId, keccak256(abi.encodePacked(label)))));
     }
 
-    function _setTokenURI(uint256 tokenId, string memory label) internal {
-        require(bytes(label).length != 0);
-
+    function _mintChild(address to, uint256 tokenId, string memory label) internal {
         uint256 childId = _childId(tokenId, label);
+        _mint(to, childId);
+
+        require(bytes(label).length != 0);
         require(_exists(childId));
+
         bytes memory domain = abi.encodePacked(label, ".", _tokenURIs[tokenId]);
 
         _tokenURIs[childId] = string(domain);
         emit NewURI(childId, string(domain));
-    }
-
-    function _mintChild(address to, uint256 tokenId, string memory label) internal {
-        uint256 childId = _childId(tokenId, label);
-        _mint(to, childId);
-        _setTokenURI(tokenId, label);
     }
 
     function _safeMintChild(address to, uint256 tokenId, string memory label, bytes memory _data) internal {
