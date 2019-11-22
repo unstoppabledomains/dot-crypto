@@ -1,4 +1,5 @@
 pragma solidity 0.5.12;
+pragma experimental ABIEncoderV2;
 
 import './Registry.sol';
 import './util/SignatureUtil.sol';
@@ -89,8 +90,8 @@ contract Resolver is SignatureUtil {
 
     /**
      * @dev Function to set record on behalf of an address.
-     * @param key The key set the value of.
-     * @param value The value to set key to.
+     * @param keys The keys set the values of.
+     * @param values The values to set keys to.
      * @param tokenId The token id to set.
      * @param signature The signature to verify the transaction with.
      */
@@ -126,7 +127,7 @@ contract Resolver is SignatureUtil {
      * @param values values of record to be set
      * @param tokenId uint256 ID of the token
      */
-    function _setMany(address owner, string[] memory keys, string[] memory value, uint256 tokenId) internal {
+    function _setMany(address owner, string[] memory keys, string[] memory values, uint256 tokenId) internal {
         uint256 keyCount = keys.length;
         // If there are no values this could be a clear fuction for less gas.
         // require(keyCount == values.length);
