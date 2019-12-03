@@ -5,7 +5,7 @@ yarn compile >/dev/null
 too_big=()
 
 for file in $(dirname $0)/abi/bin/*.bin; do
-  if ((0x6000 < $(wc -m <$file))); then
+  if ((0xC000 < $(wc -m <$file))); then
     too_big+=($file)
   fi
 done

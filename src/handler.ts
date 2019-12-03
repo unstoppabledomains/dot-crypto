@@ -81,7 +81,7 @@ export const builder = (y: typeof yargs) =>
     'uri-prefix': {
       type: 'string',
       desc: 'Address used for UriPrefix when continuing after Step 10',
-      default: config.adddresses.UriPrefixController,
+      default: config.adddresses.URIPrefixController,
     },
     resolver: {
       type: 'string',
@@ -450,18 +450,39 @@ export const handler = async argv => {
         break
       }
       case 11: {
+        console.log('Adding URIPrefixController as a controller...')
+
+        if (
+          ![registry, signature, minting, whitelistedMinter, uriPrefix].every(
+            v => v,
+          )
+        ) {
+          throw new Error('Fill out all the required contracts')
+        }
+
+        await sendTransaction({
+          to: registry.options.address,
+          data: registry.methods
+            .addController(uriPrefix.options.address)
+            .encodeABI(),
+        })
+
+        break
+      }
+      case 12: {
         console.log('Deploying Resolver...')
 
-        if (![registry, signature, minting, whitelistedMinter].every(v => v)) {
+        if (
+          ![registry, signature, minting, whitelistedMinter, uriPrefix].every(
+            v => v,
+          )
+        ) {
           throw new Error('Fill out all the required contracts')
         }
 
         resolver = await deployContract({
           jsonInterface: resolverJsonInterface,
-          bin: readFileSync(
-            join(__dirname, '../abi/bin/Resolver.bin'),
-            'utf8',
-          ),
+          bin: readFileSync(join(__dirname, '../abi/bin/Resolver.bin'), 'utf8'),
           args: [registry.options.address],
         })
 
@@ -482,7 +503,7 @@ export const handler = async argv => {
         console.log()
         console.log('    Registry:', registry.options.address)
         console.log('    Signature Controller:', signature.options.address)
-        console.log('    Sunrise Controller:', minting.options.address)
+        console.log('    Minting Controller:', minting.options.address)
         console.log(
           '    Whitelisted Minter:',
           whitelistedMinter.options.address,
@@ -492,7 +513,7 @@ export const handler = async argv => {
           account.address,
         )
         console.log('    URI Prefix Controller:', uriPrefix.options.address)
-        console.log('    Signature Resolver:', resolver.options.address)
+        console.log('    Resolver:', resolver.options.address)
         console.log()
         return
       }

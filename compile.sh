@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+dir="$(dirname $0)"
+
 set -e
 
 solc_version=$(solc --version | grep Version)
@@ -12,7 +14,7 @@ fi
 mkdir -p abi && rm -r abi
 mkdir -p abi/bin abi/json
 
-solc --abi --bin -o abi --allow-paths ${INIT_CWD:-.} --optimize --optimize-runs 200 @openzeppelin=${INIT_CWD:-.}/node_modules/@openzeppelin contracts/*.sol contracts/**/*.sol >/dev/null
+solc --abi --bin -o abi --allow-paths ${dir:-.} --optimize --optimize-runs 200 @openzeppelin=${INIT_CWD:-.}/node_modules/@openzeppelin contracts/*.sol contracts/**/*.sol >/dev/null
 
 find abi -name '*.bin' -type f -size 0 -empty -delete
 find abi -name '*.bin' -exec sh -c 'mv "$0" abi/bin 2>/dev/null' {} \;
