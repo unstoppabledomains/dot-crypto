@@ -75,7 +75,7 @@ export const handler = async argv => {
   const gasPrice = web3.utils.toWei(argv.gasPrice.toString(), 'gwei')
 
   const defaultTo =
-    config.adddresses[
+    config.addresses[
       argv.contractName.charAt(0).toUpperCase() + argv.contractName.substr(1)
     ]
 

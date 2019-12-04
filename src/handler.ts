@@ -61,32 +61,32 @@ export const builder = (y: typeof yargs) =>
     registry: {
       type: 'string',
       desc: 'Address used for registry when continuing after Step 1',
-      default: config.adddresses.Registry,
+      default: config.addresses.Registry,
     },
     signature: {
       type: 'string',
       desc: 'Address used for signature when continuing after Step 2',
-      default: config.adddresses.SignatureController,
+      default: config.addresses.SignatureController,
     },
     minting: {
       type: 'string',
       desc: 'Address used for minting when continuing after Step 4',
-      default: config.adddresses.MintingController,
+      default: config.addresses.MintingController,
     },
     'whitelisted-minter': {
       type: 'string',
       desc: 'Address used for whitelistedMinter when continuing after Step 7',
-      default: config.adddresses.WhitelistedMinter,
+      default: config.addresses.WhitelistedMinter,
     },
     'uri-prefix': {
       type: 'string',
       desc: 'Address used for UriPrefix when continuing after Step 10',
-      default: config.adddresses.URIPrefixController,
+      default: config.addresses.URIPrefixController,
     },
     resolver: {
       type: 'string',
       desc: 'Address used for resolver when continuing after Step 11',
-      default: config.adddresses.Resolver,
+      default: config.addresses.Resolver,
     },
   })
 
@@ -267,7 +267,7 @@ export const handler = async argv => {
           bin: readFileSync(join(__dirname, '../abi/bin/Registry.bin'), 'utf8'),
         })
 
-        config.adddresses.Registry = registry.options.address
+        config.addresses.Registry = registry.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -291,7 +291,7 @@ export const handler = async argv => {
           args: [registry.options.address],
         })
 
-        config.adddresses.SignatureController = signature.options.address
+        config.addresses.SignatureController = signature.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -331,7 +331,7 @@ export const handler = async argv => {
           args: [registry.options.address],
         })
 
-        config.adddresses.MintingController = minting.options.address
+        config.addresses.MintingController = minting.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -385,7 +385,7 @@ export const handler = async argv => {
           args: [minting.options.address],
         })
 
-        config.adddresses.WhitelistedMinter = whitelistedMinter.options.address
+        config.addresses.WhitelistedMinter = whitelistedMinter.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -441,7 +441,7 @@ export const handler = async argv => {
           args: [registry.options.address],
         })
 
-        config.adddresses.URIPrefixController = uriPrefix.options.address
+        config.addresses.URIPrefixController = uriPrefix.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
@@ -486,7 +486,7 @@ export const handler = async argv => {
           args: [registry.options.address],
         })
 
-        config.adddresses.Resolver = resolver.options.address
+        config.addresses.Resolver = resolver.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
           JSON.stringify(config),
