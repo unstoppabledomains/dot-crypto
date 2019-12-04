@@ -8,10 +8,14 @@ import './util/SignatureUtil.sol';
 
 contract Resolver is SignatureUtil {
 
-    event Set(address indexed owner, string indexed key, string value, uint256 indexed tokenId);
+    event Set(uint256 indexed preset, string indexed key, string value, uint256 indexed tokenId);
+    event SetPreset(uint256 indexed preset, uint256 indexed tokenId);
 
-    // Mapping from owner to token ID to key to value
-    mapping (address => mapping (uint256 => mapping (string => string))) internal _records;
+    // Mapping from token ID to preset id to key to value
+    mapping (uint256 => mapping (uint256 =>  mapping (string => string))) internal _records;
+
+    // Mapping from token ID to current preset id
+    mapping (uint256 => uint256) _tokenPresets;
 
     constructor(Registry registry) public SignatureUtil(registry) {}
 
@@ -23,6 +27,30 @@ contract Resolver is SignatureUtil {
         _;
     }
 
+    function presetOf(uint256 tokenId) external returns (uint256) {
+        return _tokenPresets[tokenId];
+    }
+
+    function setPreset(uint256 presetId, uint256 tokenId) external {
+        require(_registry.isApprovedOrOwner(msg.sender, tokenId));
+        _setPreset(presetId, tokenId);
+    }
+
+    function setPresetFor(uint256 presetId, uint256 tokenId, bytes calldata signature) external {
+        _validate(keccak256(abi.encodeWithSelector(this.setPreset.selector, presetId, tokenId)), tokenId, signature);
+        _setPreset(presetId, tokenId);
+    }
+
+    function reset(uint256 tokenId) external {
+        require(_registry.isApprovedOrOwner(msg.sender, tokenId));
+        _setPreset(now, tokenId);
+    }
+
+    function resetFor(uint256 tokenId, bytes calldata signature) external {
+        _validate(keccak256(abi.encodeWithSelector(this.reset.selector, tokenId)), tokenId, signature);
+        _setPreset(now, tokenId);
+    }
+
     /**
      * @dev Function to get record.
      * @param key The key to query the value of.
@@ -30,8 +58,7 @@ contract Resolver is SignatureUtil {
      * @return The value string.
      */
     function get(string memory key, uint256 tokenId) public view whenResolver(tokenId) returns (string memory) {
-        address owner = _registry.ownerOf(tokenId);
-        return _records[owner][tokenId][key];
+        return _records[tokenId][_tokenPresets[tokenId]][key];
     }
 
     /**
@@ -42,7 +69,7 @@ contract Resolver is SignatureUtil {
      */
     function set(string calldata key, string calldata value, uint256 tokenId) external {
         require(_registry.isApprovedOrOwner(msg.sender, tokenId));
-        _set(_registry.ownerOf(tokenId), key, value, tokenId);
+        _set(_tokenPresets[tokenId], key, value, tokenId);
     }
 
     /**
@@ -59,7 +86,7 @@ contract Resolver is SignatureUtil {
         bytes calldata signature
     ) external {
         _validate(keccak256(abi.encodeWithSelector(this.set.selector, key, value, tokenId)), tokenId, signature);
-        _set(_registry.ownerOf(tokenId), key, value, tokenId);
+        _set(_tokenPresets[tokenId], key, value, tokenId);
     }
 
     /**
@@ -69,23 +96,22 @@ contract Resolver is SignatureUtil {
      * @return The values.
      */
     function getMany(string[] calldata keys, uint256 tokenId) external view whenResolver(tokenId) returns (string[] memory) {
-        address owner = _registry.ownerOf(tokenId);
         uint256 keyCount = keys.length;
         string[] memory values = new string[](keyCount);
+        uint256 preset = _tokenPresets[tokenId];
         for (uint256 i = 0; i < keyCount; i++) {
-            values[i] = _records[owner][tokenId][keys[i]];
+            values[i] = _records[tokenId][preset][keys[i]];
         }
         return values;
     }
 
-    // TODO
     function setMany(
         string[] memory keys,
         string[] memory values,
         uint256 tokenId
     ) public {
         require(_registry.isApprovedOrOwner(msg.sender, tokenId));
-        _setMany(_registry.ownerOf(tokenId), keys, values, tokenId);
+        _setMany(_tokenPresets[tokenId], keys, values, tokenId);
     }
 
     /**
@@ -102,7 +128,12 @@ contract Resolver is SignatureUtil {
         bytes memory signature
     ) public {
         _validate(keccak256(abi.encodeWithSelector(this.setMany.selector, keys, values, tokenId)), tokenId, signature);
-        _setMany(_registry.ownerOf(tokenId), keys, values, tokenId);
+        _setMany(_tokenPresets[tokenId], keys, values, tokenId);
+    }
+
+    function _setPreset(uint256 presetId, uint256 tokenId) internal {
+        _tokenPresets[tokenId] = presetId;
+        emit SetPreset(presetId, tokenId);
     }
 
     /**
@@ -113,10 +144,10 @@ contract Resolver is SignatureUtil {
      * @param value value of record to be set
      * @param tokenId uint256 ID of the token
      */
-    function _set(address owner, string memory key, string memory value, uint256 tokenId) internal {
+    function _set(uint256 preset, string memory key, string memory value, uint256 tokenId) internal {
         _registry.sync(tokenId, uint256(keccak256(bytes(key))));
-        _records[owner][tokenId][key] = value;
-        emit Set(owner, key, value, tokenId);
+        _records[tokenId][preset][key] = value;
+        emit Set(preset, key, value, tokenId);
     }
 
     /**
@@ -127,10 +158,10 @@ contract Resolver is SignatureUtil {
      * @param values values of record to be set
      * @param tokenId uint256 ID of the token
      */
-    function _setMany(address owner, string[] memory keys, string[] memory values, uint256 tokenId) internal {
+    function _setMany(uint256 preset, string[] memory keys, string[] memory values, uint256 tokenId) internal {
         uint256 keyCount = keys.length;
         for (uint256 i = 0; i < keyCount; i++) {
-            _set(owner, keys[i], values[i], tokenId);
+            _set(preset, keys[i], values[i], tokenId);
         }
     }
 
