@@ -27,7 +27,7 @@ contract Resolver is SignatureUtil {
         _;
     }
 
-    function presetOf(uint256 tokenId) external returns (uint256) {
+    function presetOf(uint256 tokenId) external view returns (uint256) {
         return _tokenPresets[tokenId];
     }
 
@@ -139,7 +139,7 @@ contract Resolver is SignatureUtil {
     /**
      * @dev Internal function to to set record. As opposed to set, this imposes
      * no restrictions on msg.sender.
-     * @param owner owner address of token
+     * @param preset preset to set key/values on
      * @param key key of record to be set
      * @param value value of record to be set
      * @param tokenId uint256 ID of the token
@@ -153,7 +153,7 @@ contract Resolver is SignatureUtil {
     /**
      * @dev Internal function to to set multiple records. As opposed to setMany, this imposes
      * no restrictions on msg.sender.
-     * @param owner owner address of token
+     * @param preset preset to set key/values on
      * @param keys keys of record to be set
      * @param values values of record to be set
      * @param tokenId uint256 ID of the token
