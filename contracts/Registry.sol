@@ -104,6 +104,10 @@ contract Registry is IRegistry, ControllerRole, ERC721Burnable {
 
     /// Transfering
 
+    function setOwner(address to, uint256 tokenId) external onlyApprovedOrOwner(tokenId)  {
+        super._transferFrom(ownerOf(tokenId), to, tokenId);
+    }
+
     function transferFromChild(address from, address to, uint256 tokenId, string calldata label)
         external
         onlyApprovedOrOwner(tokenId)
