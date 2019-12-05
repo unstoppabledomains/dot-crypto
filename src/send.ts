@@ -199,7 +199,9 @@ export const handler = async argv => {
     : web3.utils.fromWei(argv.value.toString(), 'ether')
 
   if (isView) {
-    const resp = await contract.methods[argv.method](...argv.params).call({
+    const resp = await contract.methods[argv.method](
+      ...argv.params.map(v => (v.includes(',') ? v.split(',') : v)),
+    ).call({
       value,
       gasPrice,
       from: account ? account.address : undefined,
@@ -226,8 +228,10 @@ export const handler = async argv => {
     )
 
     try {
+      console.log(...argv.params.map(v => (v.includes(',') ? v.split(',') : v)))
+
       const gasEstimate = await contract.methods[argv.method](
-        ...argv.params,
+        ...argv.params.map(v => (v.includes(',') ? v.split(',') : v)),
       ).estimateGas({
         to: argv.to,
         value,
@@ -264,7 +268,9 @@ export const handler = async argv => {
     await sendTransaction({
       to: argv.to,
       value,
-      data: contract.methods[argv.method](...argv.params).encodeABI(),
+      data: contract.methods[argv.method](
+        ...argv.params.map(v => (v.includes(',') ? v.split(',') : v)),
+      ).encodeABI(),
     })
 
     console.log('Done.')

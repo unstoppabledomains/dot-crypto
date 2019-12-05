@@ -1,12 +1,12 @@
 {
   "url": "https://mainnet.infura.io",
-  "privateKey": "./mainnet.key",
+  "privateKey": "./EthereumController",
   "addresses": {
-    "Registry": "0x773A68Efe2a8195dB6278013C3C1aB59e13941B4",
-    "SignatureController": "0x71f3074Bea41C09b2BD3b2Cfac8F8D55B8c8511A",
-    "MintingController": "0xabF7Cec8B34FF6AE88C63FE3c53eC7D31C195a2b",
-    "WhitelistedMinter": "0x601569301c25D3B5f6f826Ff2Ad96C884Ea5ef3D",
-    "URIPrefixController": "0x863A942821D2e63aD7549db79fabFcd47fF29c5C",
-    "Resolver": "0x03d74EAac0D8E880337D6bA8e1ddf06058C4B9f8"
+    "Registry": "0x608624cA9dacbf78B19232e15f67107Da0AeE715",
+    "SignatureController": "0x1270026d1C9cd0120bCB5454A1C6CA7a5ad5738e",
+    "MintingController": "0xeAe2eeFB9752C9e749Af2Af505cf09c3C27917e9",
+    "URIPrefixController": "0xAD85f4A2262E82a227072181C30bD02B175C1B91",
+    "WhitelistedMinter": "0x7a38F83d9dF21aD1FFD2b6c993B6dE404C2360AE",
+    "Resolver": "0xB81942fC2be9d9b0e2362A6B789EbD65E4c074C1"
   }
 }

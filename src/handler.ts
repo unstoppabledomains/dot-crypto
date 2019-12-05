@@ -113,6 +113,8 @@ export const handler = async argv => {
     argv.privateKey.replace(/^(?:0x)?/, '0x'),
   )
 
+  console.log('Using', account.address)
+
   const gasPrice = web3.utils.toWei(argv.gasPrice.toString(), 'gwei')
   const netId = await web3.eth.net.getId()
 
@@ -260,6 +262,15 @@ export const handler = async argv => {
     process.stdout.write(`${chalk.cyanBright('Step ' + step)}: `)
     switch (step) {
       case 1: {
+        console.log('Adding WhitelistedMinter as a minter...')
+
+        await sendTransaction({
+          to: minting.options.address,
+          data: minting.methods
+            .addMinter(whitelistedMinter.options.address)
+            .encodeABI(),
+        })
+        process.exit()
         console.log('Deploying Registry...')
 
         registry = await deployContract({
@@ -277,10 +288,6 @@ export const handler = async argv => {
       }
       case 2: {
         console.log('Deploying SignatureController...')
-
-        if (![registry].every(v => v)) {
-          throw new Error('Fill out all the required contracts')
-        }
 
         signature = await deployContract({
           jsonInterface: signatureJsonInterface,
@@ -302,10 +309,6 @@ export const handler = async argv => {
       case 3: {
         console.log('Adding SignatureController as a controller...')
 
-        if (![registry, signature].every(v => v)) {
-          throw new Error('Fill out all the required contracts')
-        }
-
         await sendTransaction({
           to: registry.options.address,
           data: registry.methods
@@ -317,10 +320,6 @@ export const handler = async argv => {
       }
       case 4: {
         console.log('Deploying MintingController...')
-
-        if (![registry, signature].every(v => v)) {
-          throw new Error('Fill out all the required contracts')
-        }
 
         minting = await deployContract({
           jsonInterface: mintingJsonInterface,
@@ -342,10 +341,6 @@ export const handler = async argv => {
       case 5: {
         console.log('Adding MintingController as a controller...')
 
-        if (![registry, signature, minting].every(v => v)) {
-          throw new Error('Fill out all the required contracts')
-        }
-
         await sendTransaction({
           to: registry.options.address,
           data: registry.methods
@@ -356,81 +351,7 @@ export const handler = async argv => {
         break
       }
       case 6: {
-        console.log('Renouncing controllership...')
-
-        if (![registry, signature, minting].every(v => v)) {
-          throw new Error('Fill out all the required contracts')
-        }
-
-        await sendTransaction({
-          to: registry.options.address,
-          data: registry.methods.renounceController().encodeABI(),
-        })
-
-        break
-      }
-      case 7: {
-        console.log('Deploying WhitelistedMinter...')
-
-        if (![registry, signature, minting].every(v => v)) {
-          throw new Error('Fill out all the required contracts')
-        }
-
-        whitelistedMinter = await deployContract({
-          jsonInterface: whitelistedMinterJsonInterface,
-          bin: readFileSync(
-            join(__dirname, '../abi/bin/WhitelistedMinter.bin'),
-            'utf8',
-          ),
-          args: [minting.options.address],
-        })
-
-        config.addresses.WhitelistedMinter = whitelistedMinter.options.address
-        writeFileSync(
-          join(__dirname, '../.cli-config.json'),
-          JSON.stringify(config),
-        )
-
-        break
-      }
-      case 8: {
-        console.log('Adding coinbase as whitelisted...')
-
-        if (![registry, signature, minting, whitelistedMinter].every(v => v)) {
-          throw new Error('Fill out all the required contracts')
-        }
-
-        await sendTransaction({
-          to: whitelistedMinter.options.address,
-          data: whitelistedMinter.methods
-            .addWhitelisted(account.address)
-            .encodeABI(),
-        })
-
-        break
-      }
-      case 9: {
-        console.log('Adding WhitelistedMinter as a minter...')
-
-        if (![registry, signature, minting, whitelistedMinter].every(v => v)) {
-          throw new Error('Fill out all the required contracts')
-        }
-
-        await sendTransaction({
-          to: minting.options.address,
-          data: minting.methods
-            .addMinter(whitelistedMinter.options.address)
-            .encodeABI(),
-        })
-
-        break
-      }
-      case 10: {
         console.log('Deploying URIPrefixController...')
-
-        if (![registry, signature, minting, whitelistedMinter].every(v => v)) {
-          throw new Error('Fill out all the required contracts')
-        }
 
         uriPrefix = await deployContract({
           jsonInterface: uriPrefixJsonInterface,
@@ -449,16 +370,8 @@ export const handler = async argv => {
 
         break
       }
-      case 11: {
+      case 7: {
         console.log('Adding URIPrefixController as a controller...')
-
-        if (
-          ![registry, signature, minting, whitelistedMinter, uriPrefix].every(
-            v => v,
-          )
-        ) {
-          throw new Error('Fill out all the required contracts')
-        }
 
         await sendTransaction({
           to: registry.options.address,
@@ -469,16 +382,50 @@ export const handler = async argv => {
 
         break
       }
-      case 12: {
-        console.log('Deploying Resolver...')
+      case 8: {
+        console.log('Renouncing controllership...')
 
-        if (
-          ![registry, signature, minting, whitelistedMinter, uriPrefix].every(
-            v => v,
-          )
-        ) {
-          throw new Error('Fill out all the required contracts')
-        }
+        await sendTransaction({
+          to: registry.options.address,
+          data: registry.methods.renounceController().encodeABI(),
+        })
+
+        break
+      }
+      case 9: {
+        console.log('Deploying WhitelistedMinter...')
+
+        whitelistedMinter = await deployContract({
+          jsonInterface: whitelistedMinterJsonInterface,
+          bin: readFileSync(
+            join(__dirname, '../abi/bin/WhitelistedMinter.bin'),
+            'utf8',
+          ),
+          args: [minting.options.address],
+        })
+
+        config.addresses.WhitelistedMinter = whitelistedMinter.options.address
+        writeFileSync(
+          join(__dirname, '../.cli-config.json'),
+          JSON.stringify(config),
+        )
+
+        break
+      }
+      case 10: {
+        console.log('Adding coinbase as whitelisted...')
+
+        await sendTransaction({
+          to: whitelistedMinter.options.address,
+          data: whitelistedMinter.methods
+            .addWhitelisted(account.address)
+            .encodeABI(),
+        })
+
+        break
+      }
+      case 11: {
+        console.log('Deploying Resolver...')
 
         resolver = await deployContract({
           jsonInterface: resolverJsonInterface,
@@ -492,7 +439,7 @@ export const handler = async argv => {
           JSON.stringify(config),
         )
 
-        // break
+        break
       }
       default: {
         console.log(`${chalk.cyanBright(`${step} Complete`)}.`)

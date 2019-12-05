@@ -45,7 +45,7 @@ contract Registry is IRegistry, ControllerRole, ERC721Burnable {
     }
 
     function symbol() external view returns (string memory) {
-        return "UDC";
+        return "UD";
     }
 
     function tokenURI(uint256 tokenId) external view returns (string memory) {
