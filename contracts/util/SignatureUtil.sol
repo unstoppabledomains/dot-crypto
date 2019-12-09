@@ -9,7 +9,7 @@ contract SignatureUtil {
     using ECDSA for bytes32;
 
     // Mapping from owner to a nonce
-    mapping (address => uint256) internal _nonces;
+    mapping (uint256 => uint256) internal _nonces;
 
     Registry internal _registry;
 
@@ -19,16 +19,15 @@ contract SignatureUtil {
 
     /**
      * @dev Gets the nonce of the specified address.
-     * @param addr address to query nonce for
+     * @param tokenId token ID for nonce query
      * @return nonce of the given address
      */
-    function nonceOf(address addr) external view returns (uint256) {
-        return _nonces[addr];
+    function nonceOf(uint256 tokenId) external view returns (uint256) {
+        return _nonces[tokenId];
     }
 
     function _validate(bytes32 hash, uint256 tokenId, bytes memory signature) internal {
-        address owner = _registry.ownerOf(tokenId);
-        uint256 nonce = _nonces[owner];
+        uint256 nonce = _nonces[tokenId];
 
         address signer = keccak256(abi.encodePacked(hash, address(this), nonce)).toEthSignedMessageHash().recover(signature);
         require(
@@ -39,7 +38,7 @@ contract SignatureUtil {
             )
         );
 
-        _nonces[owner] += 1;
+        _nonces[tokenId] += 1;
     }
 
 }
