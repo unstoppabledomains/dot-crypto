@@ -3,7 +3,7 @@ pragma experimental ABIEncoderV2;
 
 import './Registry.sol';
 import './util/SignatureUtil.sol';
-
+import './controllers/MintingController.sol';
 // solium-disable error-reason
 
 contract Resolver is SignatureUtil {
@@ -17,7 +17,11 @@ contract Resolver is SignatureUtil {
     // Mapping from token ID to current preset id
     mapping (uint256 => uint256) _tokenPresets;
 
-    constructor(Registry registry) public SignatureUtil(registry) {}
+    MintingController internal _mintingController;
+
+    constructor(Registry registry, MintingController mintingController) public SignatureUtil(registry) {
+        _mintingController = mintingController;
+    }
 
     /**
      * @dev Throws if called when not the resolver.
@@ -59,6 +63,15 @@ contract Resolver is SignatureUtil {
      */
     function get(string memory key, uint256 tokenId) public view whenResolver(tokenId) returns (string memory) {
         return _records[tokenId][_tokenPresets[tokenId]][key];
+    }
+
+    function preconfigure(
+        string[] memory keys,
+        string[] memory values,
+        uint256 tokenId
+    ) public {
+        require(msg.sender == address(_mintingController));
+        _setMany(_tokenPresets[tokenId], keys, values, tokenId);
     }
 
     /**

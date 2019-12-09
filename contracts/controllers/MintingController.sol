@@ -28,4 +28,9 @@ contract MintingController is IMintingController, MinterRole {
         _registry.controlledSafeMintChild(to, _registry.root(), label, _data);
     }
 
+    function mintSLDWithResolver(address to, string memory label, address resolver) public onlyMinter {
+        _registry.controlledMintChild(to, _registry.root(), label);
+        _registry.controlledResolveTo(resolver, _registry.childIdOf(_registry.root(), label));
+    }
+
 }
