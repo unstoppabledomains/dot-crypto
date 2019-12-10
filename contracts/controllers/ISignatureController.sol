@@ -21,10 +21,10 @@ interface ISignatureController {
 
     /**
      * @dev Returns the given owners' nonce.
-     * @param owner address to query the nonce of
+     * @param tokenId token ID to query the nonce of
      * @return uint256 nonce of the owner
      */
-    function nonceOf(address owner) external view returns (uint256);
+    function nonceOf(uint256 tokenId) external view returns (uint256);
 
     /// A signature function based on transferFrom inside Open Zeppelin's ERC721.sol.
     function transferFromFor(address from, address to, uint256 tokenId, bytes calldata signature) external;

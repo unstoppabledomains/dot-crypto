@@ -3,6 +3,7 @@ build/
 .chaindata/
 .truffle_artifacts/
 abi/
+EthereumController.key
 
 logs
 *.log

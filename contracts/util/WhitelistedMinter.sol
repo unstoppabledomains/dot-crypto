@@ -17,9 +17,9 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     Resolver internal _resolver;
     Registry internal _registry;
 
-    constructor (Registry registry, MintingController mintingController) public {
+    constructor (MintingController mintingController) public {
         _mintingController = mintingController;
-        _registry = registry;
+        _registry = Registry(mintingController.registry());
     }
 
     function renounceMinter() external {
@@ -40,6 +40,16 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
 
     function mintSLDToDefaultResolver(address to, string memory label, string[] memory keys, string[] memory values) public onlyWhitelisted {
         _mintingController.mintSLDWithResolver(to, label, address(_resolver));
+        _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+    }
+
+    function safeMintSLDToDefaultResolver(address to, string memory label, string[] memory keys, string[] memory values) public onlyWhitelisted {
+        _mintingController.safeMintSLDWithResolver(to, label, address(_resolver));
+        _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+    }
+
+    function safeMintSLDToDefaultResolver(address to, string memory label, string[] memory keys, string[] memory values, bytes memory _data) public onlyWhitelisted {
+        _mintingController.safeMintSLDWithResolver(to, label, address(_resolver), _data);
         _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 

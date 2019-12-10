@@ -20,6 +20,7 @@ contract Resolver is SignatureUtil {
     MintingController internal _mintingController;
 
     constructor(Registry registry, MintingController mintingController) public SignatureUtil(registry) {
+        require(address(registry) == mintingController.registry());
         _mintingController = mintingController;
     }
 

@@ -16,6 +16,10 @@ contract URIPrefixController is IURIPrefixController, WhitelistedRole {
         _registry = registry;
     }
 
+    function registry() external view returns (address) {
+        return address(_registry);
+    }
+
     function setTokenURIPrefix(string calldata prefix) external onlyWhitelisted {
         _registry.controlledSetTokenURIPrefix(prefix);
     }

@@ -17,6 +17,10 @@ contract SignatureUtil {
         _registry = registry;
     }
 
+    function registry() external view returns (address) {
+        return address(_registry);
+    }
+
     /**
      * @dev Gets the nonce of the specified address.
      * @param tokenId token ID for nonce query

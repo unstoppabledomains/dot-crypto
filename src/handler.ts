@@ -262,15 +262,6 @@ export const handler = async argv => {
     process.stdout.write(`${chalk.cyanBright('Step ' + step)}: `)
     switch (step) {
       case 1: {
-        console.log('Adding WhitelistedMinter as a minter...')
-
-        await sendTransaction({
-          to: minting.options.address,
-          data: minting.methods
-            .addMinter(whitelistedMinter.options.address)
-            .encodeABI(),
-        })
-        process.exit()
         console.log('Deploying Registry...')
 
         registry = await deployContract({
@@ -281,7 +272,7 @@ export const handler = async argv => {
         config.addresses.Registry = registry.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
-          JSON.stringify(config),
+          JSON.stringify(config, null, 2),
         )
 
         break
@@ -301,7 +292,7 @@ export const handler = async argv => {
         config.addresses.SignatureController = signature.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
-          JSON.stringify(config),
+          JSON.stringify(config, null, 2),
         )
 
         break
@@ -333,7 +324,7 @@ export const handler = async argv => {
         config.addresses.MintingController = minting.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
-          JSON.stringify(config),
+          JSON.stringify(config, null, 2),
         )
 
         break
@@ -365,7 +356,7 @@ export const handler = async argv => {
         config.addresses.URIPrefixController = uriPrefix.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
-          JSON.stringify(config),
+          JSON.stringify(config, null, 2),
         )
 
         break
@@ -407,12 +398,24 @@ export const handler = async argv => {
         config.addresses.WhitelistedMinter = whitelistedMinter.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
-          JSON.stringify(config),
+          JSON.stringify(config, null, 2),
         )
 
         break
       }
       case 10: {
+        console.log('Adding WhitelistedMinter as a minter...')
+
+        await sendTransaction({
+          to: minting.options.address,
+          data: minting.methods
+            .addMinter(whitelistedMinter.options.address)
+            .encodeABI(),
+        })
+
+        break
+      }
+      case 11: {
         console.log('Adding coinbase as whitelisted...')
 
         await sendTransaction({
@@ -424,22 +427,50 @@ export const handler = async argv => {
 
         break
       }
-      case 11: {
+      case 12: {
         console.log('Deploying Resolver...')
 
         resolver = await deployContract({
           jsonInterface: resolverJsonInterface,
           bin: readFileSync(join(__dirname, '../abi/bin/Resolver.bin'), 'utf8'),
-          args: [registry.options.address],
+          args: [registry.options.address, minting.options.address],
         })
 
         config.addresses.Resolver = resolver.options.address
         writeFileSync(
           join(__dirname, '../.cli-config.json'),
-          JSON.stringify(config),
+          JSON.stringify(config, null, 2),
         )
 
         break
+      }
+      case 13: {
+        console.log('Adding setting default Resolver for Whitelisted Minter...')
+
+        await sendTransaction({
+          to: whitelistedMinter.options.address,
+          data: whitelistedMinter.methods
+            .setDefaultResolver(account.address)
+            .encodeABI(resolver.address),
+        })
+
+        break
+      }
+      case 14: {
+        // console.log('Configure URI Prefix...')
+        // await sendTransaction({
+        //   to: uriPrefix.options.address,
+        //   data: uriPrefix.methods
+        //     .addWhitelisted(account.address)
+        //     .encodeABI(),
+        // })
+        // await sendTransaction({
+        //   to: uriPrefix.options.address,
+        //   data: uriPrefix.methods
+        //     .setTokenURIPrefix(uriPrefix.options.address)
+        //     .encodeABI('https://metadata.unstoppabledomains.com/metadata/'),
+        // })
+        // break
       }
       default: {
         console.log(`${chalk.cyanBright(`${step} Complete`)}.`)
@@ -455,10 +486,7 @@ export const handler = async argv => {
           '    Whitelisted Minter:',
           whitelistedMinter.options.address,
         )
-        console.log(
-          "    Whitelisted Minter's whitelisted admin address:",
-          account.address,
-        )
+        console.log('    EOA admin address:', account.address)
         console.log('    URI Prefix Controller:', uriPrefix.options.address)
         console.log('    Resolver:', resolver.options.address)
         console.log()
