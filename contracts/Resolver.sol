@@ -71,7 +71,7 @@ contract Resolver is SignatureUtil {
         string[] memory values,
         uint256 tokenId
     ) public {
-        require(msg.sender == address(_mintingController));
+        require(_mintingController.isMinter(msg.sender));
         _setMany(_tokenPresets[tokenId], keys, values, tokenId);
     }
 
