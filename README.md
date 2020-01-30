@@ -132,12 +132,6 @@ It differs in a couple important ways.
 
 - No rent/annual fee on purchased names. Once you own a domain you keep it.
 
-  - Except for potentially trademarked domains.
-
-- We are trademark "aware". Select names get flagged on minting using the
-  `SunriseController`. We reserve the right to takedown sunrise names for an
-  indeterminate period of time.
-
 - Most non-erc721 logic is hosted inside a set of `Controller` contracts.
 
   - The registry has a set of controlled functions to interface with these controllers.
