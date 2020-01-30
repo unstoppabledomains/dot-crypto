@@ -135,3 +135,6 @@ It differs in a couple important ways.
 - Most non-erc721 logic is hosted inside a set of `Controller` contracts.
 
   - The registry has a set of controlled functions to interface with these controllers.
+
+Medium Post:
+https://medium.com/unstoppabledomains/crypto-technical-overview-11fd4be35b6b
