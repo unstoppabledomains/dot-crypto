@@ -7,7 +7,12 @@
 
 ### Shared resolver records are not reset on transfer
 
+Issue can only be solved by clear guidance that shared resolver needs to be reset when it is being used by new owner after domain was transfered from previous owner.
+
 ### Shared resolver records are not reset on resolver assignment
+
+This can be a feature or a bug: when new resolver is assigned to the domain, it might already have records which maybe a feature or a problem (see previous point)
+
 
 ### Registry#Transfer event doesn't identify if resolver was reset for the domain
 
