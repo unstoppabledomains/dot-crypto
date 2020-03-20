@@ -9,6 +9,10 @@
 
 ### Shared resolver records are not reset on resolver assignment
 
+### Registry#Transfer event doesn't identify if resolver was reset for the domain
+
+Transfer event identifies the owner being change for the domain, however it doesn't identify if the resolver was also set to `0x00` or it was just the owner change.
+
 
 ## Solvable without redeploying the registry
 
