@@ -22,12 +22,13 @@ This can be a feature or a bug: when new resolver is assigned to the domain, it 
 
 When resolver is assigned to a domain, mirror needs to manually fetch its records. This is doable for known records by querying them in large batches and impossible for unknown records
 
-## Solvable by introducing new resolver
-
 
 ### Custom records can not be mirrored
 
 When resolver notifies registry about record being set via Registry#sync, it encodes the key using one way encryption.
+
+## Solvable by introducing new resolver
+
 
 ### Resolver setPreset is not synced with registry
 
