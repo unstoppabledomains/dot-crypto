@@ -18,6 +18,10 @@ This can be a feature or a bug: when new resolver is assigned to the domain, it 
 
 `Transfer` event identifies the owner being change for the domain, however it doesn't identify if the resolver was also set to `0x00` or it was just the owner change. Requires manual check current resolver of a domain on `Transfer` event
 
+### Non-empty resolver assignment
+
+When resolver is assigned to a domain, mirror needs to manually fetch its records. This is doable for known records by querying them in large batches and impossible for unknown records
+
 ## Solvable by introducing new resolver
 
 
@@ -33,3 +37,8 @@ Can be solved by enabling `Registry#sync` call with some special `key` name (e.g
 ### Resolver need reconfigure and reconfigureFor methods
 
 This methods would combine calls to #reset+#setMany which should simplify some end user flows requiring 1 signature and 1 tx instead of 2.
+
+
+### Inability to fetch all records for given domain
+
+Current solidity specification doesn't allow to build a resolver where one could query all the records of the given domain.
