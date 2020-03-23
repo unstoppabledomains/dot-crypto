@@ -41,4 +41,8 @@ This methods would combine calls to #reset+#setMany which should simplify some e
 
 ### Inability to fetch all records for given domain
 
-Current solidity specification doesn't allow to build a resolver where one could query all the records of the given domain.
+Current solidity specification doesn't allow to return the whole mapping as the result of function call and doesn't allow to get all keys from mapping. It can be solved by introducing a mapping to store all record names currently set for domain in the following format:
+
+```
+tokenId => presetId => recordKey[]
+```
