@@ -30,6 +30,11 @@ When resolver is assigned to a domain, mirror needs to manually fetch its record
 
 When resolver notifies registry about record being set via Registry#sync, it encodes the key using one way encryption.
 
+Solution: add encoded keys mapping.
+
+```
+{keccak256(key) => key}
+```
 
 ### Resolver setPreset is not synced with registry
 
