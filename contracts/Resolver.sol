@@ -13,9 +13,14 @@ contract Resolver is SignatureUtil {
 
     // Mapping from token ID to preset id to key to value
     mapping (uint256 => mapping (uint256 =>  mapping (string => string))) internal _records;
+    mapping (uint256 => mapping (uint256 =>  string[])) internal _recordKeys;
+    mapping (uint256 => mapping (uint256 =>  mapping (string => bool))) internal _isKeySet;
 
     // Mapping from token ID to current preset id
     mapping (uint256 => uint256) _tokenPresets;
+
+    // Mapping keys - values
+    mapping (uint256 => string) _hashedKeys;
 
     MintingController internal _mintingController;
 
@@ -159,8 +164,14 @@ contract Resolver is SignatureUtil {
      * @param tokenId uint256 ID of the token
      */
     function _set(uint256 preset, string memory key, string memory value, uint256 tokenId) internal {
-        _registry.sync(tokenId, uint256(keccak256(bytes(key))));
+        uint256 keyHash = uint256(keccak256(bytes(key)));
+        _hashedKeys[keyHash] = key;
+        _registry.sync(tokenId, keyHash);
         _records[tokenId][preset][key] = value;
+        if (_isKeySet[tokenId][preset][key] == false) {
+            _recordKeys[tokenId][preset].push(key);
+            _isKeySet[tokenId][preset][key] = true;
+        }
         emit Set(preset, key, value, tokenId);
     }
 
