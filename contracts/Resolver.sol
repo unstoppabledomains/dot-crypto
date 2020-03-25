@@ -11,10 +11,14 @@ contract Resolver is SignatureUtil {
     event Set(uint256 indexed preset, string indexed key, string value, uint256 indexed tokenId);
     event SetPreset(uint256 indexed preset, uint256 indexed tokenId);
 
+    struct Domain {
+        mapping(string => string) records;
+        string[] keys;
+        mapping(string => bool) isKeySet;
+    }
+
     // Mapping from token ID to preset id to key to value
-    mapping (uint256 => mapping (uint256 =>  mapping (string => string))) internal _records;
-    mapping (uint256 => mapping (uint256 =>  string[])) internal _recordKeys;
-    mapping (uint256 => mapping (uint256 =>  mapping (string => bool))) internal _isKeySet;
+    mapping (uint256 => mapping (uint256 =>  Domain)) internal _records;
 
     // Mapping from token ID to current preset id
     mapping (uint256 => uint256) _tokenPresets;
@@ -68,7 +72,7 @@ contract Resolver is SignatureUtil {
      * @return The value string.
      */
     function get(string memory key, uint256 tokenId) public view whenResolver(tokenId) returns (string memory) {
-        return _records[tokenId][_tokenPresets[tokenId]][key];
+        return _records[tokenId][_tokenPresets[tokenId]].records[key];
     }
 
     function preconfigure(
@@ -119,7 +123,7 @@ contract Resolver is SignatureUtil {
         string[] memory values = new string[](keyCount);
         uint256 preset = _tokenPresets[tokenId];
         for (uint256 i = 0; i < keyCount; i++) {
-            values[i] = _records[tokenId][preset][keys[i]];
+            values[i] = _records[tokenId][preset].records[keys[i]];
         }
         return values;
     }
@@ -164,14 +168,15 @@ contract Resolver is SignatureUtil {
      * @param tokenId uint256 ID of the token
      */
     function _set(uint256 preset, string memory key, string memory value, uint256 tokenId) internal {
+        Domain storage currentDomain = _records[tokenId][preset];
+        currentDomain.records[key] = value;
+        if (currentDomain.isKeySet[key] == false) {
+            currentDomain.keys.push(key);
+            currentDomain.isKeySet[key] = true;
+        }
         uint256 keyHash = uint256(keccak256(bytes(key)));
         _hashedKeys[keyHash] = key;
         _registry.sync(tokenId, keyHash);
-        _records[tokenId][preset][key] = value;
-        if (_isKeySet[tokenId][preset][key] == false) {
-            _recordKeys[tokenId][preset].push(key);
-            _isKeySet[tokenId][preset][key] = true;
-        }
         emit Set(preset, key, value, tokenId);
     }
 
