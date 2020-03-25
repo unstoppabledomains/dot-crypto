@@ -8,23 +8,15 @@ import './controllers/MintingController.sol';
 
 contract Resolver is SignatureUtil {
 
-    event Set(uint256 indexed preset, string indexed key, string value, uint256 indexed tokenId);
+    event Set(uint256 indexed tokenId, uint256 indexed preset, string indexed key, string value);
+    event KeyHash(uint256 indexed hashedKey, string indexed key);
     event SetPreset(uint256 indexed preset, uint256 indexed tokenId);
 
-    struct Domain {
-        mapping(string => string) records;
-        string[] keys;
-        mapping(string => bool) isKeySet;
-    }
-
     // Mapping from token ID to preset id to key to value
-    mapping (uint256 => mapping (uint256 =>  Domain)) internal _records;
+    mapping (uint256 => mapping (uint256 =>  mapping (string => string))) internal _records;
 
     // Mapping from token ID to current preset id
     mapping (uint256 => uint256) _tokenPresets;
-
-    // Mapping keys - values
-    mapping (uint256 => string) _hashedKeys;
 
     MintingController internal _mintingController;
 
@@ -72,7 +64,7 @@ contract Resolver is SignatureUtil {
      * @return The value string.
      */
     function get(string memory key, uint256 tokenId) public view whenResolver(tokenId) returns (string memory) {
-        return _records[tokenId][_tokenPresets[tokenId]].records[key];
+        return _records[tokenId][_tokenPresets[tokenId]][key];
     }
 
     function preconfigure(
@@ -123,7 +115,7 @@ contract Resolver is SignatureUtil {
         string[] memory values = new string[](keyCount);
         uint256 preset = _tokenPresets[tokenId];
         for (uint256 i = 0; i < keyCount; i++) {
-            values[i] = _records[tokenId][preset].records[keys[i]];
+            values[i] = _records[tokenId][preset][keys[i]];
         }
         return values;
     }
@@ -168,16 +160,11 @@ contract Resolver is SignatureUtil {
      * @param tokenId uint256 ID of the token
      */
     function _set(uint256 preset, string memory key, string memory value, uint256 tokenId) internal {
-        Domain storage currentDomain = _records[tokenId][preset];
-        currentDomain.records[key] = value;
-        if (currentDomain.isKeySet[key] == false) {
-            currentDomain.keys.push(key);
-            currentDomain.isKeySet[key] = true;
-        }
-        uint256 keyHash = uint256(keccak256(bytes(key)));
-        _hashedKeys[keyHash] = key;
-        _registry.sync(tokenId, keyHash);
-        emit Set(preset, key, value, tokenId);
+        uint256 hashedKey = uint256(keccak256(bytes(key)));
+        _registry.sync(tokenId, hashedKey);
+        _records[tokenId][preset][key] = value;
+        emit Set(tokenId, preset, key, value);
+        emit KeyHash(hashedKey, key);
     }
 
     /**
