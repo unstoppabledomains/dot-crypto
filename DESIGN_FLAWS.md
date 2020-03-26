@@ -57,3 +57,8 @@ Current solidity specification doesn't allow to return the whole mapping as the 
 ```
 tokenId => presetId => recordKey[]
 ```
+
+### Put tokenId to the first place for all events
+
+Ethereum has the ability to filter events by parameters, but only using their positions. We need to put tokenId as first parameter on all events. We need to put `tokenId` event parameter to the first place to allow easy filter for all events associated to the same tokenId regardless of event type.
+
