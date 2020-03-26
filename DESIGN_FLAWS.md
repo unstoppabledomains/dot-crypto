@@ -22,9 +22,11 @@ This can be a feature or a bug: when new resolver is assigned to the domain, it 
 
 When resolver is assigned to a domain, mirror needs to manually fetch its records. This is doable for known records by querying them in large batches and impossible for unknown records
 
-### Minting subdomains doesn't check for '.'
+### Minting subdomains doesn't check for valid label.
 
 `Registry#_childId` should check that label doesn't contain `.`. Minting such domains results in invalid `tokenId` to be generated and minted which makes problems when generating a mirror.
+
+Other characters that may not be a part of the domain name are also unchecked like emoji or special characters.
 
 
 
