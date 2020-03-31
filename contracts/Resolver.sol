@@ -17,6 +17,9 @@ contract Resolver is SignatureUtil {
     // Mapping from token ID to current preset id
     mapping (uint256 => uint256) _tokenPresets;
 
+    // All keys that were set
+    mapping (uint256 => string) _hashedKeys;
+
     MintingController internal _mintingController;
 
     constructor(Registry registry, MintingController mintingController) public SignatureUtil(registry) {
@@ -64,6 +67,20 @@ contract Resolver is SignatureUtil {
      */
     function get(string memory key, uint256 tokenId) public view whenResolver(tokenId) returns (string memory) {
         return _records[tokenId][_tokenPresets[tokenId]][key];
+    }
+
+    function hashToKey(uint256 keyHash) public view returns (string memory) {
+        return _hashedKeys[keyHash];
+    }
+
+    function hashesToKeys(uint256[] memory hashes) public view returns (string[] memory) {
+        uint256 keyCount = hashes.length;
+        string[] memory values = new string[](keyCount);
+        for (uint256 i = 0; i < keyCount; i++) {
+            values[i] = hashToKey(hashes[i]);
+        }
+
+        return values;
     }
 
     function preconfigure(
@@ -159,8 +176,12 @@ contract Resolver is SignatureUtil {
      * @param tokenId uint256 ID of the token
      */
     function _set(uint256 preset, string memory key, string memory value, uint256 tokenId) internal {
-        _registry.sync(tokenId, uint256(keccak256(bytes(key))));
+        uint256 keyHash = uint256(keccak256(bytes(key)));
+        _registry.sync(tokenId, keyHash);
         _records[tokenId][preset][key] = value;
+        if (bytes(_hashedKeys[keyHash]).length == 0) {
+            _hashedKeys[keyHash] = key;
+        }
         emit Set(preset, key, value, tokenId);
     }
 

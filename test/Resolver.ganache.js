@@ -2,12 +2,13 @@ const Registry = artifacts.require('registry/Registry.sol')
 const MintingController = artifacts.require('controller/MintingController.sol')
 const Resolver = artifacts.require('Resolver.sol')
 
-
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const getUsedGas = require("./helpers/getUsedGas").getUsedGas;
 chai.use(chaiAsPromised)
 const assert = chai.assert
+const web3 = require('web3');
+const utils = web3.utils;
 
 contract('Resolver', function([coinbase, ...accounts]) {
   let mintingController, registry, resolver
@@ -74,5 +75,44 @@ contract('Resolver', function([coinbase, ...accounts]) {
     // should fail to set name if not owned
     await assert.isRejected(resolver.set('key', 'value', tok))
     await assert.isRejected(resolver.get('key', tok))
+  });
+
+  it('should get key by hash', async () => {
+    const tok = await registry.childIdOf(await registry.root(), 'heyhash')
+    await mintingController.mintSLD(coinbase, 'heyhash')
+    await registry.resolveTo(resolver.address, tok)
+    const expectedKey = 'new-hashed-key'
+    await resolver.set(expectedKey, 'value', tok)
+    const expectedKeyHash = utils.keccak256(expectedKey)
+    const keyFromHash = await resolver.hashToKey(utils.hexToNumberString(expectedKeyHash))
+    
+    assert.equal(keyFromHash, expectedKey)
+  });
+
+  it('should get many keys by hashes', async () => {
+    const tok = await registry.childIdOf(await registry.root(), 'heyhash-many')
+    await mintingController.mintSLD(coinbase, 'heyhash-many')
+    await registry.resolveTo(resolver.address, tok)
+    const expectedKeys = ['keyhash-many-1', 'keyhash-many-2']
+    await resolver.setMany(expectedKeys, ['value', 'value'], tok)
+    const expectedKeyHashes = expectedKeys.map(key => {
+      const keyHash = utils.keccak256(key)
+      return utils.hexToNumberString(keyHash)
+    });
+    const keysFromHashes = await resolver.hashesToKeys(expectedKeyHashes)
+
+    assert.deepEqual(keysFromHashes, expectedKeys)
+  });
+
+  it('should not consume additional gas if key hash was set before', async () => {
+    const tok = await registry.childIdOf(await registry.root(), 'heyhash-gas')
+    await mintingController.mintSLD(coinbase, 'heyhash-gas')
+    await registry.resolveTo(resolver.address, tok)
+    const newKeyHashTx = await resolver.set('keyhash-gas', 'value', tok)
+    console.log(`      ⓘ Resolver.set - add new key hash: ${ getUsedGas(newKeyHashTx) }`)
+    const exitsKeyHashTx = await resolver.set('keyhash-gas', 'value', tok)
+    console.log(`      ⓘ Resolver.set - hey hash already exists: ${ getUsedGas(exitsKeyHashTx) }`)
+    
+    assert.isAbove(newKeyHashTx.receipt.gasUsed, exitsKeyHashTx.receipt.gasUsed)
   });
 })
