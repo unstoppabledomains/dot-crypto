@@ -10,7 +10,7 @@ const assert = chai.assert
 const web3 = require('web3');
 const utils = web3.utils;
 
-contract('Resolver', function([coinbase, ...accounts]) {
+contract('Resolver', function([coinbase, notOwner, ...accounts]) {
   let mintingController, registry, resolver
 
   let initializeDomain = async (name) => {
@@ -164,5 +164,17 @@ contract('Resolver', function([coinbase, ...accounts]) {
     assert.equal(args.key, 'new-key')
     assert.equal(args.value, 'value')
     assert.equal(args.preset.toNumber(), 0)
+  })
+
+  it('should reconfigure resolver with new values', async () => {
+    const tok = await initializeDomain('reconfigure')
+    await resolver.set('old-key', 'old-value', tok)
+    const tx = await resolver.reconfigure(['new-key'], ['new-value'], tok)
+    console.log(`      ⓘ Resolver.reconfigure: ${ getUsedGas(tx) }`)
+    
+    assert.equal(await resolver.get('old-key', tok), '')
+    assert.equal(await resolver.get('new-key', tok), 'new-value')
+    // should fail when trying to reconfigure non-owned domain
+    await assert.isRejected(resolver.reconfigure(['new-key'], ['new-value'], tok, {from: notOwner}))
   })
 })

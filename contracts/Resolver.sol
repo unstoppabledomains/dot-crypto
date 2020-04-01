@@ -198,6 +198,27 @@ contract Resolver is SignatureUtil {
         _setMany(_tokenPresets[tokenId], keys, values, tokenId);
     }
 
+    /**
+     * todo comments
+     */
+    function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public {
+        require(_registry.isApprovedOrOwner(msg.sender, tokenId));
+        _reconfigure(keys, values, tokenId);
+    }
+
+    /**
+     * todo comments
+     */
+    function reconfigureFor(
+        string[] memory keys,
+        string[] memory values,
+        uint256 tokenId,
+        bytes memory signature
+    ) public {
+        _validate(keccak256(abi.encodeWithSelector(this.reconfigure.selector, keys, values, tokenId)), tokenId, signature);
+        _reconfigure(keys, values, tokenId);
+    }
+
     function _setPreset(uint256 presetId, uint256 tokenId) internal {
         _tokenPresets[tokenId] = presetId;
         emit SetPreset(presetId, tokenId);
@@ -238,6 +259,14 @@ contract Resolver is SignatureUtil {
         for (uint256 i = 0; i < keyCount; i++) {
             _set(preset, keys[i], values[i], tokenId);
         }
+    }
+
+    /**
+     * todo comments
+     */
+    function _reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) internal {
+        _setPreset(now, tokenId);
+        _setMany(_tokenPresets[tokenId], keys, values, tokenId);
     }
 
 }
