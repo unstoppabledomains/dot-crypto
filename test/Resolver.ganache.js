@@ -13,6 +13,14 @@ const utils = web3.utils;
 contract('Resolver', function([coinbase, ...accounts]) {
   let mintingController, registry, resolver
 
+  let initializeDomain = async (name) => {
+    const tok = await registry.childIdOf(await registry.root(), name)
+    await mintingController.mintSLD(coinbase, name)
+    await registry.resolveTo(resolver.address, tok)
+    
+    return tok;
+  }
+
   beforeEach(async () => {
     registry = await Registry.deployed()
     mintingController = await MintingController.deployed()
@@ -78,9 +86,7 @@ contract('Resolver', function([coinbase, ...accounts]) {
   });
 
   it('should get key by hash', async () => {
-    const tok = await registry.childIdOf(await registry.root(), 'heyhash')
-    await mintingController.mintSLD(coinbase, 'heyhash')
-    await registry.resolveTo(resolver.address, tok)
+    const tok = await initializeDomain('heyhash')
     const expectedKey = 'new-hashed-key'
     await resolver.set(expectedKey, 'value', tok)
     const expectedKeyHash = utils.keccak256(expectedKey)
@@ -90,9 +96,7 @@ contract('Resolver', function([coinbase, ...accounts]) {
   });
 
   it('should get many keys by hashes', async () => {
-    const tok = await registry.childIdOf(await registry.root(), 'heyhash-many')
-    await mintingController.mintSLD(coinbase, 'heyhash-many')
-    await registry.resolveTo(resolver.address, tok)
+    const tok = await initializeDomain('heyhash-many')
     const expectedKeys = ['keyhash-many-1', 'keyhash-many-2']
     await resolver.setMany(expectedKeys, ['value', 'value'], tok)
     const expectedKeyHashes = expectedKeys.map(key => {
@@ -105,14 +109,36 @@ contract('Resolver', function([coinbase, ...accounts]) {
   });
 
   it('should not consume additional gas if key hash was set before', async () => {
-    const tok = await registry.childIdOf(await registry.root(), 'heyhash-gas')
-    await mintingController.mintSLD(coinbase, 'heyhash-gas')
-    await registry.resolveTo(resolver.address, tok)
+    const tok = await initializeDomain('heyhash-gas')
     const newKeyHashTx = await resolver.set('keyhash-gas', 'value', tok)
     console.log(`      ⓘ Resolver.set - add new key hash: ${ getUsedGas(newKeyHashTx) }`)
     const exitsKeyHashTx = await resolver.set('keyhash-gas', 'value', tok)
     console.log(`      ⓘ Resolver.set - hey hash already exists: ${ getUsedGas(exitsKeyHashTx) }`)
     
     assert.isAbove(newKeyHashTx.receipt.gasUsed, exitsKeyHashTx.receipt.gasUsed)
+  });
+
+  it('should get value by key hash', async () => {
+    const tok = await initializeDomain('get-key-by-hash')
+    const key = 'get-key-by-hash-key'
+    const expectedValue = 'get-key-by-hash-value'
+    await resolver.set(key, expectedValue, tok)
+    const keyHash = utils.keccak256(key)
+    const value = await resolver.getByHash(keyHash, tok)
+    
+    assert.equal(value, expectedValue)
+  });
+
+  it('should get multiple values by hashes', async () => {
+    const tok = await initializeDomain('get-many-keys-by-hash')
+    const keys = ['key-to-hash-1', 'key-to-hash-2']
+    const expectedValues = ['value-42', 'value-43']
+    await resolver.setMany(keys, expectedValues, tok)
+    const hashedKeys = keys.map(key => {
+      const keyHash = utils.keccak256(key)
+      return utils.hexToNumberString(keyHash)
+    });
+    const values = await resolver.getManyByHash(hashedKeys, tok)
+    assert.deepEqual(values, expectedValues)
   });
 })

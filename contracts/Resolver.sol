@@ -69,10 +69,20 @@ contract Resolver is SignatureUtil {
         return _records[tokenId][_tokenPresets[tokenId]][key];
     }
 
+    /**
+     * @dev Function to get key by provided hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @param keyHash The key to query the value of.
+     * @return The key string.
+     */
     function hashToKey(uint256 keyHash) public view returns (string memory) {
         return _hashedKeys[keyHash];
     }
 
+    /**
+     * @dev Function to get keys by provided key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @param hashes The key to query the value of.
+     * @return Keys
+     */
     function hashesToKeys(uint256[] memory hashes) public view returns (string[] memory) {
         uint256 keyCount = hashes.length;
         string[] memory values = new string[](keyCount);
@@ -80,6 +90,32 @@ contract Resolver is SignatureUtil {
             values[i] = hashToKey(hashes[i]);
         }
 
+        return values;
+    }
+
+    /**
+     * @dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @param keyHash The key to query the value of.
+     * @param tokenId The token id to set.
+     * @return The value string.
+     */
+    function getByHash(uint256 keyHash, uint256 tokenId) public view whenResolver(tokenId)  returns (string memory) {
+        return get(hashToKey(keyHash), tokenId);
+    }
+
+/**
+     * @dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @param keyHashes The key to query the value of.
+     * @param tokenId The token id to set.
+     * @return The values.
+     */
+    function getManyByHash(uint256[] memory keyHashes, uint256 tokenId) public view whenResolver(tokenId) returns (string[] memory) {
+        uint256 keyCount = keyHashes.length;
+        string[] memory values = new string[](keyCount);
+        uint256 preset = _tokenPresets[tokenId];
+        for (uint256 i = 0; i < keyCount; i++) {
+            values[i] = _records[tokenId][preset][hashToKey(keyHashes[i])];
+        }
         return values;
     }
 
