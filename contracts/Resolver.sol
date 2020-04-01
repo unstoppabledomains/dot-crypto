@@ -8,7 +8,7 @@ import './controllers/MintingController.sol';
 
 contract Resolver is SignatureUtil {
 
-    event Set(uint256 indexed preset, string indexed key, string value, uint256 indexed tokenId);
+    event Set(uint256 indexed preset, string key, string value, bool indexed isNewKey, uint256 indexed tokenId);
     event SetPreset(uint256 indexed preset, uint256 indexed tokenId);
 
     // Mapping from token ID to preset id to key to value
@@ -213,12 +213,16 @@ contract Resolver is SignatureUtil {
      */
     function _set(uint256 preset, string memory key, string memory value, uint256 tokenId) internal {
         uint256 keyHash = uint256(keccak256(bytes(key)));
+        bool isNewKey = false;
         _registry.sync(tokenId, keyHash);
+        if (bytes(_records[tokenId][preset][key]).length == 0) {
+            isNewKey = true;
+        }
         _records[tokenId][preset][key] = value;
         if (bytes(_hashedKeys[keyHash]).length == 0) {
             _hashedKeys[keyHash] = key;
         }
-        emit Set(preset, key, value, tokenId);
+        emit Set(preset, key, value, isNewKey, tokenId);
     }
 
     /**

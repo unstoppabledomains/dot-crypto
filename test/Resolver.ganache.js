@@ -83,7 +83,7 @@ contract('Resolver', function([coinbase, ...accounts]) {
     // should fail to set name if not owned
     await assert.isRejected(resolver.set('key', 'value', tok))
     await assert.isRejected(resolver.get('key', tok))
-  });
+  })
 
   it('should get key by hash', async () => {
     const tok = await initializeDomain('heyhash')
@@ -93,7 +93,7 @@ contract('Resolver', function([coinbase, ...accounts]) {
     const keyFromHash = await resolver.hashToKey(utils.hexToNumberString(expectedKeyHash))
     
     assert.equal(keyFromHash, expectedKey)
-  });
+  })
 
   it('should get many keys by hashes', async () => {
     const tok = await initializeDomain('heyhash-many')
@@ -106,7 +106,7 @@ contract('Resolver', function([coinbase, ...accounts]) {
     const keysFromHashes = await resolver.hashesToKeys(expectedKeyHashes)
 
     assert.deepEqual(keysFromHashes, expectedKeys)
-  });
+  })
 
   it('should not consume additional gas if key hash was set before', async () => {
     const tok = await initializeDomain('heyhash-gas')
@@ -116,7 +116,7 @@ contract('Resolver', function([coinbase, ...accounts]) {
     console.log(`      ⓘ Resolver.set - hey hash already exists: ${ getUsedGas(exitsKeyHashTx) }`)
     
     assert.isAbove(newKeyHashTx.receipt.gasUsed, exitsKeyHashTx.receipt.gasUsed)
-  });
+  })
 
   it('should get value by key hash', async () => {
     const tok = await initializeDomain('get-key-by-hash')
@@ -127,7 +127,7 @@ contract('Resolver', function([coinbase, ...accounts]) {
     const value = await resolver.getByHash(keyHash, tok)
     
     assert.equal(value, expectedValue)
-  });
+  })
 
   it('should get multiple values by hashes', async () => {
     const tok = await initializeDomain('get-many-keys-by-hash')
@@ -140,5 +140,29 @@ contract('Resolver', function([coinbase, ...accounts]) {
     });
     const values = await resolver.getManyByHash(hashedKeys, tok)
     assert.deepEqual(values, expectedValues)
-  });
+  })
+
+  it('should set isNewKey = true for new keys isNewKey = false for already added keys', async () => {
+    const tok = await initializeDomain('new-key')
+    let tx = await resolver.set('new-key', 'value', tok)
+    let event = tx.logs.reduce(e => e.event == 'Set')
+    
+    assert.isTrue(event.args.isNewKey)
+    
+    tx = await resolver.set('new-key', 'new-value', tok)
+    event = tx.logs.reduce(e => e.event == 'Set')
+
+    assert.isFalse(event.args.isNewKey)
+  })
+
+  it('should product correct Set event', async () => {
+    const tok = await initializeDomain('check-set-event')
+    const tx = await resolver.set('new-key', 'value', tok)
+    const event = tx.logs.reduce(e => e.event == 'Set')
+    const args = event.args
+    assert.equal(args.tokenId.toString(), tok.toString())
+    assert.equal(args.key, 'new-key')
+    assert.equal(args.value, 'value')
+    assert.equal(args.preset.toNumber(), 0)
+  })
 })
