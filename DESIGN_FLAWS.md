@@ -28,7 +28,9 @@ When resolver is assigned to a domain, mirror needs to manually fetch its record
 
 Other characters that may not be a part of the domain name are also unchecked like emoji or special characters.
 
+### Sync event has tokeinId paramters not on the first position
 
+Ideally, we need to move `tokenId` parameters of `Sync` event that will allow us to query all events of the registry associated to given token. Currently this is impossible.
 
 ## Solvable by introducing new resolver
 
