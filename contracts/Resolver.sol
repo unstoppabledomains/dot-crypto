@@ -103,7 +103,7 @@ contract Resolver is SignatureUtil {
         return get(hashToKey(keyHash), tokenId);
     }
 
-/**
+    /**
      * @dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.
      * @param keyHashes The key to query the value of.
      * @param tokenId The token id to set.
@@ -198,8 +198,11 @@ contract Resolver is SignatureUtil {
         _setMany(_tokenPresets[tokenId], keys, values, tokenId);
     }
 
-    /**
-     * todo comments
+     /**
+     * @dev Function to reset all domain records and set new ones.
+     * @param keys records keys.
+     * @param values records values.
+     * @param tokenId domain token id.
      */
     function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public {
         require(_registry.isApprovedOrOwner(msg.sender, tokenId));
@@ -207,7 +210,11 @@ contract Resolver is SignatureUtil {
     }
 
     /**
-     * todo comments
+     * @dev Delegated version of reconfigure() function.
+     * @param keys records keys.
+     * @param values records values.
+     * @param tokenId domain token id.
+     * @param signature user signature.
      */
     function reconfigureFor(
         string[] memory keys,
@@ -221,6 +228,7 @@ contract Resolver is SignatureUtil {
 
     function _setPreset(uint256 presetId, uint256 tokenId) internal {
         _tokenPresets[tokenId] = presetId;
+        _registry.sync(tokenId, 0); // notify registry that domain records were reset
         emit SetPreset(presetId, tokenId);
     }
 
@@ -262,7 +270,10 @@ contract Resolver is SignatureUtil {
     }
 
     /**
-     * todo comments
+     * @dev Internal function to reset all domain records and set new ones.
+     * @param keys records keys.
+     * @param values records values.
+     * @param tokenId domain token id.
      */
     function _reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) internal {
         _setPreset(now, tokenId);
