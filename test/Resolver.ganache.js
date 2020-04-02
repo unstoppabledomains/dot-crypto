@@ -110,11 +110,22 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
 
   it('should not consume additional gas if key hash was set before', async () => {
     const tok = await initializeDomain('heyhash-gas')
-    const newKeyHashTx = await resolver.set('keyhash-gas', 'value', tok)
+    let newKeyHashTx = await resolver.set('keyhash-gas', 'value', tok)
     console.log(`      ⓘ Resolver.set - add new key hash: ${ getUsedGas(newKeyHashTx) }`)
-    const exitsKeyHashTx = await resolver.set('keyhash-gas', 'value', tok)
-    console.log(`      ⓘ Resolver.set - hey hash already exists: ${ getUsedGas(exitsKeyHashTx) }`)
-    
+    let exitsKeyHashTx = await resolver.set('keyhash-gas', 'value', tok)
+    console.log(`      ⓘ Resolver.set - key hash already exists: ${ getUsedGas(exitsKeyHashTx) }`)
+    assert.isAbove(newKeyHashTx.receipt.gasUsed, exitsKeyHashTx.receipt.gasUsed)
+
+    newKeyHashTx = await resolver.setMany(['keyhash-gas-1', 'keyhash-gas-2'], ['value-1', 'value-2'], tok)
+    console.log(`      ⓘ Resolver.setMany - two values. Add new key hash: ${ getUsedGas(newKeyHashTx) }`)
+    exitsKeyHashTx = await resolver.setMany(['keyhash-gas-1', 'keyhash-gas-2'], ['value-1', 'value-2'], tok)
+    console.log(`      ⓘ Resolver.setMany - two values. Key hashes already exists: ${ getUsedGas(exitsKeyHashTx) }`)
+    assert.isAbove(newKeyHashTx.receipt.gasUsed, exitsKeyHashTx.receipt.gasUsed)
+
+    newKeyHashTx = await resolver.setMany(['keyhash-gas-3', 'keyhash-gas-4', 'keyhash-gas-5'], ['value-1', 'value-2', 'value-3'], tok)
+    console.log(`      ⓘ Resolver.setMany - three values. Add new key hash: ${ getUsedGas(newKeyHashTx) }`)
+    exitsKeyHashTx = await resolver.setMany(['keyhash-gas-3', 'keyhash-gas-4', 'keyhash-gas-5'], ['value-1', 'value-2', 'value-3'], tok)
+    console.log(`      ⓘ Resolver.setMany - three values. Key hashes already exists: ${ getUsedGas(exitsKeyHashTx) }`)
     assert.isAbove(newKeyHashTx.receipt.gasUsed, exitsKeyHashTx.receipt.gasUsed)
   })
 
@@ -124,9 +135,10 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
     const expectedValue = 'get-key-by-hash-value'
     await resolver.set(key, expectedValue, tok)
     const keyHash = utils.keccak256(key)
-    const value = await resolver.getByHash(keyHash, tok)
+    const result = await resolver.getByHash(keyHash, tok)
     
-    assert.equal(value, expectedValue)
+    assert.equal(result.value, expectedValue)
+    assert.equal(result.key, key)
   })
 
   it('should get multiple values by hashes', async () => {
@@ -138,8 +150,10 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
       const keyHash = utils.keccak256(key)
       return utils.hexToNumberString(keyHash)
     });
-    const values = await resolver.getManyByHash(hashedKeys, tok)
-    assert.deepEqual(values, expectedValues)
+    const result = await resolver.getManyByHash(hashedKeys, tok)
+
+    assert.deepEqual(result.values, expectedValues)
+    assert.deepEqual(result.keys, keys)
   })
 
   it('should set isNewKey = true for new keys isNewKey = false for already added keys', async () => {

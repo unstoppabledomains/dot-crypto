@@ -8,8 +8,8 @@ import './controllers/MintingController.sol';
 
 contract Resolver is SignatureUtil {
 
-    event Set(uint256 indexed preset, string key, string value, bool indexed isNewKey, uint256 indexed tokenId);
-    event SetPreset(uint256 indexed preset, uint256 indexed tokenId);
+    event Set(uint256 indexed tokenId, uint256 indexed preset, bool indexed isNewKey, string key, string value);
+    event SetPreset(uint256 indexed tokenId, uint256 indexed preset);
 
     // Mapping from token ID to preset id to key to value
     mapping (uint256 => mapping (uint256 =>  mapping (string => string))) internal _records;
@@ -97,26 +97,29 @@ contract Resolver is SignatureUtil {
      * @dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.
      * @param keyHash The key to query the value of.
      * @param tokenId The token id to set.
-     * @return The value string.
+     * @return Key and value.
      */
-    function getByHash(uint256 keyHash, uint256 tokenId) public view whenResolver(tokenId)  returns (string memory) {
-        return get(hashToKey(keyHash), tokenId);
+    function getByHash(uint256 keyHash, uint256 tokenId) public view whenResolver(tokenId) returns (string memory key, string memory value) {
+        key = hashToKey(keyHash);
+        value = get(key, tokenId);
     }
 
     /**
      * @dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.
      * @param keyHashes The key to query the value of.
      * @param tokenId The token id to set.
-     * @return The values.
+     * @return Keys and values.
      */
-    function getManyByHash(uint256[] memory keyHashes, uint256 tokenId) public view whenResolver(tokenId) returns (string[] memory) {
+    function getManyByHash(
+        uint256[] memory keyHashes,
+        uint256 tokenId
+    ) public view whenResolver(tokenId) returns (string[] memory keys, string[] memory values) {
         uint256 keyCount = keyHashes.length;
-        string[] memory values = new string[](keyCount);
-        uint256 preset = _tokenPresets[tokenId];
+        keys = new string[](keyCount);
+        values = new string[](keyCount);
         for (uint256 i = 0; i < keyCount; i++) {
-            values[i] = _records[tokenId][preset][hashToKey(keyHashes[i])];
+            (keys[i], values[i]) = getByHash(keyHashes[i], tokenId);
         }
-        return values;
     }
 
     function preconfigure(
@@ -229,12 +232,11 @@ contract Resolver is SignatureUtil {
     function _setPreset(uint256 presetId, uint256 tokenId) internal {
         _tokenPresets[tokenId] = presetId;
         _registry.sync(tokenId, 0); // notify registry that domain records were reset
-        emit SetPreset(presetId, tokenId);
+        emit SetPreset(tokenId, presetId);
     }
 
     /**
-     * @dev Internal function to to set record. As opposed to set, this imposes
-     * no restrictions on msg.sender.
+     * @dev Internal function to to set record. As opposed to set, this imposes no restrictions on msg.sender.
      * @param preset preset to set key/values on
      * @param key key of record to be set
      * @param value value of record to be set
@@ -242,16 +244,13 @@ contract Resolver is SignatureUtil {
      */
     function _set(uint256 preset, string memory key, string memory value, uint256 tokenId) internal {
         uint256 keyHash = uint256(keccak256(bytes(key)));
-        bool isNewKey = false;
+        bool isNewKey = bytes(_records[tokenId][preset][key]).length == 0;
         _registry.sync(tokenId, keyHash);
-        if (bytes(_records[tokenId][preset][key]).length == 0) {
-            isNewKey = true;
-        }
         _records[tokenId][preset][key] = value;
         if (bytes(_hashedKeys[keyHash]).length == 0) {
             _hashedKeys[keyHash] = key;
         }
-        emit Set(preset, key, value, isNewKey, tokenId);
+        emit Set(tokenId, preset, isNewKey, key, value);
     }
 
     /**

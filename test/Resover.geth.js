@@ -55,4 +55,23 @@ contract('Resolver', function([coinbase, notOwner]) {
         )  
     )
   })
+
+  it('should setManyFor', async () => {
+    const tok = await initializeDomain('set-many-for')
+    const keys = ['new-key-1', 'new-key-2'];
+    const expectedValues = ['new-value-1', 'new-value-2'];
+    const tx = await submitSigTransaction(
+        resolver,
+        resolver,
+        coinbase,
+        'setMany',
+        keys,
+        expectedValues,
+        tok
+    )
+    console.log(`      ⓘ Resolver.setManyFor - two values: ${ getUsedGas(tx) }`)
+    
+    const values = await resolver.getMany(keys, tok)
+    assert.deepEqual(values, expectedValues)
+  })
 })
