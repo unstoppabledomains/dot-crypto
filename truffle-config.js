@@ -1,8 +1,3 @@
-// const HDWalletProvider = require('@truffle/hdwallet-provider')
-
-const fs = require('fs')
-const path = require('path')
-
 module.exports = {
   networks: {
     development: {
@@ -15,13 +10,6 @@ module.exports = {
       port: 8545,
       network_id: '1',
     },
-    // ropsten: {
-    //   provider: new HDWalletProvider(
-    //     ['3ad0bf208c2999caeaa72dbf5578d244a1840755013977c89f1fd22defd047a9'],
-    //     'https://ropsten.infura.io/v3',
-    //   ),
-    //   network_id: '3',
-    // },
     ganache: {
       host: 'localhost',
       port: 7545,
