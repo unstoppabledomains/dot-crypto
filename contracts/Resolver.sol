@@ -8,8 +8,9 @@ import './controllers/MintingController.sol';
 
 contract Resolver is SignatureUtil {
 
-    event Set(uint256 indexed tokenId, uint256 indexed preset, bool indexed isNewKey, string key, string value);
-    event SetPreset(uint256 indexed tokenId, uint256 indexed preset);
+    event Set(uint256 indexed tokenId, string indexed key, string indexed value);
+    event NewKey(uint256 indexed tokenId, string indexed key);
+    event ResetRecords(uint256 indexed tokenId);
 
     // Mapping from token ID to preset id to key to value
     mapping (uint256 => mapping (uint256 =>  mapping (string => string))) internal _records;
@@ -33,20 +34,6 @@ contract Resolver is SignatureUtil {
     modifier whenResolver(uint256 tokenId) {
         require(address(this) == _registry.resolverOf(tokenId), "SimpleResolver: is not the resolver");
         _;
-    }
-
-    function presetOf(uint256 tokenId) external view returns (uint256) {
-        return _tokenPresets[tokenId];
-    }
-
-    function setPreset(uint256 presetId, uint256 tokenId) external {
-        require(_registry.isApprovedOrOwner(msg.sender, tokenId));
-        _setPreset(presetId, tokenId);
-    }
-
-    function setPresetFor(uint256 presetId, uint256 tokenId, bytes calldata signature) external {
-        _validate(keccak256(abi.encodeWithSelector(this.setPreset.selector, presetId, tokenId)), tokenId, signature);
-        _setPreset(presetId, tokenId);
     }
 
     function reset(uint256 tokenId) external {
@@ -229,10 +216,11 @@ contract Resolver is SignatureUtil {
         _reconfigure(keys, values, tokenId);
     }
 
+    // reset records
     function _setPreset(uint256 presetId, uint256 tokenId) internal {
         _tokenPresets[tokenId] = presetId;
         _registry.sync(tokenId, 0); // notify registry that domain records were reset
-        emit SetPreset(tokenId, presetId);
+        emit ResetRecords(tokenId);
     }
 
     /**
@@ -247,10 +235,15 @@ contract Resolver is SignatureUtil {
         bool isNewKey = bytes(_records[tokenId][preset][key]).length == 0;
         _registry.sync(tokenId, keyHash);
         _records[tokenId][preset][key] = value;
+
         if (bytes(_hashedKeys[keyHash]).length == 0) {
             _hashedKeys[keyHash] = key;
         }
-        emit Set(tokenId, preset, isNewKey, key, value);
+
+        emit Set(tokenId, key, value);
+        if (isNewKey) {
+            emit NewKey(tokenId, key);
+        }
     }
 
     /**

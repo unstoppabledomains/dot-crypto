@@ -62,21 +62,11 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
       ['value2', 'value3']
     );
 
-    // should setPreset
-    tx = await resolver.setPreset(1, tok)
-    console.log(`      ⓘ Resolver.setPreset: ${ getUsedGas(tx) }`)
-    assert.equal(
-      await resolver.presetOf(tok),
-      1
-    );
-
     // should reset
     tx = await resolver.reset(tok);
     console.log(`      ⓘ Resolver.reset: ${ getUsedGas(tx) }`)
-    assert.notEqual(
-      await resolver.presetOf(tok),
-      1
-    );
+    const event = tx.logs.find(e => e.event == 'ResetRecords')
+    assert.equal(event.args.tokenId.toString(), tok.toString())
 
     await registry.transferFrom(coinbase, accounts[1], tok)
 
@@ -156,28 +146,31 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
     assert.deepEqual(result.keys, keys)
   })
 
-  it('should set isNewKey = true for new keys isNewKey = false for already added keys', async () => {
+  it('should emit NewKey event new keys added', async () => {
     const tok = await initializeDomain('new-key')
-    let tx = await resolver.set('new-key', 'value', tok)
-    let event = tx.logs.reduce(e => e.event == 'Set')
+    const key = 'new-key'
+    const value = 'value';
+    let tx = await resolver.set(key, value, tok)
+    let event = tx.logs.find(e => e.event == 'NewKey')
+    assert.equal(event.args.tokenId, tok.toString())
+    assert.equal(event.args.key, utils.keccak256(key))
     
-    assert.isTrue(event.args.isNewKey)
-    
-    tx = await resolver.set('new-key', 'new-value', tok)
-    event = tx.logs.reduce(e => e.event == 'Set')
-
-    assert.isFalse(event.args.isNewKey)
+    tx = await resolver.set(key, value, tok)
+    event = tx.logs.find(e => e.event == 'NewKey')
+    assert.isUndefined(event)
   })
 
-  it('should product correct Set event', async () => {
+  it('should emit correct Set event', async () => {
     const tok = await initializeDomain('check-set-event')
-    const tx = await resolver.set('new-key', 'value', tok)
-    const event = tx.logs.reduce(e => e.event == 'Set')
+    const key = 'new-key'
+    const value = 'value';
+    const tx = await resolver.set(key, value, tok)
+    const event = tx.logs.find(e => e.event == 'Set')
     const args = event.args
+
     assert.equal(args.tokenId.toString(), tok.toString())
-    assert.equal(args.key, 'new-key')
-    assert.equal(args.value, 'value')
-    assert.equal(args.preset.toNumber(), 0)
+    assert.equal(args.key, utils.keccak256(key))
+    assert.equal(args.value, utils.keccak256(value))
   })
 
   it('should reconfigure resolver with new values', async () => {
