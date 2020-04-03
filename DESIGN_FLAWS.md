@@ -32,6 +32,11 @@ Other characters that may not be a part of the domain name are also unchecked li
 
 Ideally, we need to move `tokenId` parameters of `Sync` event that will allow us to query all events of the registry associated to given token. Currently this is impossible.
 
+### NewURI event doesn't contain initial owner
+
+Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to get the information how a new domain was minted.
+`Transfer` event is part of ERC721. We can not modify it, but we can add the initial owner information into `NewURI` event.
+
 ## Solvable by introducing new resolver
 
 ### Custom records can not be mirrored
