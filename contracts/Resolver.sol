@@ -240,10 +240,10 @@ contract Resolver is SignatureUtil {
             _hashedKeys[keyHash] = key;
         }
 
-        emit Set(tokenId, key, value);
         if (isNewKey) {
             emit NewKey(tokenId, key);
         }
+        emit Set(tokenId, key, value);
     }
 
     /**
