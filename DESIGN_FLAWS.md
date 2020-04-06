@@ -24,6 +24,11 @@ This can be a feature or a bug: when new resolver is assigned to the domain, it 
 
 Other characters that may not be a part of the domain name are also unchecked like emoji or special characters.
 
+Characters category:
+
+* lower case letters
+* allowed/unallowed special characters
+* `.`
 
 ### Cosmetical
 
