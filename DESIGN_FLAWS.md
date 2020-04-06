@@ -1,41 +1,48 @@
 # .crypto Design Flaws
 
-
-
 ## Solvable only by redeploying the registry
 
+### Fundamental
 
-### Shared resolver records are not reset on transfer
+#### Shared resolver records are not reset on transfer
 
 Issue can only be solved by clear guidance that shared resolver needs to be reset when it is being used by new owner after domain was transfered from previous owner.
 
-### Shared resolver records are not reset on resolver assignment
+#### Shared resolver records are not reset on resolver assignment
 
 This can be a feature or a bug: when new resolver is assigned to the domain, it might already have records which maybe a feature or a problem (see previous point)
 
 
-### Registry#Transfer event doesn't identify if resolver was reset for the domain
+#### Registry#Transfer event doesn't identify if resolver was reset for the domain
 
 `Transfer` event identifies the owner being change for the domain, however it doesn't identify if the resolver was also set to `0x00` or it was just the owner change. Requires manual check current resolver of a domain on `Transfer` event
 
-### Non-empty resolver assignment
 
-When resolver is assigned to a domain, mirror needs to manually fetch its records. This is doable for known records by querying them in large batches and impossible for unknown records
-
-### Minting subdomains doesn't check for valid label.
+#### Minting subdomains doesn't check for valid label.
 
 `Registry#_childId` should check that label doesn't contain `.`. Minting such domains results in invalid `tokenId` to be generated and minted which makes problems when generating a mirror.
 
 Other characters that may not be a part of the domain name are also unchecked like emoji or special characters.
 
-### Sync event has tokeinId paramters not on the first position
+
+### Cosmetical
+
+#### Sync event has tokeinId paramters not on the first position
 
 Ideally, we need to move `tokenId` parameters of `Sync` event that will allow us to query all events of the registry associated to given token. Currently this is impossible.
 
-### NewURI event doesn't contain initial owner
+#### NewURI event doesn't contain initial owner
 
 Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to get the information how a new domain was minted.
 `Transfer` event is part of ERC721. We can not modify it, but we can add the initial owner information into `NewURI` event.
+
+#### Additional convinience methods
+
+* `record(tokenId)` - return owner and resolver address of a domain with single query instead of two
+* `ownersOf(tokenIds string[])` - return list of owner addresses for given domains
+* `resolversOf(tokenIds string[])`
+* `records(tokenIds: string[])`
+
 
 ## Solvable by introducing new resolver
 
