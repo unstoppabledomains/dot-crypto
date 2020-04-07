@@ -153,7 +153,8 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
     let tx = await resolver.set(key, value, tok)
     let event = tx.logs.find(e => e.event == 'NewKey')
     assert.equal(event.args.tokenId, tok.toString())
-    assert.equal(event.args.key, utils.keccak256(key))
+    assert.equal(event.args.keyIndex, utils.keccak256(key))
+    assert.equal(event.args.key, key)
     
     tx = await resolver.set(key, value, tok)
     event = tx.logs.find(e => e.event == 'NewKey')
@@ -169,8 +170,10 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
     const args = event.args
 
     assert.equal(args.tokenId.toString(), tok.toString())
-    assert.equal(args.key, utils.keccak256(key))
-    assert.equal(args.value, utils.keccak256(value))
+    assert.equal(args.keyIndex, utils.keccak256(key))
+    assert.equal(args.valueIndex, utils.keccak256(value))
+    assert.equal(args.key, key)
+    assert.equal(args.value, value)
   })
 
   it('should reconfigure resolver with new values', async () => {
