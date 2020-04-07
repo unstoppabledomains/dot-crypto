@@ -8,8 +8,8 @@ import './controllers/MintingController.sol';
 
 contract Resolver is SignatureUtil {
 
-    event Set(uint256 indexed tokenId, string indexed key, string indexed value);
-    event NewKey(uint256 indexed tokenId, string indexed key);
+    event Set(uint256 indexed tokenId, string indexed keyIndex, string indexed valueIndex, string key, string value);
+    event NewKey(uint256 indexed tokenId, string indexed keyIndex, string key);
     event ResetRecords(uint256 indexed tokenId);
 
     // Mapping from token ID to preset id to key to value
@@ -241,9 +241,9 @@ contract Resolver is SignatureUtil {
         }
 
         if (isNewKey) {
-            emit NewKey(tokenId, key);
+            emit NewKey(tokenId, key, key);
         }
-        emit Set(tokenId, key, value);
+        emit Set(tokenId, key, value, key, value);
     }
 
     /**
