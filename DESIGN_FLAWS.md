@@ -48,8 +48,19 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 * `resolversOf(tokenIds string[])`
 * `records(tokenIds: string[])`
 
-
 ## Solvable by introducing new resolver
+
+### Ability to set record for multiple domains
+
+User may want to set ipfs hash for all domains he owns.
+That would require him to sign 10 txs at the moment.
+We need a method like:
+
+```
+setManyToEachFor(tokenIds, keys, values, signature)
+```
+
+## Solvabled by introducing new resolver
 
 ### Custom records can not be mirrored
 
