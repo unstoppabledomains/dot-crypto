@@ -60,7 +60,7 @@ We need a method like:
 setManyToEachFor(tokenIds, keys, values, signature)
 ```
 
-## Solvabled by introducing new resolver
+# SOLVED
 
 ### Custom records can not be mirrored
 
