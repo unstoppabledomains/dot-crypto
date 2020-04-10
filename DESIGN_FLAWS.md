@@ -53,7 +53,7 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 ### Ability to set record for multiple domains
 
 User may want to set ipfs hash for all domains he owns.
-That would require him to sign 10 txs at the moment.
+That would require him to generate as many signature as there are domains at the moment.
 We need a method like:
 
 ```
