@@ -30,6 +30,11 @@ Characters category:
 * allowed/unallowed special characters
 * `.`
 
+#### Bulk manage functionality
+
+Add the ability to bulk-transfer or bulk-assign resolver to many domains at once.
+
+
 ### Cosmetical
 
 #### Sync event has tokeinId paramters not on the first position
