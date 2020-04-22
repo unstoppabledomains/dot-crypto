@@ -30,6 +30,10 @@ Characters category:
 * allowed/unallowed special characters
 * `.`
 
+#### No error messages
+
+`require` calls on regisry do not have any error message specified.
+
 #### Bulk manage functionality
 
 Add the ability to bulk-transfer or bulk-assign resolver to many domains at once.
@@ -52,10 +56,6 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 * `ownersOf(tokenIds string[])` - return list of owner addresses for given domains
 * `resolversOf(tokenIds string[])`
 * `records(tokenIds: string[])`
-
-#### No error messages
-
-`require` calls on regisry do not have any error message specified.
 
 
 ## Solvable by introducing new resolver
