@@ -32,12 +32,16 @@ contract Resolver is SignatureUtil {
      * @dev Throws if called when not the resolver.
      */
     modifier whenResolver(uint256 tokenId) {
-        require(address(this) == _registry.resolverOf(tokenId), "SimpleResolver: is not the resolver");
+        require(address(this) == _registry.resolverOf(tokenId), "WRONG_RESOLVER_ADDRESS");
         _;
     }
 
-    function reset(uint256 tokenId) external {
-        require(_registry.isApprovedOrOwner(msg.sender, tokenId));
+    modifier whenApprovedOrOwner(uint256 tokenId) {
+        require(_registry.isApprovedOrOwner(msg.sender, tokenId), "NOT_APPROVED_OR_OWNER");
+        _;
+    }
+
+    function reset(uint256 tokenId) external whenApprovedOrOwner(tokenId) {
         _setPreset(now, tokenId);
     }
 
@@ -114,7 +118,7 @@ contract Resolver is SignatureUtil {
         string[] memory values,
         uint256 tokenId
     ) public {
-        require(_mintingController.isMinter(msg.sender));
+        require(_mintingController.isMinter(msg.sender), "CALLER_IS_NOT_MINTER");
         _setMany(_tokenPresets[tokenId], keys, values, tokenId);
     }
 
@@ -124,8 +128,7 @@ contract Resolver is SignatureUtil {
      * @param value The value to set key to.
      * @param tokenId The token id to set.
      */
-    function set(string calldata key, string calldata value, uint256 tokenId) external {
-        require(_registry.isApprovedOrOwner(msg.sender, tokenId));
+    function set(string calldata key, string calldata value, uint256 tokenId) external whenApprovedOrOwner(tokenId) {
         _set(_tokenPresets[tokenId], key, value, tokenId);
     }
 
@@ -166,8 +169,7 @@ contract Resolver is SignatureUtil {
         string[] memory keys,
         string[] memory values,
         uint256 tokenId
-    ) public {
-        require(_registry.isApprovedOrOwner(msg.sender, tokenId));
+    ) public whenApprovedOrOwner(tokenId) {
         _setMany(_tokenPresets[tokenId], keys, values, tokenId);
     }
 
@@ -194,8 +196,7 @@ contract Resolver is SignatureUtil {
      * @param values records values.
      * @param tokenId domain token id.
      */
-    function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public {
-        require(_registry.isApprovedOrOwner(msg.sender, tokenId));
+    function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public whenApprovedOrOwner(tokenId) {
         _reconfigure(keys, values, tokenId);
     }
 
