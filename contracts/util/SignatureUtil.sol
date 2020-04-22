@@ -39,7 +39,8 @@ contract SignatureUtil {
             _registry.isApprovedOrOwner(
                 signer,
                 tokenId
-            )
+            ),
+            "INVALID_SIGNATURE"
         );
 
         _nonces[tokenId] += 1;

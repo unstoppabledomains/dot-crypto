@@ -1,7 +1,7 @@
 const Web3 = require('web3')
 
 async function submitSigTransaction(contractToSend, contractToEncode, fromAccount, method, ...args) {
-    const abiVal = contractToEncode.constructor._json.abi.find(v => v.name === method)
+    const abiVal = contractToEncode.constructor._json.abi.find(v => {return v.name === method && v.inputs.length === args.length})
     const web3 = new Web3(contractToSend.constructor.web3.currentProvider)
     const nonce = await contractToSend.nonceOf(fromAccount)
 
