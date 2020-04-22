@@ -53,6 +53,11 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 * `resolversOf(tokenIds string[])`
 * `records(tokenIds: string[])`
 
+#### No error messages
+
+`require` calls on regisry do not have any error message specified.
+
+
 ## Solvable by introducing new resolver
 
 ### Ability to set record for multiple domains
