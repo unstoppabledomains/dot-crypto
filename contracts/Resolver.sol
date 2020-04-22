@@ -32,12 +32,12 @@ contract Resolver is SignatureUtil {
      * @dev Throws if called when not the resolver.
      */
     modifier whenResolver(uint256 tokenId) {
-        require(address(this) == _registry.resolverOf(tokenId), "WRONG_RESOLVER_ADDRESS");
+        require(address(this) == _registry.resolverOf(tokenId), "RESOLVER_DETACHED_FROM_DOMAIN");
         _;
     }
 
     modifier whenApprovedOrOwner(uint256 tokenId) {
-        require(_registry.isApprovedOrOwner(msg.sender, tokenId), "NOT_APPROVED_OR_OWNER");
+        require(_registry.isApprovedOrOwner(msg.sender, tokenId), "SENDER_IS_NOT_APPROVED_OR_OWNER");
         _;
     }
 
@@ -118,7 +118,7 @@ contract Resolver is SignatureUtil {
         string[] memory values,
         uint256 tokenId
     ) public {
-        require(_mintingController.isMinter(msg.sender), "CALLER_IS_NOT_MINTER");
+        require(_mintingController.isMinter(msg.sender), "SENDER_IS_NOT_MINTER");
         _setMany(_tokenPresets[tokenId], keys, values, tokenId);
     }
 
