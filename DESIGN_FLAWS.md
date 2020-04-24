@@ -38,6 +38,13 @@ Characters category:
 
 Add the ability to bulk-transfer or bulk-assign resolver to many domains at once.
 
+### Internal tokenId nonce is not consistent with acocunt nonce
+
+Suppose one has signed a tx using his account nonce to execute a TX.
+If this tx is not executed by any reason and user now manages his domain using internal tokenId nonce afterwards, it means that lost transaction can be reexecuted any time.
+
+Ideally the use of tx with internal tokenId nonce should invalidate all txs using account nonce and vice versa.
+
 
 ### Cosmetical
 
