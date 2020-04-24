@@ -52,10 +52,10 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 
 #### Additional convinience methods
 
-* `recordOf(tokenId)` - return owner and resolver address of a domain with single query instead of two
+* `setupOf(tokenId)` - return owner and resolver address of a domain with single query instead of two
 * `ownersOf(tokenIds string[])` - return list of owner addresses for given domains
 * `resolversOf(tokenIds string[])`
-* `recordsOf(tokenIds: string[])`
+* `setupsOf(tokenIds: string[])`
 
 
 ## Solvable by introducing new resolver
