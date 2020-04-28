@@ -6,7 +6,7 @@
     * Add `transferMultiOwnershipFromZilliqa(tokenIds[], publicKey, signature)`
     * Add `WhitelistedMinterController.migrateFromZilliqa(label, keys, values, zilAddress)`
     * Add storage for zilliqa domains ownership `mapping tokenId -> zilAddress`
-    * Ensure domains in transfer state can not be bestowed or managed.
+    * Ensure domains in zilliqa-ownership state can not be bestowed or managed.
   
 2. Prepare resolution libraries to use new .zil registry. 
     * JS
