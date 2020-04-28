@@ -2,8 +2,8 @@
 
 1. Prepare contracts:
     * Fix all issues from DESIGN_FLAWS.md
-    * Add  `Registry.transferOwnershipFromZilliqa(tokenId, publicKey, signature)` 
-    * Add `transferMultiOwnershipFromZilliqa(tokenIds[], publicKey, signature)`
+    * Add  `Registry.transferOwnershipFromZilliqa(tokenId, publicKey, signature, newOwnerAddress)` 
+    * Add `transferMultiOwnershipFromZilliqa(tokenIds[], publicKey, signature, newOwnerAddress)`
     * Add `WhitelistedMinterController.migrateFromZilliqa(label, keys, values, zilAddress)`
     * Add storage for zilliqa domains ownership `mapping tokenId -> zilAddress`
     * Ensure domains in zilliqa-ownership state can not be bestowed or managed.
