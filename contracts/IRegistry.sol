@@ -142,4 +142,8 @@ contract IRegistry is IERC721Metadata {
      */
     function controlledResolveTo(address to, uint256 tokenId) external;
 
+    /**
+     * TODO add description
+     */
+    function childIdOf(uint256 tokenId, string calldata label) external pure returns (uint256);
 }
