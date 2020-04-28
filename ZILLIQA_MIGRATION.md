@@ -20,8 +20,8 @@
     * Implement .zil blockchain mirror with the ability to mirror old zil address ownership
     * Disable transfer and manage functionality for domains without migrated ownership
     * Implement new transfer/manage functionality .zil domains with migrated ownership
-4. Data Migration
-    * For each zilliqa domain make transaction `Registry.migrateFromZilliqa`
+4. Build new Registry with `WhitelistedMinterController.migrateFromZilliqa`
+4. Release
     * Release resolution libraries 
     * Notify clients that library upgrade required.
     * Release website
