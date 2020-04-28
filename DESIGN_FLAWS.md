@@ -63,6 +63,8 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 * `ownersOf(tokenIds string[])` - return list of owner addresses for given domains
 * `resolversOf(tokenIds string[])`
 * `setupsOf(tokenIds: string[])`
+* `WhitelistedMinter.getDefaultResolver()` 
+
 
 
 ## Solvable by introducing new resolver
