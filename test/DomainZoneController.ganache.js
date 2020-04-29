@@ -73,4 +73,17 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
         values
     )
   });
+
+  it('should not allow mint subdomain from not whitelisted address', async () => {
+    const subdomainName = 'not-allowed-to-mint'
+    const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
+    await registry.addController(domainZoneController.address)
+    await mintingController.addMinter(domainZoneController.address)
+    try {
+      await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, [], [], {from: domainReceiver})
+      assert.fail('mintChild function should fail when trying to call from not allowed address')
+    } catch (e) {
+      assert.equal(e.reason, 'WhitelistedRole: caller does not have the Whitelisted role')
+    }
+  });
 })
