@@ -85,10 +85,20 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
   });
 
   it('should transfer minted domain to owner', async () => {
-
+    const subdomainName = 'transferred-subdomain'
+    const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
+    await registry.approve(domainZoneController.address, secondLevelTokenId)
+    await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, [], [], {from: whitelisted})
+    const subdomainTokenId = await registry.childIdOf(secondLevelTokenId, subdomainName)
+    assert.equal(
+        await registry.ownerOf(subdomainTokenId),
+        domainReceiver
+    )
   });
 
-  it('should allow mint subdomains only if second-level domain allowed', async () => {
-
+  it('should not allow minting from not allowed second-level domains', async () => {
+    const subdomainName = 'not-allowed-to-transfer'
+    const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
+    assert.isRejected(domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, [], [], {from: whitelisted}))
   });
 })

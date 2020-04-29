@@ -27,4 +27,5 @@ contract DomainZoneController is BulkWhitelistedRole {
         IResolver(resolver).reconfigure(keys, values, childTokenId);
         _registry.setOwner(to, childTokenId);
     }
+
 }
