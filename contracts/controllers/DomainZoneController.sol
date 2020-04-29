@@ -6,6 +6,7 @@ import "../IRegistry.sol";
 
 contract IResolver {
     function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public;
+    function setMany(string[] memory keys, string[] memory values, uint256 tokenId) public;
 }
 
 contract DomainZoneController is BulkWhitelistedRole {
@@ -28,4 +29,12 @@ contract DomainZoneController is BulkWhitelistedRole {
         _registry.setOwner(to, childTokenId);
     }
 
+    function resolveTo(address to, uint256 tokenId) external onlyWhitelisted {
+        _registry.resolveTo(to, tokenId);
+    }
+
+    function setMany(string[] memory keys, string[] memory values, uint256 tokenId) public onlyWhitelisted {
+        address resolver = _registry.resolverOf(tokenId);
+        IResolver(resolver).setMany(keys, values, tokenId);
+    }
 }
