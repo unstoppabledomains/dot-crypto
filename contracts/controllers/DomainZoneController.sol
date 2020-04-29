@@ -5,7 +5,7 @@ import "../util/BulkWhitelistedRole.sol";
 import "../IRegistry.sol";
 
 contract IResolver {
-    function preconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public;
+    function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public;
 }
 
 contract DomainZoneController is BulkWhitelistedRole {
@@ -22,8 +22,9 @@ contract DomainZoneController is BulkWhitelistedRole {
     function mintChild(address to, uint256 tokenId, string memory label, string[] memory keys, string[] memory values) public onlyWhitelisted {
         address resolver = _registry.resolverOf(tokenId);
         uint256 childTokenId = _registry.childIdOf(tokenId, label);
-        _registry.controlledMintChild(to, tokenId, label);
-        _registry.controlledResolveTo(resolver, childTokenId);
-        IResolver(resolver).preconfigure(keys, values, childTokenId);
+        _registry.mintChild(address(this), tokenId, label);
+        _registry.resolveTo(resolver, childTokenId);
+        IResolver(resolver).reconfigure(keys, values, childTokenId);
+        _registry.setOwner(to, childTokenId);
     }
 }

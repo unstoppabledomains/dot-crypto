@@ -49,8 +49,7 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
     const subdomainName = 'subdomain'
     const expectedDomainUri = `${subdomainName}.${secondLevelDomainName}.crypto`
     const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
-    await registry.addController(domainZoneController.address)
-    await mintingController.addMinter(domainZoneController.address)
+    await registry.approve(domainZoneController.address, secondLevelTokenId)
     await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, [], [], {from: whitelisted})
     const subdomainTokenId = await registry.childIdOf(secondLevelTokenId, subdomainName)
     assert.equal(
@@ -64,12 +63,11 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
     const keys = ['crypto.ETH.address'];
     const values = ['0x2a02559786988d4f65154391673f8323db1c7a30']
     const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
-    await registry.addController(domainZoneController.address)
-    await mintingController.addMinter(domainZoneController.address)
+    await registry.approve(domainZoneController.address, secondLevelTokenId)
     await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, keys, values, {from: whitelisted})
     const subdomainTokenId = await registry.childIdOf(secondLevelTokenId, subdomainName)
     assert.deepEqual(
-        await resolver.getMany(keys, subdomainTokenId),
+        await resolver.getMany(keys, subdomainTokenId, {from: domainReceiver}),
         values
     )
   });
@@ -77,13 +75,20 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
   it('should not allow mint subdomain from not whitelisted address', async () => {
     const subdomainName = 'not-allowed-to-mint'
     const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
-    await registry.addController(domainZoneController.address)
-    await mintingController.addMinter(domainZoneController.address)
+    await registry.approve(domainZoneController.address, secondLevelTokenId)
     try {
       await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, [], [], {from: domainReceiver})
       assert.fail('mintChild function should fail when trying to call from not allowed address')
     } catch (e) {
       assert.equal(e.reason, 'WhitelistedRole: caller does not have the Whitelisted role')
     }
+  });
+
+  it('should transfer minted domain to owner', async () => {
+
+  });
+
+  it('should allow mint subdomains only if second-level domain allowed', async () => {
+
   });
 })
