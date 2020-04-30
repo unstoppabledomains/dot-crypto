@@ -5,7 +5,8 @@ const DomainZoneController = artifacts.require('controller/DomainZoneController.
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
-const getUsedGas = require("./helpers/getUsedGas").getUsedGas;
+const usedGas = require("./helpers/getUsedGas");
+const getUsedGas = usedGas.getUsedGas;
 chai.use(chaiAsPromised)
 const assert = chai.assert
 
@@ -14,6 +15,7 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
   const secondLevelDomainName = 'unstoppable';
 
   before(async () => {
+    await usedGas.init()
     registry = await Registry.deployed()
     mintingController = await MintingController.deployed()
     resolver = await Resolver.deployed()
@@ -50,7 +52,8 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
     const expectedDomainUri = `${subdomainName}.${secondLevelDomainName}.crypto`
     const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
     await registry.approve(domainZoneController.address, secondLevelTokenId)
-    await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, [], [], {from: whitelisted})
+    const tx = await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, [], [], {from: whitelisted})
+    console.log(`      ⓘ DomainZoneController.mintChild - no records: ${ getUsedGas(tx) }`)
     const subdomainTokenId = await registry.childIdOf(secondLevelTokenId, subdomainName)
     assert.equal(
         await registry.tokenURI(subdomainTokenId),
@@ -60,11 +63,12 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
 
   it('should mint new child (subdomain) with predefined resolver and domain records', async () => {
     const subdomainName = 'subdomain-with-records'
-    const keys = ['crypto.ETH.address']
-    const values = ['0x2a02559786988d4f65154391673f8323db1c7a30']
+    const keys = ['crypto.ETH.address', 'crypto.DAI.address', 'crypto.TRX.address']
+    const values = ['0x2a02559786988d4f65154391673f8323db1c7a30', '0x2a02559786988d4f65154391673f8323db1c7a30', '0x2a02559786988d4f65154391673f8323db1c7a30']
     const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
     await registry.approve(domainZoneController.address, secondLevelTokenId)
-    await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, keys, values, {from: whitelisted})
+    const tx = await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, keys, values, {from: whitelisted})
+    console.log(`      ⓘ DomainZoneController.mintChild - three records: ${ getUsedGas(tx) }`)
     const subdomainTokenId = await registry.childIdOf(secondLevelTokenId, subdomainName)
     assert.deepEqual(
         await resolver.getMany(keys, subdomainTokenId, {from: domainReceiver}),
@@ -109,7 +113,8 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
     const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
     await registry.transferFrom(coinbase, domainZoneController.address, tokenId)
     assert.isRejected(registry.resolverOf(tokenId))
-    await domainZoneController.resolveTo(resolver.address, tokenId, {from: whitelisted})
+    const tx = await domainZoneController.resolveTo(resolver.address, tokenId, {from: whitelisted})
+    console.log(`      ⓘ DomainZoneController.resolveTo: ${ getUsedGas(tx) }`)
     assert.equal(
       await registry.resolverOf(tokenId),
       resolver.address
@@ -131,22 +136,23 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
   })
   
   it('should set records for domain', async () => {
-    const keys = ['crypto.ETH.address']
-    const values = ['0x2a02559786988d4f65154391673f8323db1c7a30']
+    const keys = ['crypto.ETH.address', 'crypto.DAI.address', 'crypto.TRX.address']
+    const values = ['0x2a02559786988d4f65154391673f8323db1c7a30', '0x2a02559786988d4f65154391673f8323db1c7a30', '0x2a02559786988d4f65154391673f8323db1c7a30']
     const domainName = 'set-many-records'
     await mintingController.mintSLD(coinbase, domainName)
     const tokenId = await registry.childIdOf(await registry.root(), domainName)
     const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
     await registry.resolveTo(resolver.address, tokenId)
     await registry.setOwner(domainZoneController.address, tokenId)
-    await domainZoneController.setMany(keys, values, tokenId, {from: whitelisted})
+    const tx = await domainZoneController.setMany(keys, values, tokenId, {from: whitelisted})
+    console.log(`      ⓘ DomainZoneController.setMany - three records: ${ getUsedGas(tx) }`)
     assert.deepEqual(
       await resolver.getMany(keys, tokenId),
       values
     )
   })
 
-  it('should not set records from not whitelisted addresse', async () => {
+  it('should not set records from not whitelisted address', async () => {
     const keys = ['crypto.ETH.address']
     const values = ['0x2a02559786988d4f65154391673f8323db1c7a30']
     const domainName = 'set-many-records-not-allowed'
@@ -161,5 +167,18 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
     } catch (e) {
         assert.equal(e.reason, 'WhitelistedRole: caller does not have the Whitelisted role')
     }
+  })
+
+  it('should emit MintChild event', async () => {
+    const subdomainName = 'mint-child-event'
+    const domainZoneController = await DomainZoneController.new(registry.address, [whitelisted])
+    await registry.approve(domainZoneController.address, secondLevelTokenId)
+    const tx = await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, [], [], {from: whitelisted})
+    const event = tx.logs.find(e => e.event == 'MintChild')
+    const subdomainTokenId = await registry.childIdOf(secondLevelTokenId, subdomainName)
+    assert.equal(
+        event.args.tokenId,
+        subdomainTokenId.toString()
+    )
   })
 })

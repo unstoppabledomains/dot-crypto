@@ -4,7 +4,8 @@ const Resolver = artifacts.require('Resolver.sol')
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
-const getUsedGas = require("./helpers/getUsedGas").getUsedGas;
+const usedGas = require("./helpers/getUsedGas");
+const getUsedGas = usedGas.getUsedGas;
 chai.use(chaiAsPromised)
 const assert = chai.assert
 const submitSigTransaction = require('./helpers/submitSigTransaction')
@@ -20,6 +21,10 @@ contract('Resolver', function([coinbase, notOwner]) {
     return tok;
   }
 
+  before(async () => {
+    await usedGas.init()
+  })
+
   beforeEach(async () => {
     registry = await Registry.deployed()
     mintingController = await MintingController.deployed()
@@ -27,7 +32,7 @@ contract('Resolver', function([coinbase, notOwner]) {
   })
 
   it('should reconfigure resolver with new values', async () => {
-    const tok = await initializeDomain('reconfigure')
+    const tok = (await initializeDomain('reconfigure')).toString(10)
     await resolver.set('old-key', 'old-value', tok)
     const tx = await submitSigTransaction(
         resolver,
@@ -57,7 +62,7 @@ contract('Resolver', function([coinbase, notOwner]) {
   })
 
   it('should setManyFor', async () => {
-    const tok = await initializeDomain('set-many-for')
+    const tok = (await initializeDomain('set-many-for')).toString(10)
     const keys = ['new-key-1', 'new-key-2'];
     const expectedValues = ['new-value-1', 'new-value-2'];
     const tx = await submitSigTransaction(

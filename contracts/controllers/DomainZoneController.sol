@@ -11,6 +11,8 @@ contract IResolver {
 
 contract DomainZoneController is BulkWhitelistedRole {
 
+    event MintChild(uint256 indexed tokenId);
+
     IRegistry internal _registry;
 
     constructor (IRegistry registry, address[] memory accounts) public {
@@ -27,6 +29,7 @@ contract DomainZoneController is BulkWhitelistedRole {
         _registry.resolveTo(resolver, childTokenId);
         IResolver(resolver).reconfigure(keys, values, childTokenId);
         _registry.setOwner(to, childTokenId);
+        emit MintChild(childTokenId);
     }
 
     function resolveTo(address to, uint256 tokenId) external onlyWhitelisted {
