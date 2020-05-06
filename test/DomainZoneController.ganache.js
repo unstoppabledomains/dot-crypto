@@ -42,7 +42,7 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
     }
   })
 
-  it('address should not be whitelisted if weren\'t added', async () => {
+  it('address should not be whitelisted if wasn\'t added', async () => {
      const domainZoneController = await DomainZoneController.new(registry.address, accounts)
      assert.isFalse(await domainZoneController.isWhitelisted(coinbase))
   })
@@ -176,9 +176,8 @@ contract('DomainZoneController', function([coinbase, whitelisted, domainReceiver
     const tx = await domainZoneController.mintChild(domainReceiver, secondLevelTokenId, subdomainName, [], [], {from: whitelisted})
     const event = tx.logs.find(e => e.event == 'MintChild')
     const subdomainTokenId = await registry.childIdOf(secondLevelTokenId, subdomainName)
-    assert.equal(
-        event.args.tokenId,
-        subdomainTokenId.toString()
-    )
+    assert.equal(event.args.tokenId, subdomainTokenId.toString())
+    assert.equal(event.args.parentTokenId, secondLevelTokenId.toString())
+    assert.equal(event.args.label, subdomainName)
   })
 })

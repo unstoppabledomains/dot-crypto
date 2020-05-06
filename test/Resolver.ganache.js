@@ -78,7 +78,7 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
     // should fail to set name if not owned
     await assert.isRejected(resolver.set('key', 'value', tok))
     await assert.isRejected(resolver.get('key', tok))
-  })
+  }) 
 
   it('should get key by hash', async () => {
     const tok = await initializeDomain('heyhash')
