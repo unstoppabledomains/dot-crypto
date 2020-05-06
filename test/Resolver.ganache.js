@@ -4,7 +4,8 @@ const Resolver = artifacts.require('Resolver.sol')
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
-const getUsedGas = require("./helpers/getUsedGas").getUsedGas;
+const usedGas = require("./helpers/getUsedGas");
+const getUsedGas = usedGas.getUsedGas;
 chai.use(chaiAsPromised)
 const assert = chai.assert
 const web3 = require('web3');
@@ -20,6 +21,10 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
     
     return tok;
   }
+
+  before(async () => {
+    await usedGas.init();
+  })
 
   beforeEach(async () => {
     registry = await Registry.deployed()
@@ -73,7 +78,7 @@ contract('Resolver', function([coinbase, notOwner, ...accounts]) {
     // should fail to set name if not owned
     await assert.isRejected(resolver.set('key', 'value', tok))
     await assert.isRejected(resolver.get('key', tok))
-  })
+  }) 
 
   it('should get key by hash', async () => {
     const tok = await initializeDomain('heyhash')

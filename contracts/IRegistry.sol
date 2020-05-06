@@ -142,4 +142,17 @@ contract IRegistry is IERC721Metadata {
      */
     function controlledResolveTo(address to, uint256 tokenId) external;
 
+    /**
+     * @dev Provides child token (subdomain) of provided tokenId.
+     * @param tokenId uint256 ID of the token
+     * @param label label of subdomain (for `aaa.bbb.crypto` it will be `aaa`)
+     */
+    function childIdOf(uint256 tokenId, string calldata label) external pure returns (uint256);
+
+    /**
+     * @dev Transfer domain ownership without resetting domain records.
+     * @param to address of new domain owner
+     * @param tokenId uint256 ID of the token to be transferred
+     */
+    function setOwner(address to, uint256 tokenId) external;
 }
