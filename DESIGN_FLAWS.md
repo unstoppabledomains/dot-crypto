@@ -48,6 +48,10 @@ Ideally the use of tx with internal tokenId nonce should invalidate all txs usin
 
 ### Cosmetical
 
+#### resolverOf throws error for 0x00 resolver
+
+We would prefer to just return empty resolver instead
+
 #### Sync event has tokeinId paramters not on the first position
 
 Ideally, we need to move `tokenId` parameters of `Sync` event that will allow us to query all events of the registry associated to given token. Currently this is impossible.
