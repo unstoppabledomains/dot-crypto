@@ -1,7 +1,6 @@
 node_modules/
 build/
 .chaindata/
-.truffle_artifacts/
 abi/
 EthereumController.key
 

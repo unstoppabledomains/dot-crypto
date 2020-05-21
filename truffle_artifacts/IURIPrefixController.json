@@ -1,0 +1,235 @@
+{
+  "contractName": "IURIPrefixController",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "prefix",
+          "type": "string"
+        }
+      ],
+      "name": "setTokenURIPrefix",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"internalType\":\"string\",\"name\":\"prefix\",\"type\":\"string\"}],\"name\":\"setTokenURIPrefix\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"setTokenURIPrefix(string)\":{\"details\":\"Function to control the token URI metadata prefix (base url).\",\"params\":{\"prefix\":\"string to set the base url to.\"}}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/derain/Projects/un-dot-crypto/contracts/controllers/IURIPrefixController.sol\":\"IURIPrefixController\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/derain/Projects/un-dot-crypto/contracts/controllers/IURIPrefixController.sol\":{\"keccak256\":\"0x36c1e37ace9d701c90e35fd3d0477d31660a27c151f152acf68e3e6a1ba27c5c\",\"urls\":[\"bzz-raw://ddb0ee020e15a6035190f083d3fa92371ecea0038a56b4db225a25219bd34b3c\",\"dweb:/ipfs/QmW6Hi23uK2L3CWhu6VDpygZBHwPZoD8cBTenEZwMEUu9y\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "\npragma solidity 0.5.12;\n\ninterface IURIPrefixController {\n\n    /**\n     * @dev Function to control the token URI metadata prefix (base url).\n     * @param prefix string to set the base url to.\n     */\n    function setTokenURIPrefix(string calldata prefix) external;\n\n}",
+  "sourcePath": "/Users/derain/Projects/un-dot-crypto/contracts/controllers/IURIPrefixController.sol",
+  "ast": {
+    "absolutePath": "/Users/derain/Projects/un-dot-crypto/contracts/controllers/IURIPrefixController.sol",
+    "exportedSymbols": {
+      "IURIPrefixController": [
+        2115
+      ]
+    },
+    "id": 2116,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2109,
+        "literals": [
+          "solidity",
+          "0.5",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "1:23:7"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 2115,
+        "linearizedBaseContracts": [
+          2115
+        ],
+        "name": "IURIPrefixController",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Function to control the token URI metadata prefix (base url).\n@param prefix string to set the base url to.",
+            "id": 2114,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setTokenURIPrefix",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2112,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2111,
+                  "name": "prefix",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2114,
+                  "src": "233:22:7",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2110,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "233:6:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "232:24:7"
+            },
+            "returnParameters": {
+              "id": 2113,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "265:0:7"
+            },
+            "scope": 2115,
+            "src": "206:60:7",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2116,
+        "src": "26:243:7"
+      }
+    ],
+    "src": "1:268:7"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/derain/Projects/un-dot-crypto/contracts/controllers/IURIPrefixController.sol",
+    "exportedSymbols": {
+      "IURIPrefixController": [
+        2115
+      ]
+    },
+    "id": 2116,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2109,
+        "literals": [
+          "solidity",
+          "0.5",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "1:23:7"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 2115,
+        "linearizedBaseContracts": [
+          2115
+        ],
+        "name": "IURIPrefixController",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Function to control the token URI metadata prefix (base url).\n@param prefix string to set the base url to.",
+            "id": 2114,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setTokenURIPrefix",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2112,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2111,
+                  "name": "prefix",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2114,
+                  "src": "233:22:7",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 2110,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "233:6:7",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "232:24:7"
+            },
+            "returnParameters": {
+              "id": 2113,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "265:0:7"
+            },
+            "scope": 2115,
+            "src": "206:60:7",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2116,
+        "src": "26:243:7"
+      }
+    ],
+    "src": "1:268:7"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.12+commit.7709ece9.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.16",
+  "updatedAt": "2020-05-21T10:43:06.669Z",
+  "devdoc": {
+    "methods": {
+      "setTokenURIPrefix(string)": {
+        "details": "Function to control the token URI metadata prefix (base url).",
+        "params": {
+          "prefix": "string to set the base url to."
+        }
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

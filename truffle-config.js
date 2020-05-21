@@ -32,5 +32,5 @@ module.exports = {
       },
     },
   },
-  contracts_build_directory: '.truffle_artifacts',
+  contracts_build_directory: 'truffle_artifacts',
 }
