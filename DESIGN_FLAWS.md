@@ -69,7 +69,10 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 * `setupsOf(tokenIds: string[])`
 * `WhitelistedMinter.getDefaultResolver()` 
 
+#### Implement metatransactions for ERC721 built-in methods
 
+* `setApprovalForAll` 
+* `approve`
 
 ## Solvable by introducing new resolver
 
