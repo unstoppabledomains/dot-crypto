@@ -68,6 +68,7 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 * `resolversOf(tokenIds string[])`
 * `setupsOf(tokenIds: string[])`
 * `WhitelistedMinter.getDefaultResolver()` 
+* `setupOf(tokenId, keys: string[])` - return owner address, resolver address, and values for specified record keys of the domain
 
 #### Implement metatransactions for ERC721 built-in methods and some our methods
 
