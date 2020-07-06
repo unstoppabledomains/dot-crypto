@@ -22,9 +22,9 @@ contract TwitterValidationOperator is WhitelistedRole {
     LinkTokenInterface internal _linkToken;
 
     /**
-    * @notice Deploy with the address of the LINK token and .crypto domains registry and payment amount in LINK for one valiation
-    * @dev Sets the LinkToken address, .crypto registry address and payment in LINK tokens for one validation
-    * @param registry The address of the .crypto registry
+    * @notice Deploy with the address of the LINK token, domains registry and payment amount in LINK for one valiation
+    * @dev Sets the LinkToken address, Registry address and payment in LINK tokens for one validation
+    * @param registry The address of the .crypto Registry
     * @param linkToken The address of the LINK token
     * @param payment Payment amount in LINK tokens for one validation
     */
@@ -44,9 +44,11 @@ contract TwitterValidationOperator is WhitelistedRole {
     }
 
     /**
-     * @notice Method will be called by Chainlink node in the end of the job. Provides user twitter name and validation signature.
-     * @dev Sets twitter username and signature to .crypto domain records.
-     * @param
+     * @notice Method will be called by Chainlink node in the end of the job. Provides user twitter name and validation signature
+     * @dev Sets twitter username and signature to .crypto domain records
+     * @param username Twitter username
+     * @param signature Signed twitter username. Ensures the validity of twitter username
+     * @param tokenId Domain token ID
      */
     function setValidation(string calldata username, string calldata signature, uint256 tokenId) external onlyWhitelisted {
         _withdrawableTokens = _withdrawableTokens.add(_paymentPerValidation);
