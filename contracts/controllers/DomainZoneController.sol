@@ -3,11 +3,7 @@ pragma experimental ABIEncoderV2;
 
 import "../util/BulkWhitelistedRole.sol";
 import "../IRegistry.sol";
-
-contract IResolver {
-    function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public;
-    function setMany(string[] memory keys, string[] memory values, uint256 tokenId) public;
-}
+import "../IResolver.sol";
 
 contract DomainZoneController is BulkWhitelistedRole {
 

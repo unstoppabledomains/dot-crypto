@@ -45,7 +45,7 @@ module.exports = (deployer, network, accounts) => {
     }
 
     await deployer.deploy(Resolver, registry.address, sunriseController.address)
-    const simple = await deployer.deploy(Simple)
+    await deployer.deploy(Simple)
 
     console.log('Migrated!')
   })

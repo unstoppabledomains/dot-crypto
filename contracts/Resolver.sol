@@ -4,9 +4,10 @@ pragma experimental ABIEncoderV2;
 import './Registry.sol';
 import './util/SignatureUtil.sol';
 import './controllers/MintingController.sol';
+import './IResolver.sol';
 // solium-disable error-reason
 
-contract Resolver is SignatureUtil {
+contract Resolver is SignatureUtil, IResolver {
 
     event Set(uint256 indexed tokenId, string indexed keyIndex, string indexed valueIndex, string key, string value);
     event NewKey(uint256 indexed tokenId, string indexed keyIndex, string key);
