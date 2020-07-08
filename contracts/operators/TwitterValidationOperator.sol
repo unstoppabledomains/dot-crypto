@@ -2,6 +2,7 @@ pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/access/roles/WhitelistedRole.sol";
+import "@openzeppelin/contracts/access/roles/CapperRole.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "../IRegistry.sol";
 import "../IResolver.sol";
@@ -10,10 +11,11 @@ interface LinkTokenInterface {
   function transfer(address to, uint256 value) external returns (bool success);
 }
 
-contract TwitterValidationOperator is WhitelistedRole {
+contract TwitterValidationOperator is WhitelistedRole, CapperRole {
     using SafeMath for uint256;
 
     event Validation(uint256 indexed tokenId);
+    event PaymentSet(uint256 paymentPerValidation);
 
     uint256 public withdrawableTokens;
     uint256 public paymentPerValidation;
@@ -26,15 +28,20 @@ contract TwitterValidationOperator is WhitelistedRole {
     * @dev Sets the LinkToken address, Registry address and payment in LINK tokens for one validation
     * @param _registry The address of the .crypto Registry
     * @param _linkToken The address of the LINK token
-    * @param _paymentPerValidation Payment amount in LINK tokens for one validation
+    * @param _paymentCappers Addresses allowed to update payment amount per validation
     */
-    constructor (IRegistry _registry, LinkTokenInterface _linkToken, uint256 _paymentPerValidation) public {
+    constructor (IRegistry _registry, LinkTokenInterface _linkToken, address[] memory _paymentCappers) public {
         require(paymentPerValidation >= 0, "Payment for one validation must be positive or zero");
         require(address(_registry) != address(0), "Registry address can not be zero");
         require(address(_linkToken) != address(0), "LINK token address can not be zero");
+        require(_paymentCappers.length > 0, "You should provide at least one address for setting payment per validation");
         Registry = _registry;
         LinkToken = _linkToken;
-        paymentPerValidation = _paymentPerValidation;
+        uint256 cappersCount = _paymentCappers.length;
+        for (uint256 i = 0; i < cappersCount; i++) {
+            addCapper(_paymentCappers[i]);
+        }
+        renounceCapper();
     }
 
     /**
@@ -59,6 +66,16 @@ contract TwitterValidationOperator is WhitelistedRole {
         Resolver.set("social.twitter.username", _username, _tokenId);
         Resolver.set("validation.social.twitter.username", _signature, _tokenId);
         emit Validation(_tokenId);
+    }
+
+    /**
+     * @notice Method allows to update payment per one validation in LINK tokens
+     * @dev Sets paymentPerValidation variable
+     * @param _paymentPerValidation Amount in LINK tokens
+     */
+    function setPaymentPerValidation(uint256 _paymentPerValidation) external onlyCapper {
+        paymentPerValidation = _paymentPerValidation;
+        emit PaymentSet(paymentPerValidation);
     }
 
     /**

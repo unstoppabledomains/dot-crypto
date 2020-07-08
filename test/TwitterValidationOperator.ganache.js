@@ -9,7 +9,7 @@ const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised)
 const assert = chai.assert
 
-contract('TwitterValidationOperator', function([coinbase, whitelisted, fundsReceiver]) {
+contract('TwitterValidationOperator', function([coinbase, whitelisted, paymentCapper, fundsReceiver]) {
   const domainName = 'twitter-validation'
   let linkToken, registry, resolver, mintingController, domainTokenId, operator
     
@@ -25,9 +25,10 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, fundsRece
   })
 
   beforeEach(async () => {
-    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, 1)
+    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, [paymentCapper])
     await registry.approve(operator.address, domainTokenId)
     await operator.addWhitelisted(whitelisted)
+    await operator.setPaymentPerValidation(1, {from: paymentCapper})
     await linkToken.transfer(operator.address, 100)
   })
 
@@ -98,12 +99,29 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, fundsRece
 
   it('should unlock predefined payment amount for valiation', async () => {
     const paymentPerValidation = 5;
-    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, paymentPerValidation)
+    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, [paymentCapper])
+    await operator.setPaymentPerValidation(paymentPerValidation, {from: paymentCapper})
     await registry.approve(operator.address, domainTokenId)
     await operator.addWhitelisted(whitelisted)
     await linkToken.transfer(operator.address, paymentPerValidation)
     await operator.setValidation('rainberk', 'signature', domainTokenId, {from: whitelisted})
     const tokensAvailable = (await operator.withdrawableTokens()).toNumber()
     assert.equal(tokensAvailable, paymentPerValidation)
+  })
+
+  it('should not allow set price per validation from Admin', async () => {
+    try {
+      await operator.setPaymentPerValidation(100, {from: coinbase})
+    } catch (e) {
+      assert.equal(e.reason, 'CapperRole: caller does not have the Capper role')
+    }
+  })
+
+  it('should not allow set price per valiation from Whitelisted', async () => {
+    try {
+      await operator.setPaymentPerValidation(100, {from: whitelisted})
+    } catch (e) {
+      assert.equal(e.reason, 'CapperRole: caller does not have the Capper role')
+    }
   })
 })
