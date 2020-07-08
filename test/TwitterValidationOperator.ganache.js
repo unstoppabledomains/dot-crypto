@@ -8,8 +8,10 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised)
 const assert = chai.assert
+const usedGas = require("./helpers/getUsedGas");
+const getUsedGas = usedGas.getUsedGas;
 
-contract('TwitterValidationOperator', function([coinbase, whitelisted, fundsReceiver]) {
+contract('TwitterValidationOperator', function([coinbase, whitelisted, paymentCapper, fundsReceiver]) {
   const domainName = 'twitter-validation'
   let linkToken, registry, resolver, mintingController, domainTokenId, operator
     
@@ -25,16 +27,32 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, fundsRece
   })
 
   beforeEach(async () => {
-    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, 1)
+    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, [paymentCapper])
     await registry.approve(operator.address, domainTokenId)
     await operator.addWhitelisted(whitelisted)
+    await operator.setPaymentPerValidation(1, {from: paymentCapper})
     await linkToken.transfer(operator.address, 100)
   })
 
   it('should set twitter username and signature', async () => {
-    await operator.setValidation('rainberk', 'signature', domainTokenId, {from: whitelisted})
-    const validationRecords = await resolver.getMany(['social.twitter.username', 'validation.social.twitter.username'], domainTokenId)
+    let tx = await operator.setValidation('rainberk', 'signature', domainTokenId, {from: whitelisted})
+    console.log(`      ⓘ TwitterValidationOperator.setValidation - first validation, first domain: ${ getUsedGas(tx) }`)
+    let validationRecords = await resolver.getMany(['social.twitter.username', 'validation.social.twitter.username'], domainTokenId)
     assert.deepEqual(validationRecords, ['rainberk', 'signature'])
+    
+    tx = await operator.setValidation('apple', 'apple-signature', domainTokenId, {from: whitelisted})
+    console.log(`      ⓘ TwitterValidationOperator.setValidation - second validation, first domain: ${ getUsedGas(tx) }`)
+    validationRecords = await resolver.getMany(['social.twitter.username', 'validation.social.twitter.username'], domainTokenId)
+    assert.deepEqual(validationRecords, ['apple', 'apple-signature'])
+
+    await mintingController.mintSLD(coinbase, 'testing-test')
+    const secondDomainTokenId = await registry.childIdOf(await registry.root(), 'testing-test')
+    await registry.resolveTo(resolver.address, secondDomainTokenId)
+    await registry.approve(operator.address, secondDomainTokenId)
+    tx = await operator.setValidation('google', 'google-signature', secondDomainTokenId, {from: whitelisted})
+    console.log(`      ⓘ TwitterValidationOperator.setValidation - third validation, second domain: ${ getUsedGas(tx) }`)
+    validationRecords = await resolver.getMany(['social.twitter.username', 'validation.social.twitter.username'], secondDomainTokenId)
+    assert.deepEqual(validationRecords, ['google', 'google-signature'])
   })
 
   it('should unlock LINK tokens after validation', async () => {
@@ -82,6 +100,7 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, fundsRece
   it('should not allowed to set validation from non-whitelised address', async () => {
     try {
       await operator.setValidation('rainberk', 'signature', domainTokenId, {from: fundsReceiver})
+      assert.fail('setValidation function should fail when trying to call from non-whitelisted address')
     } catch (e) {
       assert.equal(e.reason, 'WhitelistedRole: caller does not have the Whitelisted role')
     }
@@ -98,12 +117,62 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, fundsRece
 
   it('should unlock predefined payment amount for valiation', async () => {
     const paymentPerValidation = 5;
-    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, paymentPerValidation)
+    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, [paymentCapper])
+    await operator.setPaymentPerValidation(paymentPerValidation, {from: paymentCapper})
     await registry.approve(operator.address, domainTokenId)
     await operator.addWhitelisted(whitelisted)
     await linkToken.transfer(operator.address, paymentPerValidation)
     await operator.setValidation('rainberk', 'signature', domainTokenId, {from: whitelisted})
     const tokensAvailable = (await operator.withdrawableTokens()).toNumber()
     assert.equal(tokensAvailable, paymentPerValidation)
+  })
+
+  it('should not allow set price per validation from Admin', async () => {
+    try {
+      await operator.setPaymentPerValidation(100, {from: coinbase})
+      assert.fail('setPaymentPerValidation function should fail when trying to call from non-capper address')
+    } catch (e) {
+      assert.equal(e.reason, 'CapperRole: caller does not have the Capper role')
+    }
+  })
+
+  it('should not allow set price per valiation from Whitelisted', async () => {
+    try {
+      await operator.setPaymentPerValidation(100, {from: whitelisted})
+      assert.fail('setPaymentPerValidation function should fail when trying to call from non-capper address')
+    } catch (e) {
+      assert.equal(e.reason, 'CapperRole: caller does not have the Capper role')
+    }
+  })
+
+  it('should not allow validate if operator does not have enough LINK tokens on balance', async () => {
+    const paymentPerValidation = 5;
+    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, [paymentCapper])
+    await registry.approve(operator.address, domainTokenId)
+    await operator.addWhitelisted(whitelisted)
+    await operator.setPaymentPerValidation(paymentPerValidation, {from: paymentCapper})
+    await linkToken.transfer(operator.address, paymentPerValidation - 1)
+    try {
+      await operator.setValidation('rainberk', 'signature', domainTokenId, {from: whitelisted})
+      assert.fail('setValidation function should fail if does not have enough LINK on balance')
+    } catch (e) {
+      assert.equal(e.reason, 'Not enough of LINK tokens on balance')
+    }
+  })
+
+  it('should work with zero price', async () => {
+    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, [paymentCapper])
+    await registry.approve(operator.address, domainTokenId)
+    await operator.addWhitelisted(whitelisted)
+    await operator.setValidation('rainberk', 'signature', domainTokenId, {from: whitelisted})
+    const paymentPerValidation = (await operator.paymentPerValidation()).toNumber();
+    assert.equal(paymentPerValidation, 0);
+  })
+
+  it('should work with Registry.setApprovalForAll approval', async () => {
+    operator = await TwitterValidationOperator.new(registry.address, linkToken.address, [paymentCapper])
+    await registry.setApprovalForAll(operator.address, true)
+    await operator.addWhitelisted(whitelisted)
+    await operator.setValidation('rainberk', 'signature', domainTokenId, {from: whitelisted})
   })
 })
