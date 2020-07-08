@@ -12,6 +12,7 @@ Issue can only be solved by clear guidance that shared resolver needs to be rese
 
 This can be a feature or a bug: when new resolver is assigned to the domain, it might already have records which maybe a feature or a problem (see previous point)
 
+
 #### Registry#Transfer event doesn't identify if resolver was reset for the domain
 
 `Transfer` event identifies the owner being change for the domain, however it doesn't identify if the resolver was also set to `0x00` or it was just the owner change. Requires manual check current resolver of a domain on `Transfer` event
@@ -43,6 +44,7 @@ Suppose one has signed a tx using his account nonce to execute a TX.
 If this tx is not executed by any reason and user now manages his domain using internal tokenId nonce afterwards, it means that lost transaction can be reexecuted any time.
 
 Ideally the use of tx with internal tokenId nonce should invalidate all txs using account nonce and vice versa.
+
 
 ### Cosmetical
 
