@@ -9,6 +9,7 @@ import "../IResolver.sol";
 
 interface LinkTokenInterface {
   function transfer(address to, uint256 value) external returns (bool success);
+  function balanceOf(address _owner) external view returns (uint256 balance);
 }
 
 contract TwitterValidationOperator is WhitelistedRole, CapperRole {
@@ -54,13 +55,24 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole {
     }
 
     /**
+     * @dev Reverts if contract doesn not have enough LINK tokens to fulfil validation
+     */
+    modifier hasAvailableBalance() {
+        require(LinkToken.balanceOf(address(this)) >= withdrawableTokens.add(paymentPerValidation), "Not enough of LINK tokens on balance");
+        _;
+    }
+
+    /**
      * @notice Method will be called by Chainlink node in the end of the job. Provides user twitter name and validation signature
      * @dev Sets twitter username and signature to .crypto domain records
      * @param _username Twitter username
      * @param _signature Signed twitter username. Ensures the validity of twitter username
      * @param _tokenId Domain token ID
      */
-    function setValidation(string calldata _username, string calldata _signature, uint256 _tokenId) external onlyWhitelisted {
+    function setValidation(string calldata _username, string calldata _signature, uint256 _tokenId)
+      external
+      onlyWhitelisted
+      hasAvailableBalance {
         withdrawableTokens = withdrawableTokens.add(paymentPerValidation);
         IResolver Resolver = IResolver(Registry.resolverOf(_tokenId));
         Resolver.set("social.twitter.username", _username, _tokenId);

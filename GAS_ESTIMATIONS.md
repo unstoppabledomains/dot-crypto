@@ -52,6 +52,13 @@ May 6, 2020, 10:17 UTC
     ✓ should emit MintChild event (218ms)
 ```
 
+### Contract: TwitterValidationOperator
+```
+      ⓘ TwitterValidationOperator.setValidation - first validation, first domain: 226267 gas (~$0.0905, 200 USD/ETH, 2 Gas Price in Gwei)
+      ⓘ TwitterValidationOperator.setValidation - second validation, first domain: 103158 gas (~$0.0413, 200 USD/ETH, 2 Gas Price in Gwei)
+      ⓘ TwitterValidationOperator.setValidation - third validation, second domain: 130100 gas (~$0.052, 200 USD/ETH, 2 Gas Price in Gwei)
+```
+
 ## Geth
 ### Contract: Resolver
 ```
