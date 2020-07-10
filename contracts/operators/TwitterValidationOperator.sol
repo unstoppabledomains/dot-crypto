@@ -80,6 +80,14 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole {
     }
 
     /**
+     * @notice Method returns true if Node Operator able to set validation
+     * @dev Returns true or error
+     */
+    function canSetValidation() external view onlyWhitelisted hasAvailableBalance returns (bool) {
+        return true;
+    }
+
+    /**
      * @notice Method allows to update payment per one validation in LINK tokens
      * @dev Sets paymentPerValidation variable
      * @param _paymentPerValidation Amount in LINK tokens
