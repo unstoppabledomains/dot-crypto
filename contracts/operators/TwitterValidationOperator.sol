@@ -32,7 +32,6 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole {
     * @param _paymentCappers Addresses allowed to update payment amount per validation
     */
     constructor (IRegistry _registry, LinkTokenInterface _linkToken, address[] memory _paymentCappers) public {
-        require(paymentPerValidation >= 0, "Payment for one validation must be positive or zero");
         require(address(_registry) != address(0), "Registry address can not be zero");
         require(address(_linkToken) != address(0), "LINK token address can not be zero");
         require(_paymentCappers.length > 0, "You should provide at least one address for setting payment per validation");
