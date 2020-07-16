@@ -54,9 +54,9 @@ May 6, 2020, 10:17 UTC
 
 ### Contract: TwitterValidationOperator
 ```
-      ⓘ TwitterValidationOperator.setValidation - first validation, first domain: 226267 gas (~$0.0905, 200 USD/ETH, 2 Gas Price in Gwei)
-      ⓘ TwitterValidationOperator.setValidation - second validation, first domain: 103158 gas (~$0.0413, 200 USD/ETH, 2 Gas Price in Gwei)
-      ⓘ TwitterValidationOperator.setValidation - third validation, second domain: 130100 gas (~$0.052, 200 USD/ETH, 2 Gas Price in Gwei)
+      ⓘ TwitterValidationOperator.setValidation - first validation, first domain: 336743 gas (~$3.9236, 233.03 USD/ETH, 50 Gas Price in Gwei)
+      ⓘ TwitterValidationOperator.setValidation - second validation, first domain: 133193 gas (~$1.5519, 233.03 USD/ETH, 50 Gas Price in Gwei)
+      ⓘ TwitterValidationOperator.setValidation - third validation, second domain: 240128 gas (~$2.7979, 233.03 USD/ETH, 50 Gas Price in Gwei)
 ```
 
 ## Geth

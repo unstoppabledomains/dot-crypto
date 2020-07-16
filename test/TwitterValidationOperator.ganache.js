@@ -35,24 +35,24 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, paymentCa
   })
 
   it('should set twitter username and signature', async () => {
-    let tx = await operator.setValidation('rainberk', 'signature', domainTokenId, {from: whitelisted})
+    let tx = await operator.setValidation('rainberk', '0x1bd3c1e0eb3d9143d6365cfd328a002e01b01d1acd719b12d37d8791fbaeed7b0b850d995c3e32ba79b34dbb15962bd68529f9360eb7507961f67e7e6645e9a41b', domainTokenId, {from: whitelisted})
     console.log(`      ⓘ TwitterValidationOperator.setValidation - first validation, first domain: ${ getUsedGas(tx) }`)
     let validationRecords = await resolver.getMany(['social.twitter.username', 'validation.social.twitter.username'], domainTokenId)
-    assert.deepEqual(validationRecords, ['rainberk', 'signature'])
+    assert.deepEqual(validationRecords, ['rainberk', '0x1bd3c1e0eb3d9143d6365cfd328a002e01b01d1acd719b12d37d8791fbaeed7b0b850d995c3e32ba79b34dbb15962bd68529f9360eb7507961f67e7e6645e9a41b'])
     
-    tx = await operator.setValidation('apple', 'apple-signature', domainTokenId, {from: whitelisted})
+    tx = await operator.setValidation('apple', '0x1bd3c1e0eb3d9143d6365cfd328a002e01b01d1acd719b12d37d8791fbaeed7b0b850d995c3e32ba79b34dbb15962bd68529f9360eb7507961f67e7e6645e9a41b', domainTokenId, {from: whitelisted})
     console.log(`      ⓘ TwitterValidationOperator.setValidation - second validation, first domain: ${ getUsedGas(tx) }`)
     validationRecords = await resolver.getMany(['social.twitter.username', 'validation.social.twitter.username'], domainTokenId)
-    assert.deepEqual(validationRecords, ['apple', 'apple-signature'])
+    assert.deepEqual(validationRecords, ['apple', '0x1bd3c1e0eb3d9143d6365cfd328a002e01b01d1acd719b12d37d8791fbaeed7b0b850d995c3e32ba79b34dbb15962bd68529f9360eb7507961f67e7e6645e9a41b'])
 
     await mintingController.mintSLD(coinbase, 'testing-test')
     const secondDomainTokenId = await registry.childIdOf(await registry.root(), 'testing-test')
     await registry.resolveTo(resolver.address, secondDomainTokenId)
     await registry.approve(operator.address, secondDomainTokenId)
-    tx = await operator.setValidation('google', 'google-signature', secondDomainTokenId, {from: whitelisted})
+    tx = await operator.setValidation('google', '0x1bd3c1e0eb3d9143d6365cfd328a002e01b01d1acd719b12d37d8791fbaeed7b0b850d995c3e32ba79b34dbb15962bd68529f9360eb7507961f67e7e6645e9a41b', secondDomainTokenId, {from: whitelisted})
     console.log(`      ⓘ TwitterValidationOperator.setValidation - third validation, second domain: ${ getUsedGas(tx) }`)
     validationRecords = await resolver.getMany(['social.twitter.username', 'validation.social.twitter.username'], secondDomainTokenId)
-    assert.deepEqual(validationRecords, ['google', 'google-signature'])
+    assert.deepEqual(validationRecords, ['google', '0x1bd3c1e0eb3d9143d6365cfd328a002e01b01d1acd719b12d37d8791fbaeed7b0b850d995c3e32ba79b34dbb15962bd68529f9360eb7507961f67e7e6645e9a41b'])
   })
 
   it('should unlock LINK tokens after validation', async () => {
