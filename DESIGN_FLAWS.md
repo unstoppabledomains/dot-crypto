@@ -78,6 +78,9 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 
 ## Solvable by introducing new resolver
 
+### Emit ResetRecords event when call preconfigure method
+All new domains prefilled with records via preconfigure method. For consistency and easier keys gathering we need emit ResetRecords when domain preconfigured.
+
 ### Ability to set record for multiple domains
 
 User may want to set ipfs hash for all domains he owns.
