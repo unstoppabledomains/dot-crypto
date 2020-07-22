@@ -6,10 +6,11 @@
 
 Required to resolve a domain:
 
-* [Solidity ABI](https://solidity.readthedocs.io/en/v0.6.11/abi-spec.html) - Application Binary Interface
-* [Ethereum JSON RPC](https://eth.wiki/json-rpc/API) - access ethereum blockchain via JSON RPC interface
+* [JSON](https://www.json.org/json-en.html) - standard data interchange format in web
+* [Solidity ABI](https://solidity.readthedocs.io/en/v0.6.11/abi-spec.html) - function call parameters encoding/decoding algorithm
+* [Ethereum JSON RPC](https://eth.wiki/json-rpc/API) - access ethereum blockchain data via JSON RPC interface
 
-Additionally required to manage domain records and change management permission:
+Additionally required to manage domain records, transfer domains to other owner address and configure management permission:
 
 * [EIP-721](https://eips.ethereum.org/EIPS/eip-721) - ERC-721 Non-Fungible Token Standard
 * [Ethereum Transactions](https://docs.ethhub.io/using-ethereum/transactions/) - executing blockchain transactions
@@ -20,28 +21,30 @@ TODO: Add high level diagram on Ethereum infrastructure
 
 ## Registry Essentials
 
-The essential part of the Registry is to allow one to own a domain in a form of ERC721 token and associate records to it. 
+The essential part of the registry is to allow one to own a domain and associate records to it. 
+Domain ownership is held in a form of ERC721 token.
 
-A domain name is converted to a ERC721 token using the following algorithm.  See [Namehashing](#namehashing) for more information.
+A domain name is converted to a ERC721 token using a [Namehashing](#namehashing) algorithm.
 The records have a key-value form. 
-Multiple records with the same key are disallowed at the low level and have to be simulated in higher level. See [Records Reference]().
+**Multiple records with the same key are unsupported** at the low level and have to be simulated in higher level. See [Records Reference](#records-reference). An attempt to add a record that already exist on resolver will result in record value being overwritten.
 
-In addition to this, the Registry design has a capability for flexible records managements that allows to implement any records management permission model.
-The flexibility is achieved by introducing a Resolver contract as a separated contract that can hold records and associating a domain record with a single resolver contract address.
+In addition to this, the registry design has a capability for flexible records managements that allows to implement any records management permission model.
+The flexibility is achieved by introducing a Resolver contract as a separated contract that can hold records and associating a domain with a single resolver contract address.
 Records can be associated to a domain ONLY via a Resolver contract. 
+A single resolver can hold records for multiple domains.
 
-UD provides a default public resolver contract. See [Managing domain records]()
+UD provides a default public resolver contract. See [Managing domain records](#management)
 So the data structure of the registry looks in the following way (pseudocode):
 
 ``` solidity
-// Mapping from ERC721 token ID to an resolver address
+// Mapping from ERC721 token ID to a resolver address
 mapping (uint256 => address) internal _tokenResolvers;
 // Maping from ERC721 token ID to an owner address
 // Part of ERC721 standard
 mapping (uint256 => address) internal _tokenOwners;
 ```
 
-There are other structures available as part of ERC721 standard but they do not have any custom functionality on top. See the ERC721 standard for more information
+There are other structures available as part of ERC721 standard but they do not have any custom functionality on top. See the ERC721 standard for more information on additional permission data stored on the registry.
 
 Resolver data structure looks in the following way (pseudocode):
 
@@ -52,7 +55,7 @@ mapping mapping (uint256 =>  mapping (string => string)) internal _records;
 
 ## Resolving a domain
 
-Resolving a domain is a process of retrieving a domain name records when the domain name and required record names are given.
+Resolving a domain is a process of retrieving a domain records when the domain name and required record names are given.
 There is no limitation on who can read domain records on Registry side. Anyone having an access to Ethereum Node on the mainnet can resolve a domain.
 
 In order to resolve a domain, one would require to make 2 `eth_call` ethereum JSON RPC method calls:
@@ -74,26 +77,36 @@ keys.forEach((k, i) => console.log(k, values[i]));
 
 Reference:
 
-* `namehash` - namehashing algorithm implementation. See [Namehashing]().
-* `EthContract#call` - Ethereum JSON RPC implementation for `eth_call` method. See [Ethereum JSON RPC]()
+* `namehash` - namehashing algorithm implementation. See [Namehashing](#namehashing).
+* `EthContract#call` - Ethereum JSON RPC implementation for `eth_call` method. See [Ethereum JSON RPC](https://eth.wiki/json-rpc/API#eth_call)
 
+See [Records Reference](#records-reference) for more information on which specific records to query.
 
 ### Record Value Validation
 
-TODO
+Crypto resolver doesn't have any built-in record value validation when it is updated for two reasons:
 
-## Managing domain records
+* Any validation would require additional gas to be paid
+* Solidity is special purpose programming language that doesn't have any built-in data validation tools like Regular Expressions
+
+Any domain management application must perform record format validation before submitting a transaction.
+However, there is no guarantee that all management application will do it correctly. 
+That is why records must be validated when domain is resolved too.
+
+See [Records Reference](#records-reference) for more information for the validator of each record.
+
+## Managing domain records {#management}
 
 Domain records can be managed via default public resolver.
 One can develop its own custom resolver with any management permissions defined. 
 
 ### Using Default Public Resolver
 
-Default public resolver allows to manage all domain records for any address given a permission over domain as per [ERC721 "Transfer Mechanism"]() section. These includes:
+Default public resolver allows to manage all domain records for any address given a permission over domain as per [ERC721 "Transfer Mechanism"](https://eips.ethereum.org/EIPS/eip-721) section. These includes:
 
 * Owner address of a domain 
 * Approved address for a domain
-* Owner operator addresses
+* Owner's operator addresses
 
 See ERC721 on how those permissions can be granted and revoked.
 Any records change is submitted as a signed as a [ethereum blockchain transaction](https://ethereum.org/en/whitepaper/#messages-and-transactions). 
@@ -112,7 +125,7 @@ TODO: more information on how meta-transaction signature can be generated.
 
 TODO
 
-## Namehashing
+## Namehashing {#namehashing}
 
 Namehashing is an algorithm that converts a domain name in a classical format (like `www.example.crypto`) to ERC721 token.
 All .crypto ecosystem contracts accept domain name as a method argument in a form of ERC721 token.
@@ -120,19 +133,19 @@ All .crypto ecosystem contracts accept domain name as a method argument in a for
 TODO: text description of the algorithm
 
 Example implementation in JS: https://github.com/unstoppabledomains/resolution/blob/master/src/cns/namehash.ts
-One can verify his implementation of namehashing algorithm using the following reference: https://github.com/unstoppabledomains/resolution/blob/master/src/Cns.test.ts#L130
+One can verify his implementation of namehashing algorithm using the following reference:
 
-TODO: fill a reference table with valid token ID
+| Domain Name               | ERC721 Token                                                          |
+|---------------------------|-----------------------------------------------------------------------|
+| .                         | 0x0000000000000000000000000000000000000000000000000000000000000000    |
+| crypto                    | 0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f    |
+| example.crypto            | 0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e    |
+| www.example.crypto        | 0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1    |
+| welcome.to.ukraine.crypto | 0x8c2503ec1678c38aea1bb40b2c878feec5ba4807ab16293cb53cbf0b9a8a0533    |
 
-| Domain Name        | ERC721 Token |
-|--------------------|--------------|
-| .                  | 0x0000000    |
-| crypto             | 0x1111111    |
-| example.crypto     | 0x1111111    |
-| www.example.crypto | 0x1111111    |
 
 
-## Records Reference
+## Records Reference {#records-reference}
 
 TODO
 
@@ -142,5 +155,28 @@ TODO
 
 ### DNS records
 
+Resolver records may contain classical DNS records besides other records. In order to distinguish those from other crypto records, the `dns.*` namespace is used.  So DNS `A` corresponds to `dns.A` crypto record. Any [listed DNS record](https://en.wikipedia.org/wiki/List_of_DNS_record_types) as per RFC standards is supported. All record names must follow upper case naming convention.
+
+As crypto resolver doesn't support multiple records with the same key, but DNS does allow that, DNS record value must always be stored as [JSON](http://json.org) serialized array of strings. 
+Example 1: a domain that needs one `CNAME` record set to `example.com.` should be configured as one crypto record `dns.CNAME` set to `["example.com."]`.
+Example 2: a domain that needs two `A` records set to `10.0.0.1` and `10.0.0.2` should be configured as one crypto record `dns.A` set to `["10.0.0.1","10.0.0.2"]`.
+
+No other data transformation is required when converting a traditional DNS record into Crypto record other than serialization as JSON array of strings.
+
+TODO: confirm the following paragraphs with DNS technology experts
+
+Crypto records do not have a support for TTL at the moment. Ethereum blockchain has a built-in distribution system that automatically synchronizes updates and doesn't require TTL.
+
+Crypto records do not have a domain name associated to them. That is why there is no feature of storing your subdomain records inside a parent domain.
+Example: `www.example.com` record can only be set inside the same domain name but never inside `example.com`.
+
+
+## Security and Permission
+
 TODO
 
+### Ethereum Network Security
+
+### Domain Ownership protection
+
+### Sub-domains permission
