@@ -7,6 +7,7 @@
 Required to resolve a domain:
 
 * [JSON](https://www.json.org/json-en.html) - standard data interchange format in web
+* [SHA-3](https://en.wikipedia.org/wiki/SHA-3) - modern secure cryptographic hashing algorithm
 * [Solidity ABI](https://solidity.readthedocs.io/en/v0.6.11/abi-spec.html) - function call parameters encoding/decoding algorithm
 * [Ethereum JSON RPC](https://eth.wiki/json-rpc/API) - access ethereum blockchain data via JSON RPC interface
 
@@ -43,6 +44,8 @@ mapping (uint256 => address) internal _tokenResolvers;
 // Part of ERC721 standard
 mapping (uint256 => address) internal _tokenOwners;
 ```
+
+Registry is a "singleton" contract and only exists in a single instance deployed at [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe)
 
 There are other structures available as part of ERC721 standard but they do not have any custom functionality on top. See the ERC721 standard for more information on additional permission data stored on the registry.
 
@@ -95,7 +98,9 @@ That is why records must be validated when domain is resolved too.
 
 See [Records Reference](#records-reference) for more information for the validator of each record.
 
-## Managing domain records {#management}
+<div id="management"></div>
+
+## Managing domain records 
 
 Domain records can be managed via default public resolver.
 One can develop its own custom resolver with any management permissions defined. 
@@ -125,9 +130,11 @@ TODO: more information on how meta-transaction signature can be generated.
 
 TODO
 
-## Namehashing {#namehashing}
+<div id="namehashing"></div>
 
-Namehashing is an algorithm that converts a domain name in a classical format (like `www.example.crypto`) to ERC721 token.
+## Namehashing Domain Name
+
+Namehashing is an algorithm that converts a domain name in a classical format (like `www.example.crypto`) to ERC721 token id.
 All .crypto ecosystem contracts accept domain name as a method argument in a form of ERC721 token.
 
 TODO: text description of the algorithm
@@ -137,15 +144,15 @@ One can verify his implementation of namehashing algorithm using the following r
 
 | Domain Name               | ERC721 Token                                                          |
 |---------------------------|-----------------------------------------------------------------------|
-| .                         | 0x0000000000000000000000000000000000000000000000000000000000000000    |
-| crypto                    | 0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f    |
-| example.crypto            | 0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e    |
-| www.example.crypto        | 0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1    |
-| welcome.to.ukraine.crypto | 0x8c2503ec1678c38aea1bb40b2c878feec5ba4807ab16293cb53cbf0b9a8a0533    |
+| .                         | `0x0000000000000000000000000000000000000000000000000000000000000000`  |
+| crypto                    | `0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f`  |
+| example.crypto            | `0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e`  |
+| www.example.crypto        | `0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1`  |
+| welcome.to.ukraine.crypto | `0x8c2503ec1678c38aea1bb40b2c878feec5ba4807ab16293cb53cbf0b9a8a0533`  |
 
+<div id="records-reference"></div>
 
-
-## Records Reference {#records-reference}
+## Records Reference 
 
 TODO
 
