@@ -186,7 +186,7 @@ TODO
 
 TODO
 
-<div id='dns'></div>
+<div id='dns-records'></div>
 
 ### DNS records
 
@@ -204,6 +204,8 @@ Crypto records do not have a support for TTL at the moment. Ethereum blockchain 
 
 Crypto records do not have a domain name associated to them. That is why there is no feature of storing your subdomain records inside a parent domain.
 Example: `www.example.com` record can only be set inside the same domain name but never inside `example.com`.
+
+<div id="ipfs-records"></div>
 
 ### IPFS records
 

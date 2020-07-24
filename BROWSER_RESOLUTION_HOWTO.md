@@ -30,25 +30,27 @@ This document describe a recommended way to resolve blockchain domain within a c
 
 ## Browser Resolution Algorithm
 
-This section contains a description on how different crypto records configurations need to be interpreted by a browser.
-More general information on how a domain can records can be retrieved is available here.
-See [Network Configuration](./ARCHITECTURE.md#domain-resolution)
+Different crypto records configurations need to be interpreted differently by a browser.
+For More general information on how a crypto domain records can be retrieved
+see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
 
 A domain can be resolved to an IPFS hash or using a classical DNS resolution protocol.
 A browser may support any of these methods or both of them.
 
 Browsers supporting IPFS content display should always prioritize IPFS content to be displayed. 
-IPFS resolution is set using 2 records: `ipfs.html.value` and `ipfs.redirect_domain.value`.
+IPFS resolution is set using 2 records: 
+
+1. `ipfs.html.value` - an IPFS hash for the content to be displayed
+2. `ipfs.redirect_domain.value`. - an URL where a user suppose to be redirected.
+
+See [IPFS Records](./ARCHITECTURE.md#ipfs-records) for more information.
 
 If first record isn't set or IPFS protocol is not supported, a browser should lookup a second record.
 
 If none of IPFS records is set, a browser should fall back to DNS resolution. It is set within `dns.*` namespace.
-See [DNS Records](./ARCHITECTURE.md#dns) for more information
+See [DNS Records](./ARCHITECTURE.md#dns-records) for more information
 
-### Technical reference
+Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly. In case of blockchain domain names inside a browser that suppose to support both content display methods, it is preferred to prefix a protocol only after a domain being resolved based on specified records for a domain.
 
-1. [Domain Resolution](./ARCHITECTURE.md#domain-resolution) - general information on how any domain record can be retrieved.
-2. [DNS Records](./ARCHITECTURE.md#dns) - information on how DNS records are stored within crypto registry.
-3. [IPFS Protocol](https://en.wikipedia.org/wiki/InterPlanetary_File_System) - a general description of IPFS protocol
 
 
