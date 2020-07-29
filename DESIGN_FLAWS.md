@@ -76,6 +76,10 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 * `approve`
 * `setOwner`
 
+#### Never remove domain from _tokenUris
+
+Currently a domain can be removed from _tokenUris when it is burned. There is no sense in that and we prefer to make URI recoverable from namehash any time.
+
 ## Solvable by introducing new resolver
 
 ### Emit ResetRecords event when call preconfigure method
