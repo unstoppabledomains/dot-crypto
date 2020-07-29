@@ -31,26 +31,33 @@ This document describe a recommended way to resolve blockchain domain within a c
 ## Browser Resolution Algorithm
 
 Different crypto records configurations need to be interpreted differently by a browser.
-For More general information on how a crypto domain records can be retrieved
+For more general information on how a crypto domain records can be retrieved
 see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
 
-A domain can be resolved to an IPFS hash or using a classical DNS resolution protocol.
+A domain can be resolved to a distributed file system hash or using a classical DNS resolution protocol.
 A browser may support any of these methods or both of them.
+Distributed file system protocol currently supported are:
 
-Browsers supporting IPFS content display should always prioritize IPFS content to be displayed. 
-IPFS resolution is set using 2 records: 
+* [IPFS]() defining `ipfs://` protocol
+* [Swarm]() defining `bzz://` protocol
 
-1. `ipfs.html.value` - an IPFS hash for the content to be displayed
-2. `ipfs.redirect_domain.value`. - an URL where a user suppose to be redirected.
+Browsers supporting distributed content protocol content display should always prioritize distributed content to be displayed. 
+A ditributed content hash for a protocol is stored in a record `dweb.<protocol>.hash`. Ex: `dweb.bzz.hash` for Swarm.
+
+A domain can have a single content hash for each protocol. A browser can select a protocol it has a support for.
+If browser is supporting both protocols, it should prioritize a protocol based on `browser.preferred_protocol` record that can be set to one of the following HTML transfer protocols:
+
+* http
+* https
+* bzz
+* ipfs
 
 See [IPFS Records](./ARCHITECTURE.md#ipfs-records) for more information.
 
-If first record isn't set or IPFS protocol is not supported, a browser should lookup a second record.
-
-If none of IPFS records is set, a browser should fall back to DNS resolution. It is set within `dns.*` namespace.
+If none of dweb hash records is set, a browser should fall back to DNS resolution. It is set within `dns.*` namespace.
 See [DNS Records](./ARCHITECTURE.md#dns-records) for more information
 
-Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly. In case of blockchain domain names inside a browser that suppose to support both content display methods, it is preferred to prefix a protocol only after a domain being resolved based on specified records for a domain.
+Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly by the user. In case of blockchain domain names inside a browser that suppose to support both content display methods, it is preferred to determine a protocol only after a domain being resolved based on specified records for a domain.
 
 
 

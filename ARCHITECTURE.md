@@ -163,10 +163,10 @@ TODO
 Namehashing is an algorithm that converts a domain name in a classical format (like `www.example.crypto`) to ERC721 token id.
 All .crypto ecosystem contracts accept domain name as a method argument in a form of ERC721 token.
 
-TODO: text description of the algorithm
+Namehashing is defined as a part of [EIP-137](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-137.md#namehash-algorithm) standard.
 
 Example implementation in JS: https://github.com/unstoppabledomains/resolution/blob/master/src/cns/namehash.ts
-One can verify his implementation of namehashing algorithm using the following reference:
+One can verify his implementation of namehashing algorithm using the following reference table:
 
 | Domain Name               | ERC721 Token                                                          |
 |---------------------------|-----------------------------------------------------------------------|
