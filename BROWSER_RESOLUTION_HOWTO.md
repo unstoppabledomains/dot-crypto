@@ -1,3 +1,6 @@
+Questions:
+How do DNS records for sub domains work if the parent domains show these records?
+
 # Browser Resolution How-to
 
 This document describe a recommended way to resolve blockchain domain within a classical HTTP Web Browser or a Dapp Browser.
