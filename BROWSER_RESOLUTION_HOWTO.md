@@ -2,7 +2,7 @@
 
 * Would a browser will be able to resolve a domain first and apply the protocol prefix then?
 * How do DNS records for sub domains work if the parent domains show these records?
-* Is Cloudflare DNS over HTTPs would a satisfyng solution to resolve domains instead of direct blockchain calls for all browsers?
+* Is Cloudflare DNS over HTTPs a satisfyng solution to resolve domains instead of direct blockchain calls for Brave?
 
 # Browser Resolution How-to
 
@@ -47,7 +47,7 @@ This document describe a recommended way to resolve blockchain domain within a c
 In addition to base browser content display protocol like `http`, `https` or `ftp`. Blockchain domains can also be configured
 for distributed content protocol like `ipfs`. It is strongly recommended for a browser to support the following distributed protocols:
 
-* [IPFS](https://en.wikipedia.org/wiki/InterPlanetary_File_System#:~:text=The%20InterPlanetary%20File%20System%20(IPFS,namespace%20connecting%20all%20computing%20devices.) defining `ipfs://` protocol
+* [IPFS](https://en.wikipedia.org/wiki/InterPlanetary_File_System) defining `ipfs://` protocol
 * [BZZ](https://swarm-guide.readthedocs.io/en/stable/architecture.html#the-bzz-protocol) defining `bzz://` protocol
 
 A browser may support any of traditional or distributed protocols that would still make crypto domains websites displayable.
