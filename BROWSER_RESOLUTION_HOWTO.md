@@ -1,5 +1,8 @@
-Questions:
-How do DNS records for sub domains work if the parent domains show these records?
+# Questions:
+
+* Would a browser will be able to resolve a domain first and apply the protocol prefix then?
+* How do DNS records for sub domains work if the parent domains show these records?
+* Is Cloudflare DNS over HTTPs would a satisfyng solution to resolve domains instead of direct blockchain calls for all browsers?
 
 # Browser Resolution How-to
 
@@ -42,12 +45,12 @@ This document describe a recommended way to resolve blockchain domain within a c
 ## Content Display Protocol
 
 In addition to base browser content display protocol like `http`, `https` or `ftp`. Blockchain domains can also be configured
-for distributed content protocol like `ipfs` besides traditional protocols. It is strongly recommended for a browser to support the following distributed protocols:
+for distributed content protocol like `ipfs`. It is strongly recommended for a browser to support the following distributed protocols:
 
 * [IPFS](https://en.wikipedia.org/wiki/InterPlanetary_File_System#:~:text=The%20InterPlanetary%20File%20System%20(IPFS,namespace%20connecting%20all%20computing%20devices.) defining `ipfs://` protocol
 * [BZZ](https://swarm-guide.readthedocs.io/en/stable/architecture.html#the-bzz-protocol) defining `bzz://` protocol
 
-A browser may support any of traditional or distributed protocols.
+A browser may support any of traditional or distributed protocols that would still make crypto domains websites displayable.
 
 ## Records related to browser resolution
 
@@ -63,15 +66,7 @@ see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
 
 ## Browser Resolution Algorithm
 
-Different crypto records configurations need to be interpreted differently by a browser.
 This section explains how differrent records configuration of a domain should be interpreted by the browser.
-
-Browsers supporting distributed content protocol should always prioritize distributed content to be displayed. 
-A domain can have a single content hash for each distributed protocol stored in `browser.dweb.<protocol>.hash`. Ex: `browser.dweb.bzz.hash` for Swarm's `bzz` protocol.
-
-
-If none of dweb hash records is set, a browser should fall back to DNS resolution. It is set within `dns.*` namespace.
-See [DNS Records](./ARCHITECTURE.md#dns-records) for more information
 
 A browser can select a protocol it has a support for.
 If a domain is configured for multiple protocols, it should prioritize a protocol based on `browser.preferred_protocol` record that can be set to one of the following HTML transfer protocols:
@@ -80,6 +75,12 @@ If a domain is configured for multiple protocols, it should prioritize a protoco
 * https
 * bzz
 * ipfs
+
+Browsers supporting distributed content protocol should always prioritize distributed content to be displayed for domains that do not have `browser.preferred_protocol` record set to tranditional protocol. 
+A domain can have a single content hash for each distributed protocol stored in `browser.dweb.<protocol>.hash`. Ex: `browser.dweb.bzz.hash` for Swarm's `bzz` protocol.
+
+If none of dweb hash records is set, a browser should fall back to DNS resolution that is set within `browser.dns.*` namespace.
+See [DNS Records](./ARCHITECTURE.md#dns-records) for more information
 
 Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly by the user. In case of blockchain domain names inside a browser that suppose to support many protocols, it is preferred to determine a protocol only after a domain being resolved based on specified records for a domain.
 
