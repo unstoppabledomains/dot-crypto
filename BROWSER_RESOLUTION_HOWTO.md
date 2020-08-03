@@ -66,7 +66,7 @@ see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
 Different crypto records configurations need to be interpreted differently by a browser.
 This section explains how differrent records configuration of a domain should be interpreted by the browser.
 
-Browsers supporting distributed content protocol content display should always prioritize distributed content to be displayed. 
+Browsers supporting distributed content protocol should always prioritize distributed content to be displayed. 
 A domain can have a single content hash for each distributed protocol stored in `browser.dweb.<protocol>.hash`. Ex: `browser.dweb.bzz.hash` for Swarm's `bzz` protocol.
 
 
@@ -93,6 +93,4 @@ Most .crypto domains as of Q3 2020 are configured using legacy record names for 
 `ipfs.html.value` deprecated in favor of `browser.dweb.ipfs.hash`
 `ipfs.redirect_domain` deprecated in favor of `browser.dweb.redirect_url`
 
-A browser is strongly recommended to support those records as a fallback when `br`
-
-TODO describe how to handle them
+A browser is strongly recommended to support those records as a fallback when corresponding replacement records are not set.
