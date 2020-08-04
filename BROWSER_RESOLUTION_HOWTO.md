@@ -1,9 +1,16 @@
 # Questions:
 
-* Would a browser will be able to resolve a domain first and apply the protocol prefix then?
-* How do DNS records for sub domains work if the parent domains show these records?
-* Is Cloudflare DNS over HTTPs a satisfyng solution to resolve domains instead of direct blockchain calls for Brave?
-
+* DNS protocol questions 
+  * How do DNS records for sub domains work if the parent domains show these records?
+* CloudFlare
+  * We see your solution now works for DNS over HTTP. Is there any specific reason why it requires DNS over HTTP? It seems to be expandable to classical DNS easily. Is there any downside of that?
+  * Are you planning to open source your IPFS gateway and DNS gateway you are using? We think it can be important to brand this solution as completely decentralized by allowing people to launch their own gateways.
+  
+* Brave
+  * Is Cloudflare DNS over HTTPs a satisfyng solution to resolve domains instead of direct blockchain calls for Brave?
+  * Would a browser be able to resolve a domain first and apply the protocol prefix then?
+  
+ 
 # Browser Resolution How-to
 
 This document describe a recommended way to resolve blockchain domain within a classical HTTP Web Browser or a Dapp Browser.
