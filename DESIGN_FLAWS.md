@@ -38,12 +38,24 @@ Characters category:
 
 Add the ability to bulk-transfer or bulk-assign resolver to many domains at once.
 
-### Internal tokenId nonce is not consistent with acocunt nonce
+#### Internal tokenId nonce is not consistent with acocunt nonce
 
 Suppose one has signed a tx using his account nonce to execute a TX.
 If this tx is not executed by any reason and user now manages his domain using internal tokenId nonce afterwards, it means that lost transaction can be reexecuted any time.
 
 Ideally the use of tx with internal tokenId nonce should invalidate all txs using account nonce and vice versa.
+
+#### Reverse resolution support
+
+Add ability to reverse resolve owner address to domain name
+
+``` solidity
+domainOf(address): string
+tokenOf(address): uint256
+setDomainOf(tokenId)
+setDomainOfFor(tokenId, signature)
+```
+
 
 
 ### Cosmetical
@@ -79,17 +91,6 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 #### Never remove domain from _tokenUris
 
 Currently a domain can be removed from _tokenUris when it is burned. There is no sense in that and we prefer to make URI recoverable from namehash any time.
-
-#### Reverse resolution support
-
-Add ability to reverse resolve owner address to domain name
-
-``` solidity
-domainOf(address): string
-tokenOf(address): uint256
-setDomainOf(tokenId)
-setDomainOfFor(tokenId, signature)
-```
 
 ## Solvable by introducing new resolver
 
