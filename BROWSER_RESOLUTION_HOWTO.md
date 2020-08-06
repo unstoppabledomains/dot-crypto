@@ -99,7 +99,7 @@ Generally browsers automatically add `http://` prefix for any domain in the addr
 
 Most .crypto domains as of Q3 2020 are configured using legacy record names for IPFS hash and redirect domain:
 
-`ipfs.html.value` deprecated in favor of `browser.dweb.ipfs.hash`
-`ipfs.redirect_domain` deprecated in favor of `browser.dweb.redirect_url`
+1. `ipfs.html.value` deprecated in favor of `browser.dweb.ipfs.hash`
+2. `ipfs.redirect_domain` deprecated in favor of `browser.dweb.redirect_url`
 
 A browser is strongly recommended to support those records as a fallback when corresponding replacement records are not set.
