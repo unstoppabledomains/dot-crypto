@@ -11,6 +11,7 @@
 * Brave
   * Is Cloudflare DNS over HTTPs a satisfyng solution to resolve domains instead of direct blockchain calls for Brave? Cloudflare DNS seems like more centralized approach to resovle domain records.
   * Would a browser be able to resolve a domain first and apply the protocol prefix then?
+  * Brave currently has metamask built-in which uses infura eth endpoint by default. We think infura eth node is fine to be used for domains resolution too. Is there any reason why cloudflare eth node is better for domains resolution?
  
 # Browser Resolution How-to
 
