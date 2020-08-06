@@ -15,6 +15,7 @@
 # Browser Resolution How-to
 
 This document describe a recommended way to resolve blockchain domain within a classical HTTP Web Browser or a Dapp Browser.
+The document assumes that one having a basic understanding of how domain records are retrieved in general. See [Domain Resolution](./ARCHITECTURE.md#domain-resolution)
 
 ## End user features
 
@@ -23,26 +24,26 @@ This document describe a recommended way to resolve blockchain domain within a c
 1. Given a blockchain domain name configured to have a DNS record attached.
 2. User enters a crypto domain within an address bar of a browser.
 3. A browser resolves a domain and gets specified DNS records.
-4. A browser requests and displays the content using DNS protocol.
+4. A browser requests and displays the content using DNS protocol and HTTP protocol.
 
 ### Distributed Website Browsing
 
-1. Given a blockchain domain name configured to have a distributed network content hash
+1. Given a blockchain domain name configured to have a distributed network content hash (like IPFS)
 2. User enters a crypto domain within an address bar of a browser.
-3. A browser resolves a domain and gets eth content hash of the domain
-4. A browser retrieves a content by the hash using a related protocol
+3. A browser resolves a domain and gets the content hash of a domain
+4. A browser retrieves a content by the hash using a related protocol and displays the content in browser
 
-### Redirect fallback
+### Domain Level Redirect
 
 1. Given a blockchain domain name configured to have a redirect url and IPFS hash
-2. Given a browser that doesn't suppor IPFS protocol
-2. User enters a crypto domain within an address bar of a browser.
-3. A browser resolves a domain to a IPFS content hash that 
-4. A browser retrieves a content by the hash using a related protocol
+2. Given a browser that doesn't support IPFS protocol
+3. User enters a crypto domain within an address bar of a browser.
+4. A browser resolves a domain to the given records
+5. A browser redirects user to the redirect URL because IPFS protocol is not supported
 
 ### Resolution Configuration
 
-1. Given a user that want to change its eth provider service.
+1. Given a user that want to change its ETH provider service.
 2. User goes to browser settings crypto domains section.
 3. User changes ethereum node URL from default to any other.
 4. User changes Registry Address for each support crypto registry.
