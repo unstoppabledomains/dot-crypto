@@ -70,7 +70,7 @@ All records related to browser resolution are stored within `browser.*` namespac
 * `browser.dns.*` - for traditional DNS records
 * `brwoser.dweb.*` - for distributed content records
 
-For a detailed records reference see [IPFS Records](./RECORDS_REFERRENCE.md).
+For a detailed records reference see [Records Referrence](./RECORDS_REFERRENCE.md).
 
 If you are looking for a way to get records associated to a domain,
 see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
