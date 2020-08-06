@@ -87,6 +87,8 @@ Add ability to reverse resolve owner address to domain name
 ``` solidity
 domainOf(address): string
 tokenOf(address): uint256
+setDomainOf(tokenId)
+setDomainOfFor(tokenId, signature)
 ```
 
 ## Solvable by introducing new resolver
