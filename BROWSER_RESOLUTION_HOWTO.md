@@ -5,6 +5,8 @@
   * Is `ttl` really unrequired for blockchain domain names?
     * Can DNS server always resolve domains in real time without cache?
     * Does browser relay on TTL to cache dns resolutions inside?
+  * "browser.*" namespace problem
+  * "ttl" has to be supported
 * CloudFlare
   * Ethereum Gateway response format incompatibility: https://github.com/ethers-io/ethers.js/issues/949#issuecomment-662940656
   * We see your solution now works for DNS over HTTP. Is there any specific reason why it requires DNS over HTTP? It seems to be expandable to classical DNS easily. Is there any downside of that?
