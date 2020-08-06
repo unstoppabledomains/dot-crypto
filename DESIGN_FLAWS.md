@@ -80,6 +80,17 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 
 Currently a domain can be removed from _tokenUris when it is burned. There is no sense in that and we prefer to make URI recoverable from namehash any time.
 
+#### Reverse resolution support
+
+Add ability to reverse resolve owner address to domain name
+
+``` solidity
+domainOf(address): string
+tokenOf(address): uint256
+setDomainOf(tokenId)
+setDomainOfFor(tokenId, signature)
+```
+
 ## Solvable by introducing new resolver
 
 ### Emit ResetRecords event when call preconfigure method
