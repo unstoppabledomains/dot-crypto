@@ -3,7 +3,7 @@
 * DNS protocol questions 
   * How do DNS records for sub domains work if the parent domains show these records?
   * Is `ttl` really unrequired for blockchain domain names?
-    * Can DNS server always resolve domains in real time?
+    * Can DNS server always resolve domains in real time without cache?
     * Does browser relay on TTL to cache dns resolutions inside?
 * CloudFlare
   * We see your solution now works for DNS over HTTP. Is there any specific reason why it requires DNS over HTTP? It seems to be expandable to classical DNS easily. Is there any downside of that?
