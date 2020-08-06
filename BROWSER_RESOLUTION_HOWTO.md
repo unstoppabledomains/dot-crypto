@@ -9,7 +9,7 @@
   * We see your solution now works for DNS over HTTP. Is there any specific reason why it requires DNS over HTTP? It seems to be expandable to classical DNS easily. Is there any downside of that?
   * Are you planning to open source your IPFS gateway and DNS gateway you are using? We think it can be important to brand this solution as completely decentralized by allowing people to launch their own gateways.
 * Brave
-  * Is Cloudflare DNS over HTTPs a satisfyng solution to resolve domains instead of direct blockchain calls for Brave?
+  * Is Cloudflare DNS over HTTPs a satisfyng solution to resolve domains instead of direct blockchain calls for Brave? Cloudflare DNS seems like more centralized approach to resovle domain records.
   * Would a browser be able to resolve a domain first and apply the protocol prefix then?
  
 # Browser Resolution How-to
