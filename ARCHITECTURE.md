@@ -27,7 +27,7 @@ Domain ownership is held in a form of ERC721 token.
 
 A domain name is converted to an ERC721 token using a [Namehashing](#namehashing) algorithm.
 The records have a key-value form. 
-**Multiple records with the same key are unsupported** at the low level and have to be simulated in higher level. See [Records Reference](#records-reference). An attempt to add a record that already exist on resolver will result in record value being overwritten.
+**Multiple records with the same key are unsupported** at the low level and have to be simulated in higher level. See [Records Reference](./RECORDS_REFERRENCE.md). An attempt to add a record that already exist on resolver will result in record value being overwritten.
 
 In addition to this, the registry design has a capability for flexible records managements that allows to implement any records management permission model.
 The flexibility is achieved by introducing a Resolver contract as a separated contract that can hold records and associating a domain with a single resolver contract address.
@@ -87,7 +87,7 @@ Reference:
 * `namehash` - namehashing algorithm implementation. See [Namehashing](#namehashing).
 * `echCall` - Ethereum JSON RPC implementation for `eth_call` method. See [Ethereum JSON RPC](https://eth.wiki/json-rpc/API#eth_call)
 
-See [Records Reference](#records-reference) for more information on which specific records to query.
+See [Records Reference](./RECORDS_REFERRENCE.md) for more information on which specific records to query.
 
 ### Record Value Validation
 
@@ -100,7 +100,7 @@ Any domain management application must perform record format validation before s
 However, there is no guarantee that all management application will do it correctly. 
 That is why records must be validated when domain is resolved too.
 
-See [Records Reference](#records-reference) for more information for the validator of each record.
+See [Records Reference](./RECORDS_REFERRENCE.md) for more information for the validator of each record.
 
 <div id="network-configuration"></div>
 
@@ -120,7 +120,7 @@ Crypto Registry Contract Address is an actual address of a contract deployed. Th
 
 ### Retrieving all records
 
-Current Resolver allows one to retrieve all crypto records of a domain. However, due to some limitation of Ethereum Technology and gas price optimizations on management, it comes with a significant performance downside requiring one to do at least 3 queries to blockchain. In case when a domain has 1000+ records or large records changing history, it can require more.
+Current Resolver allows one to retrieve all crypto records of a domain. However, due to some limitation of Ethereum Technology and gas price optimizations on management, it comes with a significant performance downside requiring one to do at least 3 queries to blockchain. In case when a domain has 1000+ records or large records changes history, it can require more.
 
 TODO: describe the algorithm
 
