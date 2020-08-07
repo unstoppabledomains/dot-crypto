@@ -54,14 +54,14 @@ All records related to browser resolution are stored within `browser.*` namespac
 * `browser.dns.*` - for traditional DNS records
 * `brwoser.dweb.*` - for distributed content records
 
-For a detailed records reference see [Records Referrence](./RECORDS_REFERRENCE.md).
+For a detailed records reference see [Records Reference](./RECORDS_REFERENCE.md).
 
 If you are looking for a way to get records associated to a domain,
 see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
 
 ## Browser Resolution Algorithm
 
-This section explains how differrent records configuration of a domain should be interpreted by the browser.
+This section explains how different records configuration of a domain should be interpreted by the browser.
 
 A browser can select a protocol it has a support for.
 If a domain is configured for multiple protocols, it should prioritize a protocol based on `browser.preferred_protocol` record that can be set to one of the following HTML transfer protocols:
@@ -71,7 +71,7 @@ If a domain is configured for multiple protocols, it should prioritize a protoco
 * bzz
 * ipfs
 
-Browsers supporting distributed content protocol should always prioritize distributed content to be displayed for domains that do not have `browser.preferred_protocol` record set to tranditional protocol. 
+Browsers supporting distributed content protocol should always prioritize distributed content to be displayed for domains that do not have `browser.preferred_protocol` record set to traditional protocol. 
 A domain can have a single content hash for each distributed protocol stored in `browser.dweb.<protocol>.hash`. Ex: `browser.dweb.bzz.hash` for Swarm's `bzz` protocol.
 
 If none of dweb hash records is set, a browser should fall back to DNS resolution that is set within `browser.dns.*` namespace.

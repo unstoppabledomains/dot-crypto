@@ -8,7 +8,7 @@ Each name inside CNS has a format of a domain name in `.crypto` top level domain
 * [Architecture](./ARCHITECTURE.md) - detailed overview on CNS design
 * [Browser Resotuion](./BROWSER_RESOLUTION_HOWTO.md) - Resolving CNS domain in a browser howto
 * [Development Guide](./DEVELOPMENT.md) - Developer's guide on smart contract source code development and deployment
-* [Records Referrence](./RECORDS_REFERRENCE.md) - A table of all possible records that can be set for CNS domains
+* [Records Reference](./RECORDS_REFERENCE.md) - A table of all possible records that can be set for CNS domains
 
 
 ## Deployed Smart Contracts addresses
