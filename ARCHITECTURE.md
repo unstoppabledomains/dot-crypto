@@ -212,6 +212,34 @@ Crypto records do not have a support for TTL at the moment. Ethereum blockchain 
 Crypto records do not have a domain name associated to them. That is why there is no feature of storing your subdomain records inside a parent domain.
 Example: `www.example.com` record can only be set inside the same domain name but never inside `example.com`.
 
+#### TTL
+
+Records TTL can be set for all records or for individual type of record. TTL for all records can be set in `dns.ttl`. TTL for individual record type can be set in `dns.<RECORD>.ttl`. If `ttl` for individual record type is not set, a default `dns.ttl` need to be applied.
+
+Example crypto records setup:
+
+| Record    | Value                        |
+|-----------|------------------------------|
+| dns.A     | ["10.0.0.1", "10.0.0.2"]     |
+| dns.A.ttl | 168                          |
+| dns.AAAA  | ["2a00:1450:401b:805::200e"] |
+| dns.ttl   | 128                          |
+
+Should be transformed into the following DNS records:
+
+| Record | Value                    | TTL |
+|--------|--------------------------|-----|
+| A      | 10.0.0.1                 | 168 |
+| A      | 10.0.0.2                 | 168 |
+| AAAA   | 2a00:1450:401b:805::200e | 128 |
+
+
+TTL for individual records of the same type is currently unsupported due to the necessity to change the record value format and increased gas cost. Setting `dns.ttl` instead of TTL for individual records is recommended due to higher gas efficiency.
+
+#### Authority responses
+
+TODO
+
 <div id="dweb-records"></div>
 
 ### Distributed Web records
