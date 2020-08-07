@@ -49,10 +49,11 @@ A browser may support any of traditional or distributed protocols that would sti
 
 ## Records related to browser resolution
 
-All records related to browser resolution are stored within `browser.*` namespace which has two namespaces:
+All records related to browser resolution are stored within these namespaces:
 
-* `browser.dns.*` - for traditional DNS records
-* `brwoser.dweb.*` - for distributed content records
+* `dns.*` - for traditional DNS records
+* `dweb.*` - for distributed content records
+* `browser.*` - hint records to help browser determine a preferred content display method
 
 For a detailed records reference see [Records Reference](./RECORDS_REFERENCE.md).
 
@@ -72,9 +73,9 @@ If a domain is configured for multiple protocols, it should prioritize a protoco
 * ipfs
 
 Browsers supporting distributed content protocol should always prioritize distributed content to be displayed for domains that do not have `browser.preferred_protocol` record set to traditional protocol. 
-A domain can have a single content hash for each distributed protocol stored in `browser.dweb.<protocol>.hash`. Ex: `browser.dweb.bzz.hash` for Swarm's `bzz` protocol.
+A domain can have a single content hash for each distributed protocol stored in `dweb.<protocol>.hash`. Ex: `dweb.bzz.hash` for Swarm's `bzz` protocol.
 
-If none of dweb hash records is set, a browser should fall back to DNS resolution that is set within `browser.dns.*` namespace.
+If none of `dweb` hash records is set, a browser should fall back to DNS resolution that is set within `dns.*` namespace.
 See [DNS Records](./ARCHITECTURE.md#dns-records) for more information
 
 Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly by the user. In case of blockchain domain names inside a browser that suppose to support many protocols, it is preferred to determine a protocol only after a domain being resolved based on specified records for a domain.
@@ -86,7 +87,7 @@ Generally browsers automatically add `http://` prefix for any domain in the addr
 
 Most .crypto domains as of Q3 2020 are configured using legacy record names for IPFS hash and redirect domain:
 
-1. `ipfs.html.value` deprecated in favor of `browser.dweb.ipfs.hash`
-2. `ipfs.redirect_domain` deprecated in favor of `browser.dweb.redirect_url`
+1. `ipfs.html.value` deprecated in favor of `dweb.ipfs.hash`
+2. `ipfs.redirect_domain` deprecated in favor of `browser.redirect_url`
 
 A browser is strongly recommended to support those records as a fallback when corresponding replacement records are not set.
