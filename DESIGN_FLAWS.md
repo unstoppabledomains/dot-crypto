@@ -32,7 +32,7 @@ Characters category:
 
 #### No error messages
 
-`require` calls on regisry do not have any error message specified.
+`require` calls on registry do not have any error message specified.
 
 #### Bulk manage functionality
 

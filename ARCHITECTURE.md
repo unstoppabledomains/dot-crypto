@@ -34,9 +34,6 @@ The flexibility is achieved by introducing a Resolver contract as a separated co
 Records can be associated to a domain ONLY via a Resolver contract. 
 A single resolver can hold records for multiple domains.
 
-UD provides a default public resolver contract. See [Managing domain records](#management)
-So the data structure of the registry looks in the following way (pseudocode):
-
 ``` solidity
 // Mapping from ERC721 token ID to a resolver address
 mapping (uint256 => address) internal _tokenResolvers;
@@ -45,7 +42,7 @@ mapping (uint256 => address) internal _tokenResolvers;
 mapping (uint256 => address) internal _tokenOwners;
 ```
 
-Registry is a "singleton" contract and only exists in a single instance deployed at [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe)
+Registry is a "singleton" contract and only exists in a single instance deployed at [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe). [Source Code](./contracts/Registry.sol).
 
 There are other structures available as part of ERC721 standard but they do not have any custom functionality on top. See the ERC721 standard for more information on additional permission data stored on the registry.
 
@@ -55,6 +52,9 @@ Resolver data structure looks in the following way (pseudocode):
 //Mapping of ERC721 token ID to key-value records mapping
 mapping (uint256 =>  mapping (string => string)) internal _records;
 ```
+
+UD provides a default public resolver contract deployed at [0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842](https://etherscan.io/address/0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842). [Source Code](./contracts/Resolver.sol).
+So the data structure of the registry looks in the following way (pseudocode):
 
 <div id="domain-resolution"></div>
 

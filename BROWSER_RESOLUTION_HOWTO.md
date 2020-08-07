@@ -85,7 +85,6 @@ See [DNS Records](./ARCHITECTURE.md#dns-records) for more information
 
 Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly by the user. In case of blockchain domain names inside a browser that suppose to support many protocols, it is preferred to determine a protocol only after a domain being resolved based on specified records for a domain.
 
-
 <div id="legacy-records"></div>
 
 ### Legacy Records Support
