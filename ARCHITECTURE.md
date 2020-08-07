@@ -179,9 +179,16 @@ One can verify his implementation of namehashing algorithm using the following r
 
 <div id="records-reference"></div>
 
-## Records Reference 
+## Main Records
 
-TODO
+Records on top level are stored in a simple key-value mapping of string to string.
+However, keys are namespaced into main categories with `.` used as a separator.
+
+Main namespaces are:
+
+* `crypto.*` - records related to crypto payments
+* `browser.dns.*` - DNS records
+* `browser.dweb.*` - records related to distributed content network protocols
 
 ### Crypto Payments
 
@@ -193,27 +200,22 @@ TODO
 
 Resolver records may contain classical DNS records besides other records. In order to distinguish those from other crypto records, the `browser.dns.*` namespace is used.  So DNS `A` corresponds to `browser.dns.A` crypto record. Any [listed DNS record](https://en.wikipedia.org/wiki/List_of_DNS_record_types) as per RFC standards is supported. All record names must follow upper case naming convention.
 
-As crypto resolver doesn't support multiple records with the same key, but DNS does allow that, DNS record value must always be stored as [JSON](http://json.org) serialized array of strings. 
+As crypto resolver doesn't support multiple records with the same key, but DNS does allow that. Therefore, DNS record value must always be stored as [JSON](http://json.org) serialized array of strings. 
 Example 1: a domain that needs one `CNAME` record set to `example.com.` must be configured as one crypto record `browser.dns.CNAME` set to `["example.com."]`.
 Example 2: a domain that needs two `A` records set to `10.0.0.1` and `10.0.0.2` must be configured as one crypto record `browser.dns.A` set to `["10.0.0.1","10.0.0.2"]`.
 
 No other data transformation is required when converting a traditional DNS record into Crypto record other than aggregating records with the same name to one record using serialization as JSON array of strings.
-
-TODO: confirm the following paragraphs with DNS technology experts
 
 Crypto records do not have a support for TTL at the moment. Ethereum blockchain has a built-in distribution system that automatically synchronizes updates and doesn't require TTL.
 
 Crypto records do not have a domain name associated to them. That is why there is no feature of storing your subdomain records inside a parent domain.
 Example: `www.example.com` record can only be set inside the same domain name but never inside `example.com`.
 
-<div id="ipfs-records"></div>
+<div id="dweb-records"></div>
 
-### IPFS records
+### Distributed Web records
 
-Crypto resolvers currently has 2 records that store information about IPFS resolution:
-
-1. `ipfs.html.value` - stores [IPFS content hash](https://docs.ipfs.io/concepts/content-addressing/#identifier-formats) of a website that suppose to be displayed in Dapp Browser
-2. `ipfs.redirect_domain.value` - stores an URL that a browser should redirect to if it doesn't support IPFS content display.
+TODO
 
 
 ## Security and Permission
