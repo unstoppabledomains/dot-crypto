@@ -5,6 +5,8 @@ The document assumes that one having a basic understanding of how domain records
 
 ## End user features
 
+Here are some end user scenario on which features should be available in a browser that resolves crypto domains
+
 ### HTTP Website Browsing
 
 1. Given a blockchain domain name configured to have a DNS record attached.

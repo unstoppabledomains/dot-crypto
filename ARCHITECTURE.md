@@ -256,7 +256,6 @@ Each protocol has its own sub-namespace for its data using canonic name. Example
 
 Record structure can be different based on the protocol. However, all protocols have a common `.hash` record used to reference a content in the distributed network. Example: `dns.ipfs.hash` for IPFS protocol.
 
-
 ## Security and Permission
 
 TODO
