@@ -67,13 +67,16 @@ This section explains how different records configuration of a domain should be 
 A browser can select a protocol it has a support for.
 If a domain is configured for multiple protocols, it should prioritize a protocol based on `browser.preferred_protocol` record that can be set to one of the following HTML transfer protocols:
 
-* http
-* https
-* bzz
-* ipfs
+* Traditional
+  * http
+  * https
+  * ftp
+* Distributed
+  * bzz
+  * ipfs
 
 Browsers supporting distributed content protocol should always prioritize distributed content to be displayed for domains that do not have `browser.preferred_protocol` record set to traditional protocol. 
-A domain can have a single content hash for each distributed protocol stored in `dweb.<protocol>.hash`. Ex: `dweb.bzz.hash` for Swarm's `bzz` protocol.
+A domain can have a single content hash for each distributed protocol stored in `dweb.<protocol>.hash`. Ex: `dweb.bzz.hash` for Swarm's `bzz` protocol. See [Dweb Records](./ARCHITECTURE.md#dweb-records) for more information.
 
 If none of `dweb` hash records is set, a browser should fall back to DNS resolution that is set within `dns.*` namespace.
 See [DNS Records](./ARCHITECTURE.md#dns-records) for more information

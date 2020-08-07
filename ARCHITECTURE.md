@@ -223,6 +223,7 @@ Example crypto records setup:
 | dns.A     | ["10.0.0.1", "10.0.0.2"]     |
 | dns.A.ttl | 168                          |
 | dns.AAAA  | ["2a00:1450:401b:805::200e"] |
+| dns.MX    | ["10 aspmx.example.com."]    |
 | dns.ttl   | 128                          |
 
 Should be transformed into the following DNS records:
@@ -232,19 +233,28 @@ Should be transformed into the following DNS records:
 | A      | 10.0.0.1                 | 168 |
 | A      | 10.0.0.2                 | 168 |
 | AAAA   | 2a00:1450:401b:805::200e | 128 |
+| MX     | 10 aspmx.example.com.    | 128 |
 
 
 TTL for individual records of the same type is currently unsupported due to the necessity to change the record value format and increased gas cost. Setting `dns.ttl` instead of TTL for individual records is recommended due to higher gas efficiency.
 
 #### Authority responses
 
-TODO
+It is a common practice in DNS to have an authority of a subdomain delegated to a parent domain. 
+This mechanism is not necessary for crypto domains because the cost of subdomain registration is comparable to setting records.
+In other words, configuring subdomain using the parent domain has no benefit and may result in even higher gas cost due due to the necessity to store associated subdomain name to each record.
+
+Therefore, authority configurations are not supported by crypto domains at the moment.
 
 <div id="dweb-records"></div>
 
 ### Distributed Web records
 
-TODO
+Distributed Web (Dweb) records are designed to allow one to configure a domain for distributed websites protocols like IPFS or Swarm.
+Such records are stored in `dweb.*` namespace.
+Each protocol has its own sub-namespace for its data using canonic name. Example: Swarm's protocol canonic name is `bzz` so its records are stored at `dns.bzz.*` namespace.
+
+Record structure can be different based on the protocol. However, all protocols have a common `.hash` record used to reference a content in the distributed network. Example: `dns.ipfs.hash` for IPFS protocol.
 
 
 ## Security and Permission
