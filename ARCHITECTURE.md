@@ -217,10 +217,8 @@ Example 2: a domain that needs two `A` records set to `10.0.0.1` and `10.0.0.2` 
 
 No other data transformation is required when converting a traditional DNS record into Crypto record other than aggregating records with the same name to one record using serialization as JSON array of strings.
 
-Crypto records do not have a support for TTL at the moment. Ethereum blockchain has a built-in distribution system that automatically synchronizes updates and doesn't require TTL.
-
 Crypto records do not have a domain name associated to them. That is why there is no feature of storing your subdomain records inside a parent domain.
-Example: `www.example.com` record can only be set inside the same domain name but never inside `example.com`.
+Example: `www.example.com` record can only be set inside a resolver of `www.example.com` but never inside `example.com`.
 
 #### TTL
 
@@ -252,7 +250,7 @@ TTL for individual records of the same type is currently unsupported due to the 
 
 It is a common practice in DNS to have an authority of a subdomain delegated to a parent domain. 
 This mechanism is not necessary for crypto domains because the cost of subdomain registration is comparable to setting records.
-In other words, configuring subdomain using the parent domain has no benefit and may result in even higher gas cost due due to the necessity to store associated subdomain name to each record.
+In other words, configuring subdomain using the parent domain has no benefit and may result in even higher gas cost due to the necessity to store associated subdomain name to each record.
 
 Therefore, authority configurations are not supported by crypto domains at the moment.
 
