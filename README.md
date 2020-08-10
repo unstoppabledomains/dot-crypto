@@ -11,6 +11,12 @@ Each name inside CNS has a format of a domain name in `.crypto` top level domain
 * [Records Reference](./RECORDS_REFERENCE.md) - A table of all possible records that can be set for CNS domains
 
 
+## Resolution libraries
+
+* [resolution.js](https://github.com/unstoppabledomains/resolution)
+* [resolution-swift](https://github.com/unstoppabledomains/resolution-swift)
+* [resolution-java](https://github.com/unstoppabledomains/resolution-java)
+
 ## Deployed Smart Contracts addresses
 
 ### Mainnet
