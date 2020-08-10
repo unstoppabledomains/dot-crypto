@@ -23,8 +23,8 @@ TODO: Add high level diagram on Ethereum infrastructure
 ## Registry Essentials
 
 The essential part of the registry is to allow one to own a domain and associate records to it. 
-Domain ownership is held in a form of ERC721 token.
 
+Domain ownership is held in a form of ERC721 token.
 A domain name is converted to an ERC721 token using a [Namehashing](#namehashing) algorithm.
 The records have a key-value form. 
 **Multiple records with the same key are unsupported** at the low level and have to be simulated in higher level. See [Records Reference](./RECORDS_REFERENCE.md). An attempt to add a record that already exist on resolver will result in record value being overwritten.
@@ -42,7 +42,7 @@ mapping (uint256 => address) internal _tokenResolvers;
 mapping (uint256 => address) internal _tokenOwners;
 ```
 
-Registry is a "singleton" contract and only exists in a single instance deployed at [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe). [Source Code](./contracts/Registry.sol).
+Registry is a "singleton" contract and only exists in a single production instance deployed at [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe). [Source Code](./contracts/Registry.sol).
 
 There are other structures available as part of ERC721 standard but they do not have any custom functionality on top. See the ERC721 standard for more information on additional permission data stored on the registry.
 
@@ -182,7 +182,9 @@ One can verify his implementation of namehashing algorithm using the following r
 ## Main Records
 
 Records on top level are stored in a simple key-value mapping of string to string.
-However, keys are namespaced into main categories with `.` used as a separator.
+A full list of records can be found in [Records Reference](./RECORDS_REFERENCE.md).
+
+Record keys are namespaced into main categories with `.` used as a separator.
 
 Main namespaces are:
 
@@ -191,7 +193,7 @@ Main namespaces are:
 * `dweb.*` - records related to distributed content network protocols
 * `browser.*` - hint records for web browsers
 
-### Crypto Payments
+### Crypto Payments Records
 
 TODO
 
