@@ -54,7 +54,6 @@ mapping (uint256 =>  mapping (string => string)) internal _records;
 ```
 
 UD provides a default public resolver contract deployed at [0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842](https://etherscan.io/address/0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842). [Source Code](./contracts/Resolver.sol).
-So the data structure of the registry looks in the following way (pseudocode):
 
 <div id="domain-resolution"></div>
 
@@ -115,15 +114,15 @@ Domain Resolution Configuration at low level requires 3 configuration parameters
 Ethereum JSON RPC provider is an API implementing Ethereum JSON RPC standard. Usually, it is given in a form of HTTP API end point. However, other forms may exist in case when ethereum node is launched locally.
 Unstoppable domains recommends [Cloudflare Ethereum Gateway](https://developers.cloudflare.com/distributed-web/ethereum-gateway) an ethereum node service provider.
 
-Ethereum CHAIN ID is an ID of ethereum network a node is connected to. Each RPC provider can only be connected to one network. There is only one production network with CHAIN ID equal to `1` and called `mainnet`. Other networks are only used for testing purposes of different kinds. See [EIP-155](https://eips.ethereum.org/EIPS/eip-155) for more information. CHAIN ID of an ethereum node can be determined by calling [net_version method](https://eth.wiki/json-rpc/API#net_version) on JSON RPC which should be used as a default when only JSON RPC provider is given.
+Ethereum CHAIN ID is an ID of ethereum network a node is connected to. Each RPC provider can only be connected to one network. There is only one production network with CHAIN ID equal to `1` and called `mainnet`. Other networks are only used for testing purposes of different kinds. See [EIP-155](https://eips.ethereum.org/EIPS/eip-155) for more information. CHAIN ID of an ethereum node can be determined by calling [net version method](https://eth.wiki/json-rpc/API#net_version) on JSON RPC which should be used as a default when only JSON RPC provider is given.
 
-Crypto Registry Contract Address is an actual address of a contract deployed. There is only one production registry address on the mainnet: [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe). This address should be used as a default for mainnet configuration.
+Crypto Registry Contract Address is an actual address of a contract deployed. There is only one production registry address on the mainnet: [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe). This address should be used as a default for production configuration.
 
 ### Retrieving all records
 
 Current Resolver allows one to retrieve all crypto records of a domain. However, due to some limitation of Ethereum Technology and gas price optimizations on management, it comes with a significant performance downside requiring one to do at least 3 queries to blockchain. In case when a domain has 1000+ records or large records changes history, it can require more.
 
-TODO: describe the algorithm
+<!-- TODO: describe the algorithm -->
 
 <div id="management"></div>
 
@@ -151,11 +150,20 @@ Most Registry and Resolver methods have a [meta-transaction](https://docs.openze
 
 For each management method, there is a method with meta-transaction support that has `For` suffix at the end. Example: `resetFor` is a meta-transaction version of `reset`. This method has an additional `signature` argument as a last parameter. A meta-transaction method checks the permission for a domain against the address that generated the signature argument, unlike base method that checks it against Solidity `_sender` keyword.
 
-TODO: more information on how meta-transaction signature can be generated.
+<!-- TODO: more information on how meta-transaction signature can be generated. -->
 
 ### Deploying Custom Resolver
 
-TODO
+Custom Resolver is a way to implement a flexible permission model over domain records.
+This may include: 
+
+* Community owned domains - individual members of a community decide on a domain website content
+* Domain leasing - a domain is temporary managed by a different authority and then comes back to original authority
+
+Custom resolver can be implemented as a separated contract and its address can be assigned as a domain resolver via `Registry#resolveTo`
+
+<!-- TODO more information on which interface should be implemented by custom resolver -->
+<!-- TODO Sync mechanism description -->
 
 <div id="namehashing"></div>
 
