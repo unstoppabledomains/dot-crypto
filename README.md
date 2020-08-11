@@ -17,9 +17,13 @@ Each name inside CNS has a format of a domain name in `.crypto` top level domain
 * [resolution-swift](https://github.com/unstoppabledomains/resolution-swift)
 * [resolution-java](https://github.com/unstoppabledomains/resolution-java)
 
+
+<div id="deployed-contracts"></div>
+
 ## Deployed Smart Contracts addresses
 
 ### Mainnet
+
 | Contract Source                                              | Ethereum Addresses                         |
 |--------------------------------------------------------------|--------------------------------------------|
 | [Registry](./contract/Registry.sol)                          | [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe) |

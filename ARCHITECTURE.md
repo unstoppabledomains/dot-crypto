@@ -55,6 +55,18 @@ mapping (uint256 =>  mapping (string => string)) internal _records;
 
 UD provides a default public resolver contract deployed at [0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842](https://etherscan.io/address/0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842). [Source Code](./contracts/Resolver.sol).
 
+<div id="registry-controllers"></div>
+
+### Registry Controllers
+
+At the moment when crypto registry was deployed, Ethereum platform had a limitation on the contract size. [Removing Contract Size Limit Issue](https://github.com/ethereum/EIPs/issues/1662).
+
+In order to avoid that limitation, some registry methods are moved to Controller Contracts. A method sent to controller contract will act as if it was sent to original registry.
+
+A list of controller contracts and their source can be found in [List of Contracts](./README.md#deployed-contracts)
+
+The list of controllers is irreversibly locked and can not be modified in the future.
+
 <div id="domain-resolution"></div>
 
 ## Resolving a domain
@@ -118,9 +130,9 @@ Ethereum CHAIN ID is an ID of ethereum network a node is connected to. Each RPC 
 
 Crypto Registry Contract Address is an actual address of a contract deployed. There is only one production registry address on the mainnet: [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe). This address should be used as a default for production configuration.
 
-### Retrieving all records
+<!-- ### Retrieving all records -->
 
-Current Resolver allows one to retrieve all crypto records of a domain. However, due to some limitation of Ethereum Technology and gas price optimizations on management, it comes with a significant performance downside requiring one to do at least 3 queries to blockchain. In case when a domain has 1000+ records or large records changes history, it can require more.
+<!-- Current Resolver allows one to retrieve all crypto records of a domain. However, due to some limitation of Ethereum Technology and gas price optimizations on management, it comes with a significant performance downside requiring one to do at least 3 queries to blockchain. In case when a domain has 1000+ records or large records changes history, it can require more. -->
 
 <!-- TODO: describe the algorithm -->
 
@@ -140,17 +152,80 @@ Default public resolver allows to manage all domain records for any address give
 * Owner's operator addresses
 
 See ERC721 on how those permissions can be granted and revoked.
-Any records change is submitted as a signed as a [ethereum blockchain transaction](https://ethereum.org/en/whitepaper/#messages-and-transactions). 
+Any records change is submitted as a [Ethereum Blockchain Transaction](https://ethereum.org/en/whitepaper/#messages-and-transactions). 
 
-Records Management can be done via [Resolver methods](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/IResolver.sol):
+Records Management can be done via [Resolver methods](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/IResolver.sol).
 
 ### Meta-transactions support
 
-Most Registry and Resolver methods have a [meta-transaction](https://docs.openzeppelin.com/learn/sending-gasless-transactions) support. Generally meta-transactions allow to separate a transaction signer address from a transaction funding address. It allows to separate the address that approve a transaction to happen from an address that pays a gas fee for the transaction.
+Most Registry and Resolver methods have a [meta-transaction](https://docs.openzeppelin.com/learn/sending-gasless-transactions) support. Generally meta-transactions allow to separate a transaction signer address from a transaction funding address. So an address used to generate a meta-signature is used to check a permission for an operation and classical signer address is used to withdraw a transaction fee.
 
-For each management method, there is a method with meta-transaction support that has `For` suffix at the end. Example: `resetFor` is a meta-transaction version of `reset`. This method has an additional `signature` argument as a last parameter. A meta-transaction method checks the permission for a domain against the address that generated the signature argument, unlike base method that checks it against Solidity `_sender` keyword.
+For each management method, there is a method with meta-transaction support that has `For` suffix at the end. Example: `resetFor` is a meta-transaction version of `reset`. This method has an additional `signature` argument as a last parameter beside all original parameters. A meta-transaction method checks the permission for a domain against the address that generated the signature argument, unlike base method that checks it against Solidity `_sender` keyword.
 
-<!-- TODO: more information on how meta-transaction signature can be generated. -->
+Note that a meta-transaction version of a function of the Registry can be implemented in controller contract but not registry itself. See [Registry Controllers](#registry-controllers).
+
+Meta transaction methods are bound to domain based nonce (instead of [Account Nonce](https://ethereum.stackexchange.com/questions/27432/what-is-nonce-in-ethereum-how-does-it-prevent-double-spending) of traditional transactions). It protects from [Double-spending](https://en.wikipedia.org/wiki/Double-spending) in the same way as account based nonce in traditional transactions. 
+
+A source code of signature validation can be found in [SignatureUtil.sol](./contracts/utils/SignatureUtil.sol)
+
+
+#### Meta transaction signature generation
+
+Meta transaction requires 2 signature: one passed as a method argument and one classical. Classical signature is generated in a standard way. Meta signature requires a domain owner (or a person approved by owner) to sign a special message formed from:
+
+* Domain based meta-transaction nonce
+* [Function Selector](https://solidity.readthedocs.io/en/v0.7.0/abi-spec.html#function-selector) of the original method
+* Original Method parameters (the one without signature)
+
+Example Signature generation for a `reset` method call for a domain:
+
+``` typescript
+const domain = 'example.crypto';
+const methodName = 'reset';
+const methodParams = ['uint256'];
+const contractAddress = '0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842';
+// Can be different or the same as contractAddress
+const controllerContractAddress = '0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842';
+const tokenId = namehash(domain);
+
+function generateMessageToSign(
+  contractAddress: string,
+  signatureContract: string,
+  methodName: string,
+  methodParams: string[],
+  tokenId: string,
+  params: any[],
+) {
+  return solidityKeccak256(
+    ['bytes32', 'address', 'uint256'],
+    [
+      solidityKeccak256(
+        ['bytes'],
+        [encodeContractInterface(contractAddress, method, methodParams, params)],
+      ),
+      controllerContractAddress,
+      ethCallRpc(controllerContractAddress, 'nonceOf', tokenId),
+    ],
+  );
+}
+
+const message = generateMessageToSign(
+  contractAddress,
+  signagureContractAddress,
+  methodName,
+  methodParams,
+  tokenId,
+  [tokenId]
+);
+```
+
+Functions Reference:
+
+* `namehash`  - [Namehashing Function](#namehashing) algorithm implementation
+* `ethCallRpc` - Ethereum `eth_call` JSON RPC implementation
+* `encodeContractInterface` - [Solidity ABI](https://solidity.readthedocs.io/en/v0.7.0/abi-spec.html#argument-encoding) interface parameters encoder
+* `solidityKeccak256` - [Solidity ABI](https://solidity.readthedocs.io/en/v0.7.0/abi-spec.html#argument-encoding) parameters encoder
+
 
 ### Deploying Custom Resolver
 
@@ -185,6 +260,12 @@ One can verify his implementation of namehashing algorithm using the following r
 | `www.example.crypto`        | `0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1`  |
 | `welcome.to.ukraine.crypto` | `0x8c2503ec1678c38aea1bb40b2c878feec5ba4807ab16293cb53cbf0b9a8a0533`  |
 
+### Inverse namehashing
+
+Fundamentally namehashing is built to be one a way operation.
+However, crypto registry remembers all the domain names that were ever minted: [source code](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L17).
+That makes it possible to obtain an original domain name from a hash via ETH RPC call to [Registry#tokenURI](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L51).
+
 <div id="records-reference"></div>
 
 ## Main Records
@@ -192,7 +273,7 @@ One can verify his implementation of namehashing algorithm using the following r
 Records on top level are stored in a simple key-value mapping of string to string.
 A full list of records can be found in [Records Reference](./RECORDS_REFERENCE.md).
 
-Record keys are namespaced into main categories with `.` used as a separator.
+Record keys are split to namespaces with `.` used as a separator.
 
 Main namespaces are:
 
