@@ -177,13 +177,13 @@ Namehashing is defined as a part of [EIP-137](https://github.com/ethereum/EIPs/b
 Example implementation in JS: https://github.com/unstoppabledomains/resolution/blob/master/src/cns/namehash.ts
 One can verify his implementation of namehashing algorithm using the following reference table:
 
-| Domain Name               | ERC721 Token                                                          |
-|---------------------------|-----------------------------------------------------------------------|
-| .                         | `0x0000000000000000000000000000000000000000000000000000000000000000`  |
-| crypto                    | `0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f`  |
-| example.crypto            | `0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e`  |
-| www.example.crypto        | `0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1`  |
-| welcome.to.ukraine.crypto | `0x8c2503ec1678c38aea1bb40b2c878feec5ba4807ab16293cb53cbf0b9a8a0533`  |
+| Domain Name                 | ERC721 Token                                                          |
+|-----------------------------|-----------------------------------------------------------------------|
+| `.`                         | `0x0000000000000000000000000000000000000000000000000000000000000000`  |
+| `crypto`                    | `0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f`  |
+| `example.crypto`            | `0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e`  |
+| `www.example.crypto`        | `0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1`  |
+| `welcome.to.ukraine.crypto` | `0x8c2503ec1678c38aea1bb40b2c878feec5ba4807ab16293cb53cbf0b9a8a0533`  |
 
 <div id="records-reference"></div>
 
@@ -201,9 +201,28 @@ Main namespaces are:
 * `dweb.*` - records related to distributed content network protocols
 * `browser.*` - hint records for web browsers
 
+<div id='crypto-payments'></div>
+
 ### Crypto Payments Records
 
-TODO
+One of essential feature of crypto domains is the ability to make specify a domain instead of a destination address for your crypto payment.
+Crypto Wallets that need this feature should revolve a domain to crypto address under the hook in the same way browser resolves a domain to IP address.
+
+All crypto addresses are stored within `crypto.*` namespace.
+Each currency address is stored as `crypto.<TICKER>.address` record. Example: Bitcoin address is stored in `crypto.BTC.address`.
+Addresses are stored in plain text format according to an address space standard established by each individual currency
+Currency namespace can contain additional currency specific attributes to facilitate payment delivery. Example: [Ripple Destination Tag](https://xrpl.org/source-and-destination-tags.html). However, key names for those attributes are not yet standardized. Please contact [Unstoppable Domains Support](mailto:support@unstoppabledomains.com) if you need such attributes to be added to the standard.
+
+Some tickers of very popular crypto currencies are not yet standardized. Example: `LINK` for [Chainlink](https://coinmarketcap.com/currencies/chainlink).
+Standardized list of tickers can be found in [SLIP-0044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md). However, more extended list of conventional tickers is available at [cripti/cryptocurrencies](https://github.com/crypti/cryptocurrencies/blob/master/cryptocurrencies.json).
+
+Example crypto records setup:
+
+| Key                  | Value                                        |
+|----------------------|----------------------------------------------|
+| `crypto.ETH.address` | `0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe` |
+| `crypto.BTC.address` | `bc1qkd4um2nn2uyzmsch5y86wsa2pfh8xl445lg9nv` |
+| `crypto.ZIL.address` | `zil1yu5u4hegy9v3xgluweg4en54zm8f8auwxu0xxc` |
 
 <div id='dns-records'></div>
 
@@ -265,8 +284,6 @@ Each protocol has its own sub-namespace for its data using canonic name. Example
 Record structure can be different based on the protocol. However, all protocols have a common `.hash` record used to reference a content in the distributed network. Example: `dns.ipfs.hash` for IPFS protocol.
 
 ## Security and Permission
-
-TODO
 
 ### Ethereum Network Security
 
