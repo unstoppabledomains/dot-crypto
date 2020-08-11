@@ -67,6 +67,7 @@ A list of controller contracts and their source can be found in [List of Contrac
 
 The list of controllers is irreversibly locked and can not be modified in the future.
 
+
 <div id="domain-resolution"></div>
 
 ## Resolving a domain
@@ -309,7 +310,7 @@ Example crypto records setup:
 
 ### DNS records
 
-Resolver records may contain classical DNS records besides other records. In order to distinguish those from other crypto records, the `dns.*` namespace is used.  So DNS `A` corresponds to `dns.A` crypto record. Any [listed DNS record](https://en.wikipedia.org/wiki/List_of_DNS_record_types) as per RFC standards is supported. All record names must follow upper case naming convention.
+Resolver records may contain classical DNS records besides other records. In order to distinguish those from other crypto records, the `dns.*` namespace is used.  So DNS `A` corresponds to `dns.A` crypto record. Any [listed DNS record](https://en.wikipedia.org/wiki/List_of_DNS_record_types) described in RFC standards is supported. All record names must follow upper case naming convention.
 
 As crypto resolver doesn't support multiple records with the same key, but DNS does allow that. Therefore, DNS record value must always be stored as [JSON](http://json.org) serialized array of strings. 
 Example 1: a domain that needs one `CNAME` record set to `example.com.` must be configured as one crypto record `dns.CNAME` set to `["example.com."]`.
@@ -363,11 +364,3 @@ Such records are stored in `dweb.*` namespace.
 Each protocol has its own sub-namespace for its data using canonic name. Example: Swarm's protocol canonic name is `bzz` so its records are stored at `dns.bzz.*` namespace.
 
 Record structure can be different based on the protocol. However, all protocols have a common `.hash` record used to reference a content in the distributed network. Example: `dns.ipfs.hash` for IPFS protocol.
-
-## Security and Permission
-
-### Ethereum Network Security
-
-### Domain Ownership protection
-
-### Sub-domains permission
