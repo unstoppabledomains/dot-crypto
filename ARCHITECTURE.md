@@ -39,10 +39,35 @@ mapping (uint256 =>  mapping (string => string)) internal _records;
 
 Unstoppable Domains provides a default public resolver contract deployed at [0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842](https://etherscan.io/address/0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842). [Source Code](./contracts/Resolver.sol).
 
+<div id="namehashing"></div>
+
+## Namehashing Domain Name
+
+Namehashing is an algorithm that converts a domain name in a classical format (like `www.example.crypto`) to ERC721 token id.
+All .crypto ecosystem contracts accept domain name as a method argument in a form of ERC721 token.
+Namehashing is defined as a part of [EIP-137](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-137.md#namehash-algorithm) standard.
+[Example implementation](https://github.com/unstoppabledomains/resolution/blob/master/src/cns/namehash.ts) in JavaScript. 
+
+One can verify his implementation of namehashing algorithm using the following reference table:
+
+| Domain Name                 | ERC721 Token                                                          |
+|-----------------------------|-----------------------------------------------------------------------|
+| `.`                         | `0x0000000000000000000000000000000000000000000000000000000000000000`  |
+| `crypto`                    | `0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f`  |
+| `example.crypto`            | `0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e`  |
+| `www.example.crypto`        | `0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1`  |
+| `welcome.to.ukraine.crypto` | `0x8c2503ec1678c38aea1bb40b2c878feec5ba4807ab16293cb53cbf0b9a8a0533`  |
+
+### Inverse namehashing
+
+Fundamentally namehashing is built to be a one way operation.
+However, crypto registry remembers all the domain names that were ever minted: [source code](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L17).
+That makes it possible to obtain an original domain name from a namehash via ETH RPC call to [Registry#tokenURI](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L51).
+
 
 <div id="registry-controllers"></div>
 
-### Registry Controllers
+## Registry Controllers
 
 At the moment when crypto registry was deployed, Ethereum platform had a limitation on the contract size. [Removing Contract Size Limit Issue](https://github.com/ethereum/EIPs/issues/1662).
 
@@ -54,7 +79,7 @@ The list of controllers is irreversibly locked and can not be modified in the fu
 
 <div id="domains-minting"></div>
 
-### Domains Minting and Hierarchy
+## Domains Minting and Hierarchy
 
 Registry comes with a pre-generated top level domain `crypto`.
 A process of making a new domain is referenced as "minting" in the source code and documentation.
@@ -256,32 +281,6 @@ Custom resolver can be implemented as a separated contract and its address can b
 
 <!-- TODO more information on which interface should be implemented by custom resolver -->
 <!-- TODO Sync mechanism description -->
-
-<div id="namehashing"></div>
-
-## Namehashing Domain Name
-
-Namehashing is an algorithm that converts a domain name in a classical format (like `www.example.crypto`) to ERC721 token id.
-All .crypto ecosystem contracts accept domain name as a method argument in a form of ERC721 token.
-
-Namehashing is defined as a part of [EIP-137](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-137.md#namehash-algorithm) standard.
-
-Example implementation in JS: https://github.com/unstoppabledomains/resolution/blob/master/src/cns/namehash.ts
-One can verify his implementation of namehashing algorithm using the following reference table:
-
-| Domain Name                 | ERC721 Token                                                          |
-|-----------------------------|-----------------------------------------------------------------------|
-| `.`                         | `0x0000000000000000000000000000000000000000000000000000000000000000`  |
-| `crypto`                    | `0x0f4a10a4f46c288cea365fcf45cccf0e9d901b945b9829ccdb54c10dc3cb7a6f`  |
-| `example.crypto`            | `0xd584c5509c6788ad9d9491be8ba8b4422d05caf62674a98fbf8a9988eeadfb7e`  |
-| `www.example.crypto`        | `0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1`  |
-| `welcome.to.ukraine.crypto` | `0x8c2503ec1678c38aea1bb40b2c878feec5ba4807ab16293cb53cbf0b9a8a0533`  |
-
-### Inverse namehashing
-
-Fundamentally namehashing is built to be a one way operation.
-However, crypto registry remembers all the domain names that were ever minted: [source code](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L17).
-That makes it possible to obtain an original domain name from a namehash via ETH RPC call to [Registry#tokenURI](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L51).
 
 <div id="records-reference"></div>
 
