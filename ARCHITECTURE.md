@@ -1,26 +1,10 @@
 # Architecture
 
-## Pre-requirements
-
-.crypto domain names registry is based on the following technologies:
-
-Required to resolve a domain:
-
-* [JSON](https://www.json.org/json-en.html) - standard data interchange format in web
-* [SHA-3](https://en.wikipedia.org/wiki/SHA-3) - modern secure cryptographic hashing algorithm
-* [Solidity ABI](https://solidity.readthedocs.io/en/v0.6.11/abi-spec.html) - function call parameters encoding/decoding algorithm
-* [Ethereum JSON RPC](https://eth.wiki/json-rpc/API) - access ethereum blockchain data via JSON RPC interface
-
-Additionally required to manage domain records, transfer domains to other owner address and configure management permission:
-
-* [EIP-721](https://eips.ethereum.org/EIPS/eip-721) - ERC-721 Non-Fungible Token Standard
-* [Ethereum Transactions](https://docs.ethhub.io/using-ethereum/transactions/) - executing blockchain transactions
-
-The person reading this document is expected to understand the basics of those standards.
-
-TODO: Add high level diagram on Ethereum infrastructure
+This section explains the components of crypto registry, its core design principles and permission model.
 
 ## Registry Essentials
+
+TODO: Add high level diagram on Ethereum infrastructure
 
 The essential part of the registry is to allow one to own a domain and associate records to it. 
 
@@ -53,7 +37,8 @@ Resolver data structure looks in the following way (pseudocode):
 mapping (uint256 =>  mapping (string => string)) internal _records;
 ```
 
-UD provides a default public resolver contract deployed at [0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842](https://etherscan.io/address/0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842). [Source Code](./contracts/Resolver.sol).
+Unstoppable Domains provides a default public resolver contract deployed at [0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842](https://etherscan.io/address/0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842). [Source Code](./contracts/Resolver.sol).
+
 
 <div id="registry-controllers"></div>
 
@@ -67,6 +52,37 @@ A list of controller contracts and their source can be found in [List of Contrac
 
 The list of controllers is irreversibly locked and can not be modified in the future.
 
+<div id="domains-minting"></div>
+
+### Domains Minting and Hierarchy
+
+Registry comes with a pre-generated top level domain `crypto`.
+A process of making a new domain is referenced as "minting" in the source code and documentation.
+Generally any domain owner can mint a subdomain via [Registry#mintChild](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L79).
+
+Example: an owner of domain `example.crypto` can mint a domain `home.example.crypto` in the following way:
+
+```
+mintChild(subdomainOwner, namehash('example.crypto'), 'home')
+```
+
+Note: `subdomainOwner` usually matches the owner of the original domain.
+
+Parent domain owners are having a full control over child domains by having an ability to transfer the ownership of subdomain via
+[Registry#transferFromChild](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L111).
+
+Example: transferring a subdomain `home.example.crypto` from previous example to original owner can look like:
+
+```
+transferFromChild(subdomainOwner, originalDomainOwner, namehash('example.crypto'), 'home')
+```
+
+`crypto` top level domain's owner is set to `0x0000000000000000000000000000000000000000000000000000000000000000` address that no one owns. So, the second level domains minting is done via a [MintingController.sol](./contracts/MintingController.sol) which is only allowed to mint non existing domains without any ability to control those domains after they are minted.
+
+The permanent ownership of second level domains is guaranteed as there is no fee for owning a domain no ability to revoke the ownership for any other reason.
+People wanting to propagate this permission model to subdomains can follow the same pattern for domains they own.
+
+There is no technical limit of how deep subdomains tree can go. There might be limitations on the client side, but they are not recommended.
 
 <div id="domain-resolution"></div>
 
@@ -263,9 +279,9 @@ One can verify his implementation of namehashing algorithm using the following r
 
 ### Inverse namehashing
 
-Fundamentally namehashing is built to be one a way operation.
+Fundamentally namehashing is built to be a one way operation.
 However, crypto registry remembers all the domain names that were ever minted: [source code](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L17).
-That makes it possible to obtain an original domain name from a hash via ETH RPC call to [Registry#tokenURI](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L51).
+That makes it possible to obtain an original domain name from a namehash via ETH RPC call to [Registry#tokenURI](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L51).
 
 <div id="records-reference"></div>
 
