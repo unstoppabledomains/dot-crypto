@@ -41,7 +41,7 @@ Unstoppable Domains provides a default public resolver contract deployed at [0xb
 
 <div id="namehashing"></div>
 
-## Namehashing Domain Name
+### Namehashing Domain Name
 
 Namehashing is an algorithm that converts a domain name in a classical format (like `www.example.crypto`) to ERC721 token id.
 All .crypto ecosystem contracts accept domain name as a method argument in a form of ERC721 token.
@@ -58,7 +58,7 @@ One can verify his implementation of namehashing algorithm using the following r
 | `www.example.crypto`        | `0x3ae54ac25ccd63401d817b6d79a4a56ae7f79a332fe77a98fa0c9d10adf9b2a1`  |
 | `welcome.to.ukraine.crypto` | `0x8c2503ec1678c38aea1bb40b2c878feec5ba4807ab16293cb53cbf0b9a8a0533`  |
 
-### Inverse namehashing
+#### Inverse namehashing
 
 Fundamentally namehashing is built to be a one way operation.
 However, crypto registry remembers all the domain names that were ever minted: [source code](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L17).
@@ -67,7 +67,7 @@ That makes it possible to obtain an original domain name from a namehash via ETH
 
 <div id="registry-controllers"></div>
 
-## Registry Controllers
+### Registry Controllers
 
 At the moment when crypto registry was deployed, Ethereum platform had a limitation on the contract size. [Removing Contract Size Limit Issue](https://github.com/ethereum/EIPs/issues/1662).
 
@@ -79,7 +79,7 @@ The list of controllers is irreversibly locked and can not be modified in the fu
 
 <div id="domains-minting"></div>
 
-## Domains Minting and Hierarchy
+### Domains Minting and Hierarchy
 
 Registry comes with a pre-generated top level domain `crypto`.
 A process of making a new domain is referenced as "minting" in the source code and documentation.
