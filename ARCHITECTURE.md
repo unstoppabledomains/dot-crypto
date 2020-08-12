@@ -268,6 +268,8 @@ Functions Reference:
 * `encodeContractInterface` - [Solidity ABI](https://solidity.readthedocs.io/en/v0.7.0/abi-spec.html#argument-encoding) interface parameters encoder
 * `solidityKeccak256` - [Solidity ABI](https://solidity.readthedocs.io/en/v0.7.0/abi-spec.html#argument-encoding) parameters encoder
 
+<!-- TODO: clarify encodeContractInterface and solidityKeccak256, put examples implementation -->
+
 
 ### Deploying Custom Resolver
 
@@ -279,8 +281,12 @@ This may include:
 
 Custom resolver can be implemented as a separated contract and its address can be assigned as a domain resolver via `Registry#resolveTo`
 
-<!-- TODO more information on which interface should be implemented by custom resolver -->
+<!-- 
+TODO more information on which interface should be implemented by custom resolver: 
+extract Resolver records reading interface into separated solidity interface
+-->
 <!-- TODO Sync mechanism description -->
+<!-- TODO Explain Resolver events: NewKey, Set, ResetRecords -->
 
 <div id="records-reference"></div>
 
