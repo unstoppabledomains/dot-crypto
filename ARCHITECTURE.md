@@ -104,8 +104,8 @@ transferFromChild(subdomainOwner, originalDomainOwner, namehash('example.crypto'
 
 `crypto` top level domain's owner is set to `0x0000000000000000000000000000000000000000000000000000000000000000` address that no one owns. So, the second level domains minting is done via a [MintingController.sol](./contracts/MintingController.sol) which is only allowed to mint non existing domains without any ability to control those domains after they are minted.
 
-The permanent ownership of second level domains is guaranteed as there is no fee for owning a domain no ability to revoke the ownership for any other reason.
-People wanting to propagate this permission model to subdomains can follow the same pattern for domains they own.
+The permanent ownership of second level domains is guaranteed as there is no fee for owning a domain and no permission to revoke the ownership at higher level.
+People wanting to propagate this permission model to subdomains (e.g. converting them into zones) can follow the same pattern for domains they own.
 
 There is no technical limit of how deep subdomains tree can go. There might be limitations on the client side, but they are not recommended.
 
