@@ -1,7 +1,14 @@
 # .crypto
 
 Crypto Registry Naming Service (CNS) is a naming service implemented using Ethereum Smart Contract Platform.
-Each name inside CNS has a format of a domain name in `.crypto` top level domain space. Like `example.crypto`
+Each name inside CNS has a format of a domain name in `.crypto` top level domain space. Like `example.crypto`.
+
+CNS's goal is to be an alternative to classical domain names system (DNS) by fixing its core downsides:
+
+* Censorship Resistance
+* Ensure permanent ownership of the domain by the owner
+* Decentralized registration
+* Decentralized access
 
 ## Documentation:
 
