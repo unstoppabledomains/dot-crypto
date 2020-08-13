@@ -29,15 +29,15 @@ Any other custom records are not forbidden to be set, however their interpretati
 
 
 <style>
-table th:first-of-type {
-}
-table th:nth-of-type(2) {
-    min-width: 300px;
-}
-table th:nth-of-type(3) {
-    min-width: 170px;
-}
-table th:nth-of-type(4) {
-    width: 30%;
-}
+  table th:first-of-type {
+  }
+  table th:nth-of-type(2) {
+      min-width: 300px;
+  }
+  table th:nth-of-type(3) {
+      min-width: 170px;
+  }
+  table th:nth-of-type(4) {
+      width: 30%;
+  }
 </style>
