@@ -342,6 +342,8 @@ No other data transformation is required when converting a traditional DNS recor
 Crypto records do not have a domain name associated to them. That is why there is no feature of storing your subdomain records inside a parent domain.
 Example: `www.example.com` record can only be set inside a resolver of `www.example.com` but never inside `example.com`.
 
+A recommended way to display content in a browser for crypto domains is explained in [Browser Resolution How-to](./BROWSER_RESOLUTION_HOWTO.md)
+
 #### TTL
 
 Records TTL can be set for all records or for individual type of record. TTL for all records can be set in `dns.ttl`. TTL for individual record type can be set in `dns.<RECORD>.ttl`. If `ttl` for individual record type is not set, a default `dns.ttl` need to be applied.
