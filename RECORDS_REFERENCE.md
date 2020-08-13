@@ -26,18 +26,3 @@ Any other custom records are not forbidden to be set, however their interpretati
 | `dns.<RECORD>.ttl`           | TTL setting for corresponding type of records                                                                                                                                                                  | `\d+`                                            | `164`                                            | [Link](./ARCHITECTURE.md#dns-records)     |
 | `ipfs.html.value`            | Deprecated: use `dweb.ipfs.hash` instead.                                                                                                                                                                      | `[0-9a-zA-Z]{46}`                                | `QmVaAtQbi3EtsfpKoLzALm6vXphdi2KjMgxEDKeGg6wHvK` | [Link](./BROWSER_RESOLUTION_HOWTO.md)     |
 | `ipfs.redirect_domain.value` | Deprecated: use `browser.redirect_url` instead.                                                                                                                                                                | [RFC-1738](https://tools.ietf.org/html/rfc1738)  | `http://example.com/home.html`                   | [Link](./BROWSER_RESOLUTION_HOWTO.md)     |
-
-
-<style>
-  table th:first-of-type {
-  }
-  table th:nth-of-type(2) {
-      min-width: 300px;
-  }
-  table th:nth-of-type(3) {
-      min-width: 170px;
-  }
-  table th:nth-of-type(4) {
-      width: 30%;
-  }
-</style>
