@@ -41,8 +41,7 @@ Here are some end user scenario on which features should be available in a brows
 
 ## Content Display Protocol
 
-In addition to base browser content display protocol like `http`, `https` or `ftp`. Blockchain domains can also be configured
-for distributed content protocol like `ipfs`. Here is the list of content display protocols that can be associated with a crypto domain:
+In addition to base browser content display protocol like `http`. Blockchain domains can also be configured for distributed content protocol like `ipfs`. Here is the list of content display protocols that can be associated with a crypto domain:
 
 * Traditional
   * HTTP
@@ -50,7 +49,7 @@ for distributed content protocol like `ipfs`. Here is the list of content displa
   * FTP
 * Distributed
   * [IPFS](https://en.wikipedia.org/wiki/InterPlanetary_File_System) defining `ipfs://` protocol
-  * [BZZ](https://swarm-guide.readthedocs.io/en/stable/architecture.html#the-bzz-protocol) defining `bzz://` protocol
+  * [Swarm](https://swarm-guide.readthedocs.io/en/stable/architecture.html#the-bzz-protocol) defining `bzz://` protocol
 
 A browser may support any subset of traditional or distributed protocols that would still make crypto domains websites displayable.
 
