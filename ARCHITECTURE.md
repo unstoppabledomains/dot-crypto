@@ -4,7 +4,7 @@ This section explains the components of crypto registry, its core design princip
 
 ## Registry Essentials
 
-TODO: Add high level diagram on Ethereum infrastructure
+<!-- TODO: Add high level diagram on Ethereum infrastructure -->
 
 The essential part of the registry is to allow one to own a domain and associate records to it. 
 
