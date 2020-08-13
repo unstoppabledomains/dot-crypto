@@ -2,16 +2,17 @@
 
 # Records Reference
 
-This list of CNS record types is an overview of resolver records, that have a defined interpretation.
-Any other custom records are not forbidden by to be set.
+Records Reference is an overview of all standardized resolver record, that have a defined interpretation.
+Any other custom records are not forbidden to be set, however their interpretation remains custom to specific clients.
 
+## List of Records
 
 
 | Domain Name                  | Description                                                                                                                                                                                                                                                   | Example                                          | Documentation |
 |------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|---------------|
 | `crypto.ETH.address`         | Ethereum Address to receive crypto payments                                                                                                                                                                                                                   | `0x0f4a10a4f46c288cea365fcf45cccf0e9d901b94`     |               |
 | `crypto.BTC.address`         | Bitcoin Address to receive crypto payments                                                                                                                                                                                                                    | `1Nb7Mt1EqUqxxrAdmefUovS7aTgMUf2A6m`             |               |
-| `crypto.<CURRENCY>.address`  | Crypto currency address of the specified blockchain name. List of supported currencies can be found in [SLIP-0044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)                                                                             | ``                                               |               |
+| `crypto.<TICKER>.address`    | Crypto currency address of the specified blockchain name. List of supported currencies can be found in [SLIP-0044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)                                                                             | ``                                               |               |
 | `browser.preferred_protocol` | A name of the protocol that browser should prioritize to display content for                                                                                                                                                                                  | `ipfs`, `http`, 'https`, `bzz`                   |               |
 | `browser.redirect_url`       | An URL where a browser should redirect a person if no dweb.*.hash records or `dns.*` records are set or a content display protocol is not supported by the browser. See [RFC-1738](https://tools.ietf.org/html/rfc1738) for supported formats | `http://example.com/home.html`                   |               |
 | `dweb.ipfs.hash`             | IPFS network content hash                                                                                                                                                                                                                                     | `QmVaAtQbi3EtsfpKoLzALm6vXphdi2KjMgxEDKeGg6wHvK` |               |
@@ -24,9 +25,3 @@ Any other custom records are not forbidden by to be set.
 | `dns.<RECORD>.ttl`           | TTL setting for corresponding type of records                                                                                                                                                                                                                 | `164`                                            |               |
 | `ipfs.html.value`            | Deprecated: use `dweb.ipfs.hash` instead.                                                                                                                                                                                                                     | `QmVaAtQbi3EtsfpKoLzALm6vXphdi2KjMgxEDKeGg6wHvK` |               |
 | `ipfs.redirect_domain.value` | Deprecated: use `browser.redirect_url` instead.                                                                                                                                                                                                               | `http://example.com/home.html`                   |               |
-
-You can now import Markdown table code directly using File/Paste table data... dialog.
-Currently hosted here:
-[Records Reference](https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3dWRAS9YFw7fdHn6y4ilolVDTZMjkLzMe_Zm6CiEiIH3zjIcieYShIebFrDAkLDDyTbFnQRs9wKvb/pubhtml?gid=0&single=true)
-
-TODO: Move Inline once finalized from [Document](https://docs.google.com/spreadsheets/d/1xquo_6z-EgZ50nou2ldM2g5xc0XztaiIB55fyZEiSUg/edit#gid=0)
