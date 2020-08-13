@@ -385,3 +385,5 @@ Such records are stored in `dweb.*` namespace.
 Each protocol has its own sub-namespace for its data using canonic name. Example: Swarm's protocol canonic name is `bzz` so its records are stored at `dns.bzz.*` namespace.
 
 Record structure can be different based on the protocol. However, all protocols have a common `.hash` record used to reference a content in the distributed network. Example: `dns.ipfs.hash` for IPFS protocol.
+
+See [Browser Resolution How-to](./BROWSER_RESOLUTION_HOWTO.md) for an information how to interpret those records.
