@@ -1,6 +1,6 @@
 # Browser Resolution How-to
 
-This document describes a recommended way to resolve blockchain domains within a classical HTTP Web Browser or a Dapp Browser.
+This document describes the recommended way to resolve blockchain domains within a classical HTTP Web Browser or a Dapp Browser.
 The document assumes that a reader has a basic understanding of Unstoppable domains resolution in general. See [Domain Resolution](./ARCHITECTURE.md#domain-resolution)
 
 ## End user features
