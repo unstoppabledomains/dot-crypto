@@ -378,6 +378,12 @@ In other words, configuring subdomain using the parent domain has no benefit and
 
 Therefore, authority configurations are not supported by crypto domains at the moment.
 
+<!-- 
+TODO 
+consider the ability to resolve any subdomain to something like `*.example.crypto` or 
+subdomain whild card like `stage*.example.crypto`
+-->
+
 <div id="dweb-records"></div>
 
 ### Distributed Web records

@@ -53,6 +53,45 @@ In addition to base browser content display protocol like `http`. Blockchain dom
 
 A browser may support any subset of traditional or distributed protocols that would still make crypto domains websites displayable.
 
+
+## Gateway to simplify the integration
+
+While it is possible to make resolve a domain via a call to ETH RPC and support distributed content protocols in a browser, it might be easier to make those call via gateways using protocols already supported by all browsers: HTTP and DNS.
+A gateway may simplify the integration to a browser, but comes at the downside of decreased decentralization (if gateway is hosted by third party) or complex user experience if the gateway is hosted by the user.
+
+There are 2 possible gateways for each of the problem:
+
+* Distributed content gateway
+* Resolution over DNS gateway
+
+See a description of how they work below.
+
+<div id="distributed-gateway"></div>
+
+### Distributed content gateway
+
+A gateway is an HTTP Server that acts as a proxy between HTTP and distributed content protocol. 
+Basic functionality of such a gateway:
+
+1. Receive HTTP request to crypto domain (like `http://example.crypto`) 
+2. Resolve a domain into crypto records
+3. Get the content based on [Resolution Algorithm](#resolution-algorithm)
+4. Return the content to client via HTTP
+
+### Resolution over DNS gateway
+
+A gateway is a DNS Server that resolves not just traditional domains but also `.crypto` domains.
+Basic functionality of such a gateway:
+
+1. Receive a domain resolution request
+2. Resolve a domain using classical DNS system if is in classical TLD (like `.com`)
+3. Resolve a domain using [Resolution Algorithm](#resolution-algorithm) if it is in crypto TLD
+  * If a domain is set using DNS, transform [crypto DNS records](./ARCHITECTURE.md#dns-records) into classical records
+  * If a domain is set using distributed content
+    * If client requests `A` record, resolve to [Distributed Content Gateway](#distributed-gateway) IP Address
+    * If client requests `TXT` record, resolve to all crypto records in JSON encoded key-value format
+4. Send resolution to client
+
 ## Records related to browser resolution
 
 All records related to browser resolution are stored within these namespaces:
@@ -65,6 +104,8 @@ For a detailed records reference see [Records Reference](./RECORDS_REFERENCE.md)
 
 If you are looking for a way to get records associated to a domain,
 see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
+
+<div id="resolution-algorithm"></div>
 
 ## Browser Resolution Algorithm
 
