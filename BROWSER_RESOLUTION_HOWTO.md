@@ -9,37 +9,36 @@ Here are some of the end user scenarios that should give an idea which features 
 
 ### HTTP Website Browsing
 
-This scenario assumes that a blockchain domain has a DNS record configured.
 
-1. A user enters the domain name into a browser address bar.
-2. A browser resolves the domain and gets the specified DNS records.
-3. A browser requests and displays the content using DNS protocol and HTTP protocol.
+1. Given a blockchain domain has a DNS record configured.
+1. When user enters the domain name into a browser address bar.
+2. Then the browser resolves the domain and gets the specified DNS records.
+3. Then the browser requests and displays the content using DNS protocol and HTTP protocol.
 
 ### Distributed Website Browsing
 
-This scenario assumes that a blockchain domain has an dweb content identifier record configured (e.g. IPFS hash).
-
-1. A user enters the domain name into a browser address bar.
-2. A browser resolves the domain and gets the content hash of a domain.
-3. A browser retrieves the content by the hash using a related protocol and displays the content.
+1. Given a blockchain domain has an dweb content identifier record configured (e.g. IPFS hash).
+2. When user enters the domain name into a browser address bar.
+3. Then the browser resolves the domain and gets the content hash of a domain.
+4. Then the browser retrieves the content by the hash using a related protocol and displays the content.
 
 ### Domain Level Redirect
 
-This scenario assumes that a blockchain domain has a redirect url and IPFS hash configured, and a user's browser doesn't support IPFS protocol.
-
-1. A user enters the domain name into a browser address bar.
-2. The browser resolves the domain and gets redirect url and IPFS hash records.
-3. The browser redirects a user to the redirect URL because IPFS protocol is not supported.
+1. Given a blockchain domain has a redirect url and IPFS hash configured, and a user's browser doesn't support IPFS protocol.
+2. When the user enters the domain name into a browser address bar.
+3. Then the browser resolves the domain and gets redirect url and IPFS hash records.
+4. Then the browser redirects a user to the redirect URL because IPFS protocol is not supported.
 
 ### Resolution Configuration
 
 1. Given a user that want to change its ETH provider service.
-2. User goes to browser settings crypto domains section.
-3. User changes ethereum node URL from default to any other.
-4. User changes Registry Address for each support crypto registry.
-5. User changes network for ethereum node.
-6. If network is not specified explicitly, it can be retrieved from the ethereum node URL.
-7. If Registry Address is not specified, it can use a default for specified network.
+2. When user goes to browser settings crypto domains section.
+  * User changes ethereum node URL from default to any other.
+  * User changes Registry Address for each support crypto registry.
+  * User changes network for ethereum node.
+3. Then the browser uses new settings to make requests to ethereum blockchain
+  * If network is not specified explicitly, it can be retrieved from the ethereum node URL.
+  * If Registry Address is not specified, it can use a default for specified network.
 
 ## Content Display Protocol
 
