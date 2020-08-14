@@ -1,33 +1,35 @@
 # Browser Resolution How-to
 
-This document describe a recommended way to resolve blockchain domain within a classical HTTP Web Browser or a Dapp Browser.
-The document assumes that one having a basic understanding of how domain records are retrieved in general. See [Domain Resolution](./ARCHITECTURE.md#domain-resolution)
+This document describes a recommended way to resolve blockchain domains within a classical HTTP Web Browser or a Dapp Browser.
+The document assumes that a reader has a basic understanding of Unstoppable domains resolution in general. See [Domain Resolution](./ARCHITECTURE.md#domain-resolution)
 
 ## End user features
 
-Here are some end user scenario on which features should be available in a browser that resolves crypto domains
+Here are some of the end user scenarios that should give an idea which features should be available in a browser supporting crypto domains.
 
 ### HTTP Website Browsing
 
-1. Given a blockchain domain name configured to have a DNS record attached.
-2. User enters a crypto domain within an address bar of a browser.
-3. A browser resolves a domain and gets specified DNS records.
-4. A browser requests and displays the content using DNS protocol and HTTP protocol.
+This scenario assumes that a blockchain domain has a DNS record configured.
+
+1. A user enters the domain name into a browser address bar.
+2. A browser resolves the domain and gets the specified DNS records.
+3. A browser requests and displays the content using DNS protocol and HTTP protocol.
 
 ### Distributed Website Browsing
 
-1. Given a blockchain domain name configured to have a distributed network content hash (like IPFS)
-2. User enters a crypto domain within an address bar of a browser.
-3. A browser resolves a domain and gets the content hash of a domain
-4. A browser retrieves a content by the hash using a related protocol and displays the content in browser
+This scenario assumes that a blockchain domain has an dweb content identifier record configured (e.g. IPFS hash).
+
+1. A user enters the domain name into a browser address bar.
+2. A browser resolves the domain and gets the content hash of a domain.
+3. A browser retrieves the content by the hash using a related protocol and displays the content.
 
 ### Domain Level Redirect
 
-1. Given a blockchain domain name configured to have a redirect url and IPFS hash
-2. Given a browser that doesn't support IPFS protocol
-3. User enters a crypto domain within an address bar of a browser.
-4. A browser resolves a domain to the given records
-5. A browser redirects user to the redirect URL because IPFS protocol is not supported
+This scenario assumes that a blockchain domain has a redirect url and IPFS hash configured, and a user's browser doesn't support IPFS protocol.
+
+1. A user enters the domain name into a browser address bar.
+2. The browser resolves the domain and gets redirect url and IPFS hash records.
+3. The browser redirects a user to the redirect URL because IPFS protocol is not supported.
 
 ### Resolution Configuration
 
@@ -41,7 +43,7 @@ Here are some end user scenario on which features should be available in a brows
 
 ## Content Display Protocol
 
-In addition to base browser content display protocol like `http`. Blockchain domains can also be configured for distributed content protocol like `ipfs`. Here is the list of content display protocols that can be associated with a crypto domain:
+In addition to base browser content display protocol like `http` blockchain domains can also be configured for distributed content protocol like `ipfs`. Here is the list of content display protocols that can be associated with a crypto domain:
 
 * Traditional
   * HTTP
@@ -68,26 +70,24 @@ see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
 
 ## Browser Resolution Algorithm
 
-This section explains how different records configuration of a domain should be interpreted by the browser.
+This section explains how different domain record configurations should be interpreted by browsers.
 
 A browser can select a protocol it has a support for.
 If a domain is configured for multiple protocols, it should prioritize a protocol based on `browser.preferred_protocol` record that can be set to one of the defined protocols.
 
 Browsers supporting distributed content protocol should always prioritize distributed content to be displayed for domains that do not have `browser.preferred_protocol` record set to traditional protocol. 
-A domain can have a single content hash for each distributed protocol stored in `dweb.<protocol>.hash`. Ex: `dweb.bzz.hash` for Swarm's `bzz` protocol. See [Dweb Records](./ARCHITECTURE.md#dweb-records) for more information.
+A domain can have a single content identifier for each distributed protocol stored in `dweb.<protocol>.hash`. Ex: `dweb.bzz.hash` for Swarm's `bzz` protocol. See [Dweb Records](./ARCHITECTURE.md#dweb-records) for more information.
 
 If none of `dweb` hash records is set, a browser should fall back to DNS resolution that is set within `dns.*` namespace.
 See [DNS Records](./ARCHITECTURE.md#dns-records) for more information
 
-Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly by the user. In case of blockchain domain names inside a browser that suppose to support many protocols, it is preferred to determine a protocol only after a domain being resolved based on specified records for a domain.
-
-<div id="legacy-records"></div>
+Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly by a user. In case of blockchain domain names (assuming a browser supports many protocols), it is preferred to determine a protocol only after resolving domain records.
 
 ### Legacy Records Support
 
-Most .crypto domains as of Q3 2020 are configured using legacy record names for IPFS hash and redirect domain:
+As of Q3 2020, most .crypto domains are configured using legacy record names for IPFS hash and redirect domain:
 
 1. `ipfs.html.value` deprecated in favor of `dweb.ipfs.hash`
 2. `ipfs.redirect_domain` deprecated in favor of `browser.redirect_url`
 
-A browser is strongly recommended to support those records as a fallback when corresponding replacement records are not set.
+Browsers are strongly recommended to support those records as a fallback when corresponding replacement records are not set.
