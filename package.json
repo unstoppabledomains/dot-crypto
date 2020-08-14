@@ -30,7 +30,8 @@
     "rpc:geth": "geth -dev -dev.period 0 -rpc -rpcport 7545 --miner.gastarget 0x2014103 -keystore geth -password '' -verbosity 0 &",
     "test:geth": "truffle test --network devgeth test/*.geth.js",
     "rpc:stop": "lsof -ti:7545 | xargs kill",
-    "compile": "./compile.sh",
+    "compile": "./compile.sh && yarn merge-contracts",
+    "merge-contracts": "sol-merger \"./contracts/**/*.sol\" ./build",
     "prebuild": "yarn compile && rm -rf build",
     "build": "tsc",
     "watch": "tsc --watch"
@@ -42,6 +43,7 @@
     "ganache-cli": "^6.7.0",
     "node-fetch": "^2.6.0",
     "prettier": "^1.18.2",
+    "sol-merger": "^3.1.0",
     "solc": "0.5.12",
     "truffle": "^5.0.39",
     "typescript": "^3.6.3"
