@@ -74,10 +74,9 @@ That makes it possible to obtain an original domain name from a namehash via ETH
 At the moment when crypto registry was deployed, Ethereum platform had a limitation on the contract size. [Removing Contract Size Limit Issue](https://github.com/ethereum/EIPs/issues/1662).
 
 In order to avoid that limitation, some registry methods are moved to Controller Contracts. A method sent to controller contract will act as if it was sent to original registry.
+The list of controllers addresses is **irreversibly locked** on the Registry and can not be modified in the future.
 
 A list of controller contracts and their source can be found in [List of Contracts](./README.md#deployed-contracts)
-
-The list of controllers addresses is irreversibly locked on the Registry and can not be modified in the future.
 
 <div id="domains-minting"></div>
 
@@ -290,14 +289,16 @@ extract Resolver records reading interface into separated solidity interface
 <!-- TODO Sync mechanism description -->
 <!-- TODO Explain Resolver events: NewKey, Set, ResetRecords -->
 
-<div id="records-reference"></div>
+<div id="main-records"></div>
 
 ## Main Records
 
 Records on top level are stored in a simple key-value mapping of string to string.
-A full list of records can be found in [Records Reference](./RECORDS_REFERENCE.md).
+Crypto registry doesn't forbid a user to assign any record to any value.
+However, there is a list of standard records that have a defined standard interpretation by clients.
+A full list of standardized records can be found in [Records Reference](./RECORDS_REFERENCE.md).
 
-Record keys are split to namespaces with `.` used as a separator.
+Standard record keys are split by namespaces with `.` used as a separator.
 
 Main namespaces are:
 
