@@ -8,7 +8,7 @@ This section explains the components of crypto registry, its core design princip
 
 The essential part of the registry is to allow one to own a domain and associate records to it. 
 
-Domain ownership is held in a form of ERC721 token.
+Domain ownership is held in a form of [ERC721 token](https://eips.ethereum.org/EIPS/eip-721).
 A domain name is converted to an ERC721 token using a [Namehashing](#namehashing) algorithm.
 The records have a key-value form. 
 **Multiple records with the same key are unsupported** at the low level and have to be simulated in higher level. See [Records Reference](./RECORDS_REFERENCE.md). An attempt to add a record that already exist on resolver will result in record value being overwritten.
@@ -18,6 +18,8 @@ The flexibility is achieved by introducing a Resolver contract as a separated co
 Records can be associated to a domain ONLY via a Resolver contract. 
 A single resolver can hold records for multiple domains.
 
+A fragment of Registry contract that shows how ownership and resolvers information is persisted:
+
 ``` solidity
 // Mapping from ERC721 token ID to a resolver address
 mapping (uint256 => address) internal _tokenResolvers;
@@ -26,9 +28,9 @@ mapping (uint256 => address) internal _tokenResolvers;
 mapping (uint256 => address) internal _tokenOwners;
 ```
 
-Registry is a "singleton" contract and only exists in a single production instance deployed at [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe). [Source Code](./contracts/Registry.sol).
+There are other permission structures (approved address and operators) available as part of ERC721 standard but they do not have any custom functionality on top. See the ERC721 standard for more information on those topics.
 
-There are other structures available as part of ERC721 standard but they do not have any custom functionality on top. See the ERC721 standard for more information on additional permission data stored on the registry.
+Registry is a "singleton" contract and only exists in a single production instance deployed at [0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe](https://etherscan.io/address/0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe). [Source Code](./contracts/Registry.sol).
 
 Resolver data structure looks in the following way (pseudocode):
 
@@ -45,8 +47,9 @@ Unstoppable Domains provides a default public resolver contract deployed at [0xb
 
 Namehashing is an algorithm that converts a domain name in a classical format (like `www.example.crypto`) to ERC721 token id.
 All .crypto ecosystem contracts accept domain name as a method argument in a form of ERC721 token.
-Namehashing is defined as a part of [EIP-137](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-137.md#namehash-algorithm) standard.
+Namehashing is defined as a part of [EIP-137](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-137.md#namehash-algorithm) standard. 
 [Example implementation](https://github.com/unstoppabledomains/resolution/blob/master/src/cns/namehash.ts) in JavaScript. 
+See the standard for a text description of the algorithm.
 
 One can verify his implementation of namehashing algorithm using the following reference table:
 
@@ -61,9 +64,8 @@ One can verify his implementation of namehashing algorithm using the following r
 #### Inverse namehashing
 
 Fundamentally namehashing is built to be a one way operation.
-However, crypto registry remembers all the domain names that were ever minted: [source code](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L17).
+However, crypto registry remembers all the domain names that were ever minted with their corresponding namehash: [source code](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L17).
 That makes it possible to obtain an original domain name from a namehash via ETH RPC call to [Registry#tokenURI](https://github.com/unstoppabledomains/dot-crypto/blob/master/contracts/Registry.sol#L51).
-
 
 <div id="registry-controllers"></div>
 
@@ -75,7 +77,7 @@ In order to avoid that limitation, some registry methods are moved to Controller
 
 A list of controller contracts and their source can be found in [List of Contracts](./README.md#deployed-contracts)
 
-The list of controllers is irreversibly locked and can not be modified in the future.
+The list of controllers addresses is irreversibly locked on the Registry and can not be modified in the future.
 
 <div id="domains-minting"></div>
 
