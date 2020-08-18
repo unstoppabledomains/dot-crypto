@@ -45,18 +45,4 @@ contract IResolverReader {
      * @return Keys and values.
      */
     function getManyByHash(uint256[] memory keyHashes, uint256 tokenId) public view returns (string[] memory keys, string[] memory values);
-
-    /**
-     * @dev Function to get key by provided hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.
-     * @param keyHash The key to query the value of.
-     * @return The key string.
-     */
-    // function hashToKey(uint256 keyHash) public view returns (string memory);
-
-    /**
-     * @dev Function to get keys by provided key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.
-     * @param hashes The key to query the value of.
-     * @return Keys
-     */
-    // function hashesToKeys(uint256[] memory hashes) public view returns (string[] memory);
 }
