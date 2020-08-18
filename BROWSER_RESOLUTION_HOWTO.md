@@ -138,6 +138,8 @@ See [DNS Records](./ARCHITECTURE.md#dns-records) for more information
 
 Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly by a user. In case of blockchain domain names (assuming a browser supports many protocols), it is preferred to determine a protocol only after resolving domain records.
 
+![Browser_Resolution_Algorithm](./documentation/diagrams/browser-resolution/Browser_Resolution_Algorithm.png)
+
 ### Legacy Records Support
 
 As of Q3 2020, most .crypto domains are configured using legacy record names for IPFS hash and redirect domain:
