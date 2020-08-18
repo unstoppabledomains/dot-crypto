@@ -11,7 +11,7 @@ const { ZERO_ADDRESS } = require('./helpers/constants.js');
 chai.use(chaiAsPromised);
 const { assert } = chai;
 
-contract('ProxyReader', ([coinbase]) => {
+contract('ProxyReader', ([coinbase, ...accounts]) => {
     const domainName = 'test_42';
     const keys = ['test.key1', 'test.key2'];
     const values = ['test.value1', 'test.value2'];
@@ -31,38 +31,112 @@ contract('ProxyReader', ([coinbase]) => {
         await expectRevert(ProxyReader.new(ZERO_ADDRESS), 'Registry is empty');
     });
 
-    it('should revert when resolver not found', async () => {
-        const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
-        await expectRevert.unspecified(proxy.getMany([keys[0]], unknownTokenId));
+    describe('getMany', function () {
+        it('should revert when resolver not found', async () => {
+            const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+            await expectRevert.unspecified(proxy.getMany([keys[0]], unknownTokenId));
+        });
+
+        it('should return list with empty value for unregistered key', async () => {
+            const result = await proxy.getMany([keys[0]], tokenId);
+            assert.equal(result.length, 1);
+            assert.equal(result[0], '');
+        });
+
+        it('should return list with single value', async () => {
+            // arrange
+            const [ key ] = keys;
+            const [ value ] = values;
+            await resolver.set(key, value, tokenId);
+
+            const result = await proxy.getMany([key], tokenId);
+            assert.equal(result.length, 1);
+            assert.equal(result[0], value);
+        });
+
+        it('should return list with multiple values', async () => {
+            // arrange
+            for (let i = 0; i < keys.length; i++) {
+                await resolver.set(keys[i], values[i], tokenId);
+            }
+
+            const result = await proxy.getMany(keys, tokenId);
+            assert.equal(result.length, 2);
+            for (let i = 0; i < keys.length; i++) {
+                assert.equal(result[i], values[i]);
+            }
+        });
     });
-
-    it('should return list with empty value for unregistered key', async () => {
-        const result = await proxy.getMany([keys[0]], tokenId);
-        assert.equal(result.length, 1);
-        assert.equal(result[0], '');
+    
+    it('should proxy name call', async () => {
+        const result = await proxy.name();
+        const expected = await registry.name();
+        assert.equal(result, expected);
     });
-
-    it('should return list with single value', async () => {
-        // arrange
-        const [ key ] = keys;
-        const [ value ] = values;
-        await resolver.set(key, value, tokenId);
-
-        const result = await proxy.getMany([key], tokenId);
-        assert.equal(result.length, 1);
-        assert.equal(result[0], value);
+    
+    it('should proxy symbol call', async () => {
+        const result = await proxy.symbol();
+        const expected = await registry.symbol();
+        assert.equal(result, expected);
     });
-
-    it('should return list with multiple values', async () => {
-        // arrange
-        for (let i = 0; i < keys.length; i++) {
-            await resolver.set(keys[i], values[i], tokenId);
-        }
-
-        const result = await proxy.getMany(keys, tokenId);
-        assert.equal(result.length, 2);
-        for (let i = 0; i < keys.length; i++) {
-            assert.equal(result[i], values[i]);
-        }
+    
+    it('should proxy tokenURI call', async () => {
+        const result = await proxy.tokenURI(tokenId);
+        const expected = await registry.tokenURI(tokenId);
+        assert.equal(result, expected);
+    });
+    
+    it('should proxy isApprovedOrOwner call', async () => {
+        const result = await proxy.isApprovedOrOwner(accounts[0], tokenId);
+        const expected = await registry.isApprovedOrOwner(accounts[0], tokenId);
+        assert.equal(result, expected);
+    });
+    
+    it('should proxy resolverOf call', async () => {
+        const result = await proxy.resolverOf(tokenId);
+        const expected = await registry.resolverOf(tokenId);
+        assert.equal(result, expected);
+    });
+    
+    it('should proxy childIdOf call', async () => {
+        const result = await proxy.childIdOf(tokenId, "t1");
+        const expected = await registry.childIdOf(tokenId, "t1");
+        assert.equal(result.toString(), expected.toString());
+    });
+    
+    it('should proxy isController call', async () => {
+        const result = await proxy.isController(accounts[0]);
+        const expected = await registry.isController(accounts[0]);
+        assert.equal(result, expected);
+    });
+    
+    it('should proxy balanceOf call', async () => {
+        const result = await proxy.balanceOf(accounts[0]);
+        const expected = await registry.balanceOf(accounts[0]);
+        assert.equal(result.toString(), expected.toString());
+    });
+    
+    it('should proxy ownerOf call', async () => {
+        const result = await proxy.ownerOf(tokenId);
+        const expected = await registry.ownerOf(tokenId);
+        assert.equal(result, expected);
+    });
+    
+    it('should proxy getApproved call', async () => {
+        const result = await proxy.getApproved(tokenId);
+        const expected = await registry.getApproved(tokenId);
+        assert.equal(result, expected);
+    });
+    
+    it('should proxy isApprovedForAll call', async () => {
+        const result = await proxy.isApprovedForAll(accounts[0], accounts[1]);
+        const expected = await registry.isApprovedForAll(accounts[0], accounts[1]);
+        assert.equal(result, expected);
+    });
+    
+    it('should proxy root call', async () => {
+        const result = await proxy.root();
+        const expected = await registry.root();
+        assert.equal(result.toString(), expected.toString());
     });
 });

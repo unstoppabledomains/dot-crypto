@@ -1,9 +1,12 @@
 pragma solidity 0.5.12;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol";
 import "@openzeppelin/contracts/introspection/IERC165.sol";
 
-contract IRegistryReader is IERC165, IERC721Metadata {
+contract IRegistryReader is IERC165 {
+    function name() external view returns (string memory);
+    function symbol() external view returns (string memory);
+    function tokenURI(uint256 tokenId) external view returns (string memory);
+
     /**
      * @dev Returns whether the given spender can transfer a given token ID. Registry related function.
      * @param spender address of the spender to query
@@ -25,7 +28,7 @@ contract IRegistryReader is IERC165, IERC721Metadata {
      * @param tokenId uint256 ID of the token
      * @param label label of subdomain (for `aaa.bbb.crypto` it will be `aaa`)
      */
-    function childIdOf(uint256 tokenId, string calldata label) external pure returns (uint256);
+    function childIdOf(uint256 tokenId, string calldata label) external view returns (uint256);
 
     /**
      * @dev Controller related function.
@@ -36,17 +39,17 @@ contract IRegistryReader is IERC165, IERC721Metadata {
     /**
      * @dev Returns the number of NFTs in `owner`'s account. ERC721 related function.
      */
-    function balanceOf(address owner) public view returns (uint256 balance);
+    function balanceOf(address owner) public view returns (uint256);
 
     /**
      * @dev Returns the owner of the NFT specified by `tokenId`. ERC721 related function.
      */
-    function ownerOf(uint256 tokenId) public view returns (address owner);
+    function ownerOf(uint256 tokenId) public view returns (address);
     
     /**
      * @dev ERC721 related function.
      */
-    function getApproved(uint256 tokenId) public view returns (address operator);
+    function getApproved(uint256 tokenId) public view returns (address);
     
     /**
      * @dev ERC721 related function.
@@ -57,5 +60,5 @@ contract IRegistryReader is IERC165, IERC721Metadata {
      * @dev Registry related function.
      * @return root hash.
      */
-    function root() public pure returns (uint256);
+    function root() public view returns (uint256);
 }
