@@ -11,16 +11,18 @@ const { ZERO_ADDRESS } = require('./helpers/constants.js');
 chai.use(chaiAsPromised);
 const { assert } = chai;
 
-contract.only('ProxyReader', ([coinbase, ...accounts]) => {
-    const domainName = 'test';
-    let registry, resolver, proxy;
+contract('ProxyReader', ([coinbase]) => {
+    const domainName = 'test_42';
+    const keys = ['test.key1', 'test.key2'];
+    const values = ['test.value1', 'test.value2'];
+    let registry, resolver, proxy, tokenId;
 
     before(async () => {
         registry = await Registry.deployed();
         const mintingController = await MintingController.deployed();
         resolver = await Resolver.deployed();
         await mintingController.mintSLD(coinbase, domainName);
-        const tokenId = await registry.childIdOf(await registry.root(), domainName);
+        tokenId = await registry.childIdOf(await registry.root(), domainName);
         await registry.resolveTo(resolver.address, tokenId);
         proxy = await ProxyReader.new(registry.address);
     });
@@ -31,36 +33,36 @@ contract.only('ProxyReader', ([coinbase, ...accounts]) => {
 
     it('should revert when resolver not found', async () => {
         const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
-        await expectRevert.unspecified(proxy.getMany(['test.key'], unknownTokenId));
+        await expectRevert.unspecified(proxy.getMany([keys[0]], unknownTokenId));
     });
 
     it('should return list with empty value for unregistered key', async () => {
-        const tokenId = await registry.childIdOf(await registry.root(), domainName);
-        const result = await proxy.getMany(['test.key'], tokenId);
+        const result = await proxy.getMany([keys[0]], tokenId);
         assert.equal(result.length, 1);
         assert.equal(result[0], '');
     });
 
     it('should return list with single value', async () => {
         // arrange
-        const tokenId = await registry.childIdOf(await registry.root(), domainName);
-        await resolver.set('test.key', 'test.value', tokenId);
+        const [ key ] = keys;
+        const [ value ] = values;
+        await resolver.set(key, value, tokenId);
 
-        const result = await proxy.getMany(['test.key'], tokenId);
+        const result = await proxy.getMany([key], tokenId);
         assert.equal(result.length, 1);
-        assert.equal(result[0], 'test.value');
+        assert.equal(result[0], value);
     });
 
-    // TODO: optimize arrange block
     it('should return list with multiple values', async () => {
         // arrange
-        const tokenId = await registry.childIdOf(await registry.root(), domainName);
-        await resolver.set('test.key1', 'test.value1', tokenId);
-        await resolver.set('test.key2', 'test.value2', tokenId);
+        for (let i = 0; i < keys.length; i++) {
+            await resolver.set(keys[i], values[i], tokenId);
+        }
 
-        const result = await proxy.getMany(['test.key1', 'test.key2'], tokenId);
+        const result = await proxy.getMany(keys, tokenId);
         assert.equal(result.length, 2);
-        assert.equal(result[0], 'test.value1');
-        assert.equal(result[1], 'test.value2');
+        for (let i = 0; i < keys.length; i++) {
+            assert.equal(result[i], values[i]);
+        }
     });
 });
