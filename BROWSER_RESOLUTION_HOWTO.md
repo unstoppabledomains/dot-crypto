@@ -69,6 +69,8 @@ See a description of how they work below.
 
 <div id="distributed-gateway"></div>
 
+![Overview_ DWeb website via DNS + DWeb gateways](./documentation/diagrams/browser-resolution/Overview_ DWeb website via DNS + DWeb gateways.png)
+
 ### Distributed content gateway
 
 A gateway is an HTTP Server that acts as a proxy between HTTP and distributed content protocol. 
