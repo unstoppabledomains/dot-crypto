@@ -3,24 +3,17 @@ pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
 import "./IRegistryReader.sol";
+import "./IResolverReader.sol";
 import "./Registry.sol";
 import "./Resolver.sol";
 
-contract ProxyReader is IRegistryReader {
+contract ProxyReader is IRegistryReader, IResolverReader {
     Registry private _registry;
 
     constructor (Registry registry) public {
         require(address(registry) != address(0), "Registry is empty");
         _registry = registry;
     }
-
-    function getMany(string[] calldata keys, uint256 tokenId) external view returns (string[] memory) {
-        address resolverAddress = _registry.resolverOf(tokenId);
-        Resolver resolver = Resolver(resolverAddress);
-        return resolver.getMany(keys, tokenId);
-    }
-
-    // TODO: (string[] calldata keys, uint256 tokenId) -> resolver address, owner address, values[]
 
     function supportsInterface(bytes4 interfaceId) external view returns (bool) {
         return _registry.supportsInterface(interfaceId);
@@ -72,5 +65,37 @@ contract ProxyReader is IRegistryReader {
 
     function root() public view returns (uint256) {
         return _registry.root();
+    }    
+
+    function getMany(string[] calldata keys, uint256 tokenId) external view returns (string[] memory) {
+        Resolver resolver = Resolver(_registry.resolverOf(tokenId));
+        return resolver.getMany(keys, tokenId);
+    }
+
+    // TODO: (string[] calldata keys, uint256 tokenId) -> resolver address, owner address, values[]
+
+    function nonceOf(uint256 tokenId) external view returns (uint256) {
+        Resolver resolver = Resolver(_registry.resolverOf(tokenId));
+        return resolver.nonceOf(tokenId);
+    }
+
+    function get(string memory key, uint256 tokenId) public view returns (string memory) {
+        Resolver resolver = Resolver(_registry.resolverOf(tokenId));
+        return resolver.get(key, tokenId);
+    }
+
+    function getByHash(uint256 keyHash, uint256 tokenId) public view returns (string memory key, string memory value) {
+        Resolver resolver = Resolver(_registry.resolverOf(tokenId));
+        return resolver.getByHash(keyHash, tokenId);
+    }
+
+    function getManyByHash(uint256[] memory keyHashes, uint256 tokenId) public view returns (string[] memory keys, string[] memory values) {
+        Resolver resolver = Resolver(_registry.resolverOf(tokenId));
+        return resolver.getManyByHash(keyHashes, tokenId);
+    }
+
+    // TODO: figure out right way to do this without tokenId
+    function registry() external view returns (address) {
+        return address(_registry);
     }
 }

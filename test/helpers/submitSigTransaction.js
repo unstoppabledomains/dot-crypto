@@ -28,7 +28,7 @@ async function submitSigTransaction(contractToSend, contractToEncode, fromAccoun
     return contractToSend[method + 'For'](...args, fixSignature(signature))
   }
 
-function fixSignature (signature) {
+function fixSignature(signature) {
   // in geth its always 27/28, in ganache its 0/1. Change to 27/28 to prevent
   // signature malleability if version is 0/1
   // see https://github.com/ethereum/go-ethereum/blob/v1.8.23/internal/ethapi/api.go#L465
