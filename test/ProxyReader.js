@@ -1,4 +1,3 @@
-const { expectRevert, constants } = require('@openzeppelin/test-helpers');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 
@@ -6,10 +5,11 @@ const Registry = artifacts.require('Registry.sol');
 const Resolver = artifacts.require('Resolver.sol');
 const MintingController = artifacts.require('controller/MintingController.sol');
 const ProxyReader = artifacts.require('ProxyReader.sol');
+const expectRevert = require('./helpers/expectRevert.js');
+const { ZERO_ADDRESS } = require('./helpers/constants.js');
 
 chai.use(chaiAsPromised);
 const { assert } = chai;
-const { ZERO_ADDRESS } = constants;
 
 contract.only('ProxyReader', ([coinbase, ...accounts]) => {
     const domainName = 'test';
