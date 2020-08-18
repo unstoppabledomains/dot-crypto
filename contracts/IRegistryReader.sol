@@ -1,8 +1,9 @@
 pragma solidity 0.5.12;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol";
+import "@openzeppelin/contracts/introspection/IERC165.sol";
 
-contract IRegistryReader is IERC721Metadata {
+contract IRegistryReader is IERC165, IERC721Metadata {
     /**
      * @dev Returns whether the given spender can transfer a given token ID. Registry related function.
      * @param spender address of the spender to query
@@ -18,17 +19,6 @@ contract IRegistryReader is IERC721Metadata {
      * @return address currently marked as the resolver of the given token ID
      */
     function resolverOf(uint256 tokenId) external view returns (address);
-
-    /**
-     * @dev Returns true if this contract implements the interface defined by
-     * `interfaceId`. See the corresponding
-     * [EIP section](https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified)
-     * to learn more about how these ids are created.
-     *
-     * This function call must use less than 30 000 gas.
-     * ERC165 related function.
-     */
-    function supportsInterface(bytes4 interfaceId) external view returns (bool);
 
     /**
      * @dev Provides child token (subdomain) of provided tokenId. Registry related function.
