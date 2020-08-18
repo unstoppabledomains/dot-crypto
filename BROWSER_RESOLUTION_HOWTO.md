@@ -69,7 +69,7 @@ See a description of how they work below.
 
 <div id="distributed-gateway"></div>
 
-![Overview_ DWeb website via DNS + DWeb gateways](./documentation/diagrams/browser-resolution/Overview_ DWeb website via DNS + DWeb gateways.png)
+![Overview_ DWeb website via DNS + DWeb gateways](./documentation/diagrams/browser-resolution/Overview_DWeb_website_via_DNS_DWeb_gateways.png)
 
 ### Distributed content gateway
 
