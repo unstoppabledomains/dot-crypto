@@ -46,6 +46,8 @@ Here are some of the end user scenarios that should give an idea which features 
   * If network is not specified explicitly, it can be retrieved from the ethereum node URL.
   * If Registry Address is not specified, it can use a default for specified network.
 
+![Configure_DWeb_browser_settings](./documentation/diagrams/browser-resolution/Configure_DWeb_browser_settings.png)
+
 ## Content Display Protocol
 
 In addition to base browser content display protocol like `http` blockchain domains can also be configured for distributed content protocol like `ipfs`. Here is the list of content display protocols that can be associated with a crypto domain:
@@ -102,6 +104,8 @@ Basic functionality of such a gateway:
 4. Send resolution to client
 
 ![Resolve_DWeb_website_via_DNS_gateway_and_DWeb_gateway](./documentation/diagrams/browser-resolution/Resolve_DWeb_website_via_DNS_gateway_and_DWeb_gateway.png)
+
+![Configure_DNS_gateway](./documentation/diagrams/browser-resolution/Configure_DNS_gateway.png)
 
 ## Records related to browser resolution
 
