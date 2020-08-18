@@ -136,6 +136,8 @@ const values = ethcall(resolverAddress, "getMany", keys, tokenId);
 keys.forEach((k, i) => console.log(k, values[i]));
 ```
 
+![Provide_domain_records_via_Proxy_Reader_Smart_Contract](./documentation/diagrams/browser-resolution/Provide_domain_records_via_Proxy_Reader_Smart_Contract.png)  
+
 Reference:
 
 * `namehash` - namehashing algorithm implementation. See [Namehashing](#namehashing).

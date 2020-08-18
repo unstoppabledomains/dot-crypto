@@ -22,6 +22,12 @@ Here are some of the end user scenarios that should give an idea which features 
 3. Then the browser resolves the domain and gets the content hash of a domain.
 4. Then the browser retrieves the content by the hash using a related protocol and displays the content.
 
+![Overview_Read_DWeb_website_from_Ethereum_and_Decentralized_network](./documentation/diagrams/browser-resolution/Overview_Read_DWeb_website_from_Ethereum_and_Decentralized_network.png)
+
+    
+
+![Resolve_DWeb_website_by_direct_reading_from_Ethereum_and_Decentralized_network](./documentation/diagrams/browser-resolution/Resolve_DWeb_website_by_direct_reading_from_Ethereum_and_Decentralized_network.png)
+
 ### Domain Level Redirect
 
 1. Given a blockchain domain has a redirect url and IPFS hash configured, and a user's browser doesn't support IPFS protocol.
@@ -94,6 +100,8 @@ Basic functionality of such a gateway:
     * If client requests `A` record, resolve to [Distributed Content Gateway](#distributed-gateway) IP Address
     * If client requests `TXT` record, resolve to all crypto records in JSON encoded key-value format
 4. Send resolution to client
+
+![Resolve_DWeb_website_via_DNS_gateway_and_DWeb_gateway](./documentation/diagrams/browser-resolution/Resolve_DWeb_website_via_DNS_gateway_and_DWeb_gateway.png)
 
 ## Records related to browser resolution
 
