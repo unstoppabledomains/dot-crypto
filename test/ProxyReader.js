@@ -32,73 +32,73 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         await expectRevert(ProxyReader.new(ZERO_ADDRESS), 'Registry is empty');
     });
 
-    describe('Registry', () => {    
+    describe('Registry', () => {
         it('should proxy name call', async () => {
             const result = await proxy.name();
             const expected = await registry.name();
             assert.equal(result, expected);
         });
-        
+
         it('should proxy symbol call', async () => {
             const result = await proxy.symbol();
             const expected = await registry.symbol();
             assert.equal(result, expected);
         });
-        
+
         it('should proxy tokenURI call', async () => {
             const result = await proxy.tokenURI(tokenId);
             const expected = await registry.tokenURI(tokenId);
             assert.equal(result, expected);
         });
-        
+
         it('should proxy isApprovedOrOwner call', async () => {
             const result = await proxy.isApprovedOrOwner(accounts[0], tokenId);
             const expected = await registry.isApprovedOrOwner(accounts[0], tokenId);
             assert.equal(result, expected);
         });
-        
+
         it('should proxy resolverOf call', async () => {
             const result = await proxy.resolverOf(tokenId);
             const expected = await registry.resolverOf(tokenId);
             assert.equal(result, expected);
         });
-        
+
         it('should proxy childIdOf call', async () => {
             const result = await proxy.childIdOf(tokenId, "t1");
             const expected = await registry.childIdOf(tokenId, "t1");
             assert.equal(result.toString(), expected.toString());
         });
-        
+
         it('should proxy isController call', async () => {
             const result = await proxy.isController(accounts[0]);
             const expected = await registry.isController(accounts[0]);
             assert.equal(result, expected);
         });
-        
+
         it('should proxy balanceOf call', async () => {
             const result = await proxy.balanceOf(accounts[0]);
             const expected = await registry.balanceOf(accounts[0]);
             assert.equal(result.toString(), expected.toString());
         });
-        
+
         it('should proxy ownerOf call', async () => {
             const result = await proxy.ownerOf(tokenId);
             const expected = await registry.ownerOf(tokenId);
             assert.equal(result, expected);
         });
-        
+
         it('should proxy getApproved call', async () => {
             const result = await proxy.getApproved(tokenId);
             const expected = await registry.getApproved(tokenId);
             assert.equal(result, expected);
         });
-        
+
         it('should proxy isApprovedForAll call', async () => {
             const result = await proxy.isApprovedForAll(accounts[0], accounts[1]);
             const expected = await registry.isApprovedForAll(accounts[0], accounts[1]);
             assert.equal(result, expected);
         });
-        
+
         it('should proxy root call', async () => {
             const result = await proxy.root();
             const expected = await registry.root();
@@ -121,8 +121,8 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
 
             it('should return list with single value', async () => {
                 // arrange
-                const [ key ] = keys;
-                const [ value ] = values;
+                const [key] = keys;
+                const [value] = values;
                 await resolver.set(key, value, tokenId);
 
                 const result = await proxy.getMany([key], tokenId);
@@ -149,26 +149,26 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
             const expected = await resolver.nonceOf(tokenId);
             assert.equal(result.toString(), expected.toString());
         });
-        
+
         it('should proxy registry call', async () => {
             const result = await proxy.registry();
             const expected = await resolver.registry();
             assert.equal(result, expected);
         });
-        
+
         it('should proxy get call', async () => {
             const result = await proxy.get(keys[0], tokenId);
             const expected = await resolver.get(keys[0], tokenId);
             assert.equal(result, expected);
         });
-        
+
         it('should proxy getByHash call', async () => {
             const keyHash = utils.keccak256(keys[0]);
             const result = await proxy.getByHash(keyHash, tokenId);
             const expected = await resolver.getByHash(keyHash, tokenId);
             assert.equal(result.toString(), expected.toString());
         });
-        
+
         it('should proxy getManyByHash call', async () => {
             const keyHash = utils.keccak256(keys[0]);
             const result = await proxy.getManyByHash([keyHash], tokenId);

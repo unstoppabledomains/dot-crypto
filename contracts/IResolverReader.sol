@@ -1,15 +1,9 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
-contract IResolverReader {
-    /**
-     * @dev Function to get multiple record.
-     * @param keys The keys to query the value of.
-     * @param tokenId The token id to fetch.
-     * @return The values.
-     */
-    function getMany(string[] calldata keys, uint256 tokenId) external view returns (string[] memory);
+import "@openzeppelin/contracts/introspection/IERC165.sol";
 
+contract IResolverReader is IERC165 {
     /**
      * @dev Gets the nonce of the specified address.
      * @param tokenId token ID for nonce query
@@ -30,6 +24,14 @@ contract IResolverReader {
      */
     function get(string memory key, uint256 tokenId) public view returns (string memory);
    
+    /**
+     * @dev Function to get multiple record.
+     * @param keys The keys to query the value of.
+     * @param tokenId The token id to fetch.
+     * @return The values.
+     */
+    function getMany(string[] calldata keys, uint256 tokenId) external view returns (string[] memory);
+    
     /**
      * @dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.
      * @param keyHash The key to query the value of.
