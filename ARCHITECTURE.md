@@ -284,7 +284,7 @@ This may include:
 
 Custom resolver can be implemented as a separated contract and its address can be assigned as a domain resolver via `Registry#resolveTo`.
 
-Custom resolver must implement interfaces [IResolver](./contracts/IResolver.sol), [IResolverReader](./contracts/IResolverReader.sol) and [ERC165](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md)
+Custom resolver must implement interfaces [IResolverReader](./contracts/IResolverReader.sol) and [ERC165](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md)
 
 <!-- 
 TODO more information on which interface should be implemented by custom resolver: 
