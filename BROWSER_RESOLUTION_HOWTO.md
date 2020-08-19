@@ -22,6 +22,12 @@ Here are some of the end user scenarios that should give an idea which features 
 3. Then the browser resolves the domain and gets the content hash of a domain.
 4. Then the browser retrieves the content by the hash using a related protocol and displays the content.
 
+![Overview_Read_DWeb_website_from_Ethereum_and_Decentralized_network](./documentation/diagrams/browser-resolution/Overview_Read_DWeb_website_from_Ethereum_and_Decentralized_network.png)
+
+    
+
+![Resolve_DWeb_website_by_direct_reading_from_Ethereum_and_Decentralized_network](./documentation/diagrams/browser-resolution/Resolve_DWeb_website_by_direct_reading_from_Ethereum_and_Decentralized_network.png)
+
 ### Domain Level Redirect
 
 1. Given a blockchain domain has a redirect url and IPFS hash configured, and a user's browser doesn't support IPFS protocol.
@@ -39,6 +45,8 @@ Here are some of the end user scenarios that should give an idea which features 
 3. Then the browser uses new settings to make requests to ethereum blockchain
   * If network is not specified explicitly, it can be retrieved from the ethereum node URL.
   * If Registry Address is not specified, it can use a default for specified network.
+
+![Configure_DWeb_browser_settings](./documentation/diagrams/browser-resolution/Configure_DWeb_browser_settings.png)
 
 ## Content Display Protocol
 
@@ -69,6 +77,8 @@ See a description of how they work below.
 
 <div id="distributed-gateway"></div>
 
+![Overview_ DWeb website via DNS + DWeb gateways](./documentation/diagrams/browser-resolution/Overview_DWeb_website_via_DNS_DWeb_gateways.png)
+
 ### Distributed content gateway
 
 A gateway is an HTTP Server that acts as a proxy between HTTP and distributed content protocol. 
@@ -92,6 +102,10 @@ Basic functionality of such a gateway:
     * If client requests `A` record, resolve to [Distributed Content Gateway](#distributed-gateway) IP Address
     * If client requests `TXT` record, resolve to all crypto records in JSON encoded key-value format
 4. Send resolution to client
+
+![Resolve_DWeb_website_via_DNS_gateway_and_DWeb_gateway](./documentation/diagrams/browser-resolution/Resolve_DWeb_website_via_DNS_gateway_and_DWeb_gateway.png)
+
+![Configure_DNS_gateway](./documentation/diagrams/browser-resolution/Configure_DNS_gateway.png)
 
 ## Records related to browser resolution
 
@@ -123,6 +137,8 @@ If none of `dweb` hash records is set, a browser should fall back to DNS resolut
 See [DNS Records](./ARCHITECTURE.md#dns-records) for more information
 
 Generally browsers automatically add `http://` prefix for any domain in the address bar if the protocol is not specified explicitly by a user. In case of blockchain domain names (assuming a browser supports many protocols), it is preferred to determine a protocol only after resolving domain records.
+
+![Browser_Resolution_Algorithm](./documentation/diagrams/browser-resolution/Browser_Resolution_Algorithm.png)
 
 ### Legacy Records Support
 
