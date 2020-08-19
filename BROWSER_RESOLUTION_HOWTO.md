@@ -24,10 +24,6 @@ Here are some of the end user scenarios that should give an idea which features 
 
 ![Overview_Read_DWeb_website_from_Ethereum_and_Decentralized_network](./documentation/diagrams/browser-resolution/Overview_Read_DWeb_website_from_Ethereum_and_Decentralized_network.png)
 
-    
-
-![Resolve_DWeb_website_by_direct_reading_from_Ethereum_and_Decentralized_network](./documentation/diagrams/browser-resolution/Resolve_DWeb_website_by_direct_reading_from_Ethereum_and_Decentralized_network.png)
-
 ### Domain Level Redirect
 
 1. Given a blockchain domain has a redirect url and IPFS hash configured, and a user's browser doesn't support IPFS protocol.
@@ -42,11 +38,14 @@ Here are some of the end user scenarios that should give an idea which features 
   * User changes ethereum node URL from default to any other.
   * User changes Registry Address for each support crypto registry.
   * User changes network for ethereum node.
+  * User changes DNS gateway
+  * User changes Dweb gateway
 3. Then the browser uses new settings to make requests to ethereum blockchain
   * If network is not specified explicitly, it can be retrieved from the ethereum node URL.
   * If Registry Address is not specified, it can use a default for specified network.
 
 ![Configure_DWeb_browser_settings](./documentation/diagrams/browser-resolution/Configure_DWeb_browser_settings.png)
+![Configure_DNS_gateway](./documentation/diagrams/browser-resolution/Configure_DNS_gateway.png)
 
 ## Content Display Protocol
 
@@ -70,14 +69,14 @@ A gateway may simplify the integration to a browser, but comes at the downside o
 
 There are 2 possible gateways for each of the problem:
 
-* Distributed content gateway
+* Distributed content (Dweb) gateway
 * Resolution over DNS gateway
 
 See a description of how they work below.
 
 <div id="distributed-gateway"></div>
 
-![Overview_ DWeb website via DNS + DWeb gateways](./documentation/diagrams/browser-resolution/Overview_DWeb_website_via_DNS_DWeb_gateways.png)
+![Overview DWeb website via DNS + DWeb gateways](./documentation/diagrams/browser-resolution/Overview_DWeb_website_via_DNS_DWeb_gateways.png)
 
 ### Distributed content gateway
 
@@ -105,7 +104,6 @@ Basic functionality of such a gateway:
 
 ![Resolve_DWeb_website_via_DNS_gateway_and_DWeb_gateway](./documentation/diagrams/browser-resolution/Resolve_DWeb_website_via_DNS_gateway_and_DWeb_gateway.png)
 
-![Configure_DNS_gateway](./documentation/diagrams/browser-resolution/Configure_DNS_gateway.png)
 
 ## Records related to browser resolution
 
@@ -123,6 +121,9 @@ see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
 <div id="resolution-algorithm"></div>
 
 ## Browser Resolution Algorithm
+
+![Resolve Dweb website by direct reading from Ethereum and Decentralized network](./documentation/diagrams/browser-resolution/Resolve DWeb website by direct reading from Ethereum and Decentralized network.png)
+
 
 This section explains how different domain record configurations should be interpreted by browsers.
 
