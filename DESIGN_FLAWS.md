@@ -58,13 +58,13 @@ setDomainOfFor(tokenId, signature)
 
 
 
-### Cosmetical
+### Cosmetic
 
 #### resolverOf throws error for 0x00 resolver
 
 We would prefer to just return empty resolver instead
 
-#### Sync event has tokeinId paramters not on the first position
+#### Sync event has tokeinId parameters not on the first position
 
 Ideally, we need to move `tokenId` parameters of `Sync` event that will allow us to query all events of the registry associated to given token. Currently this is impossible.
 
@@ -73,7 +73,7 @@ Ideally, we need to move `tokenId` parameters of `Sync` event that will allow us
 Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to get the information how a new domain was minted.
 `Transfer` event is part of ERC721. We can not modify it, but we can add the initial owner information into `NewURI` event.
 
-#### Additional convinience methods
+#### Additional convenience methods
 
 * `setupOf(tokenId)` - return owner and resolver address of a domain with single query instead of two
 * `ownersOf(tokenIds string[])` - return list of owner addresses for given domains
@@ -82,7 +82,7 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 * `WhitelistedMinter.getDefaultResolver()` 
 * `setupOf(tokenId, keys: string[])` - return owner address, resolver address, and values for specified record keys of the domain
 
-#### Implement metatransactions for ERC721 built-in methods and some our methods
+#### Implement meta-transactions for ERC721 built-in methods and some our methods
 
 * `setApprovalForAll` 
 * `approve`
@@ -92,10 +92,16 @@ Currently, we need to listen for 2 events: `NewURI` and `Transfer` in order to g
 
 Currently a domain can be removed from _tokenUris when it is burned. There is no sense in that and we prefer to make URI recoverable from namehash any time.
 
+#### Emit MetaTransaction Event
+
+Currently there is no way to know which meta transactions were executed for the given account or token id.
+Solution: Emit `MetaTransaction` event every time when meta transaction is mined. It can be handy to aggregate transaction by signed account or by token id.
+
 ## Solvable by introducing new resolver
 
 ### Emit ResetRecords event when call preconfigure method
-All new domains prefilled with records via preconfigure method. For consistency and easier keys gathering we need emit ResetRecords when domain preconfigured.
+
+Some new domains are pre-populated with records via preconfigure method. For consistency and easier keys gathering we need emit ResetRecords when domain is preconfigured.
 
 ### Ability to set record for multiple domains
 
