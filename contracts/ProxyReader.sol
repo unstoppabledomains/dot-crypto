@@ -8,6 +8,10 @@ import "./Registry.sol";
 import "./Resolver.sol";
 
 contract ProxyReader is IRegistryReader, IResolverReader {
+
+    string public constant NAME = "Unstoppable Proxy Reader";
+    string public constant VERSION = "0.1.0";
+    
     Registry private _registry;
 
     constructor (Registry registry) public {
