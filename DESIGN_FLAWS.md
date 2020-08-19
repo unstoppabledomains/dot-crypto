@@ -56,7 +56,33 @@ setDomainOf(tokenId)
 setDomainOfFor(tokenId, signature)
 ```
 
+#### Ability to check owner and resolver existence
 
+Add ability to check existence of token owner and token resolver.
+
+``` solidity
+hasOwner(tokenId): bool
+hasResolver(tokenId): bool
+```
+
+#### Ability to check interface support
+
+Registry should implement [ERC165](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md) to have the ability to check interface support.
+
+``` solidity
+contract Registry is ..., ERC165 {
+    /*
+     * bytes4(keccak256(abi.encodePacked('supportsInterface(bytes4)'))) == 0x01ffc9a7
+     */
+    bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
+
+    constructor(...) public {
+        ...
+        _registerInterface(_INTERFACE_ID_ERC165);
+        // -> Register all supported interfaces
+    }
+}
+```
 
 ### Cosmetical
 
@@ -105,6 +131,40 @@ We need a method like:
 
 ```
 setManyToEachFor(tokenIds, keys, values, signature)
+```
+
+#### Ability to check interface support
+
+Resolver should implement [ERC165](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md) to have the ability to check interface support.
+Resolver must implement IResolverReader interface in order to be fully supported by ProxyReader.
+
+``` solidity
+contract Resolver is ..., ERC165 {
+    /*
+     * bytes4(keccak256(abi.encodePacked('supportsInterface(bytes4)'))) == 0x01ffc9a7
+     */
+    bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
+
+    /*
+     * bytes4(keccak256(abi.encodePacked('nonceOf(uint256)'))) == 0x6ccbae5f
+     * bytes4(keccak256(abi.encodePacked('registry()'))) == 0x7b103999
+     * bytes4(keccak256(abi.encodePacked('get(string,uint256)'))) == 0x1be5e7ed
+     * bytes4(keccak256(abi.encodePacked('getByHash(uint256,uint256)'))) == 0x672b9f81
+     * bytes4(keccak256(abi.encodePacked('getMany(string[],uint256)'))) == 0x1bd8cc1a
+     * bytes4(keccak256(abi.encodePacked('getManyByHash(uint256[],uint256)'))) == 0xb85afd28
+     *
+     * => 0x6ccbae5f ^ 0x7b103999 ^ 0x1be5e7ed ^
+     *    0x672b9f81 ^ 0x1bd8cc1a ^ 0xb85afd28 == 0xc897de98
+     */
+    bytes4 private constant _INTERFACE_ID_RESOLVER_READER = 0xc897de98;
+
+    constructor(...) public {
+        ...
+        _registerInterface(_INTERFACE_ID_ERC165);
+        _registerInterface(_INTERFACE_ID_RESOLVER_READER);
+        // -> Register all supported interfaces
+    }
+}
 ```
 
 # SOLVED
