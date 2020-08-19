@@ -32,7 +32,17 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         await expectRevert(ProxyReader.new(ZERO_ADDRESS), 'Registry is empty');
     });
 
+    it('should support IERC165 interface', async () => {
+        const isSupport = await proxy.supportsInterface('0x01ffc9a7');
+        assert.isTrue(isSupport);
+    });
+
     describe('Registry', () => {
+        it('should support IRegistryReader interface', async () => {
+            const isSupport = await proxy.supportsInterface('0x6eabca0d');
+            assert.isTrue(isSupport);
+        });
+
         it('should proxy name call', async () => {
             const result = await proxy.name();
             const expected = await registry.name();
@@ -107,6 +117,11 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
     });
 
     describe('Resolver', () => {
+        it('should support IResolverReader interface', async () => {
+            const isSupport = await proxy.supportsInterface('0xc897de98');
+            assert.isTrue(isSupport);
+        });
+
         describe('getMany', () => {
             it('should revert when resolver not found', async () => {
                 const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
