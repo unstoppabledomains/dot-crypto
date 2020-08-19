@@ -1,7 +1,7 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/introspection/IERC165.sol";
+import '@openzeppelin/contracts/introspection/IERC165.sol';
 
 contract IResolverReader is IERC165 {
     /**
@@ -22,23 +22,32 @@ contract IResolverReader is IERC165 {
      * @param tokenId The token id to fetch.
      * @return The value string.
      */
-    function get(string memory key, uint256 tokenId) public view returns (string memory);
-   
+    function get(string memory key, uint256 tokenId)
+        public
+        view
+        returns (string memory);
+
     /**
      * @dev Function to get multiple record.
      * @param keys The keys to query the value of.
      * @param tokenId The token id to fetch.
      * @return The values.
      */
-    function getMany(string[] calldata keys, uint256 tokenId) external view returns (string[] memory);
-    
+    function getMany(string[] calldata keys, uint256 tokenId)
+        external
+        view
+        returns (string[] memory);
+
     /**
      * @dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.
      * @param keyHash The key to query the value of.
      * @param tokenId The token id to set.
      * @return Key and value.
      */
-    function getByHash(uint256 keyHash, uint256 tokenId) public view returns (string memory key, string memory value);
+    function getByHash(uint256 keyHash, uint256 tokenId)
+        public
+        view
+        returns (string memory key, string memory value);
 
     /**
      * @dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.
@@ -46,5 +55,8 @@ contract IResolverReader is IERC165 {
      * @param tokenId The token id to set.
      * @return Keys and values.
      */
-    function getManyByHash(uint256[] memory keyHashes, uint256 tokenId) public view returns (string[] memory keys, string[] memory values);
+    function getManyByHash(uint256[] memory keyHashes, uint256 tokenId)
+        public
+        view
+        returns (string[] memory keys, string[] memory values);
 }

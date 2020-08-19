@@ -2,18 +2,17 @@ pragma solidity 0.5.12;
 // TODO: check how to avoid experimental version
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/introspection/ERC165.sol";
+import '@openzeppelin/contracts/introspection/ERC165.sol';
 
-import "./IRegistryReader.sol";
-import "./IResolverReader.sol";
-import "./Registry.sol";
-import "./Resolver.sol";
+import './IRegistryReader.sol';
+import './IResolverReader.sol';
+import './Registry.sol';
+import './Resolver.sol';
 
 contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
+    string public constant NAME = 'Unstoppable Proxy Reader';
+    string public constant VERSION = '0.1.0';
 
-    string public constant NAME = "Unstoppable Proxy Reader";
-    string public constant VERSION = "0.1.0";
-    
     Registry private _registry;
 
     /*
@@ -40,7 +39,7 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
      *    0x6352211e ^ 0x081812fc ^ 0xe985e9c5 ^ 0xebf0c717 == 0x6eabca0d
      */
     bytes4 private constant _INTERFACE_ID_REGISTRY_READER = 0x6eabca0d;
-    
+
     /*
      * bytes4(keccak256(abi.encodePacked('nonceOf(uint256)'))) == 0x6ccbae5f
      * bytes4(keccak256(abi.encodePacked('registry()'))) == 0x7b103999
@@ -49,13 +48,13 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
      * bytes4(keccak256(abi.encodePacked('getMany(string[],uint256)'))) == 0x1bd8cc1a
      * bytes4(keccak256(abi.encodePacked('getManyByHash(uint256[],uint256)'))) == 0xb85afd28
      *
-     * => 0x6ccbae5f ^ 0x7b103999 ^ 0x1be5e7ed ^ 
+     * => 0x6ccbae5f ^ 0x7b103999 ^ 0x1be5e7ed ^
      *    0x672b9f81 ^ 0x1bd8cc1a ^ 0xb85afd28 == 0xc897de98
      */
     bytes4 private constant _INTERFACE_ID_RESOLVER_READER = 0xc897de98;
 
-    constructor (Registry registry) public {
-        require(address(registry) != address(0), "Registry is empty");
+    constructor(Registry registry) public {
+        require(address(registry) != address(0), 'Registry is empty');
         _registry = registry;
 
         _registerInterface(_INTERFACE_ID_ERC165);
@@ -75,7 +74,11 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
         return _registry.tokenURI(tokenId);
     }
 
-    function isApprovedOrOwner(address spender, uint256 tokenId) external view returns (bool) {
+    function isApprovedOrOwner(address spender, uint256 tokenId)
+        external
+        view
+        returns (bool)
+    {
         return _registry.isApprovedOrOwner(spender, tokenId);
     }
 
@@ -83,7 +86,11 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
         return _registry.resolverOf(tokenId);
     }
 
-    function childIdOf(uint256 tokenId, string calldata label) external view returns (uint256) {
+    function childIdOf(uint256 tokenId, string calldata label)
+        external
+        view
+        returns (uint256)
+    {
         return _registry.childIdOf(tokenId, label);
     }
 
@@ -103,42 +110,81 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
         return _registry.getApproved(tokenId);
     }
 
-    function isApprovedForAll(address owner, address operator) public view returns (bool) {
+    function isApprovedForAll(address owner, address operator)
+        public
+        view
+        returns (bool)
+    {
         return _registry.isApprovedForAll(owner, operator);
     }
 
     function root() public view returns (uint256) {
         return _registry.root();
-    }    
+    }
 
-    function getMany(string[] calldata keys, uint256 tokenId) external view returns (string[] memory) {
+    function getMany(string[] calldata keys, uint256 tokenId)
+        external
+        view
+        returns (string[] memory)
+    {
         Resolver resolver = Resolver(_registry.resolverOf(tokenId));
         return resolver.getMany(keys, tokenId);
     }
 
-    // TODO: (string[] calldata keys, uint256 tokenId) -> resolver address, owner address, values[]
+    /**
+     * @dev Function to get resolver address, owner address and multiple records.
+     * @param keys The keys to query the value of.
+     * @param tokenId The token id to fetch.
+     * @return Resolver address, owner address and values.
+     */
+    function getData(string[] calldata keys, uint256 tokenId)
+        external
+        view
+        returns (
+            address resolver,
+            address owner,
+            string[] memory values
+        )
+    {
+        resolver = _registry.resolverOf(tokenId);
+        owner = _registry.ownerOf(tokenId);
+        
+        Resolver resolverContract = Resolver(resolver);
+        values = resolverContract.getMany(keys, tokenId);
+    }
 
     function nonceOf(uint256 tokenId) external view returns (uint256) {
         Resolver resolver = Resolver(_registry.resolverOf(tokenId));
         return resolver.nonceOf(tokenId);
     }
 
-    function get(string memory key, uint256 tokenId) public view returns (string memory) {
+    function get(string memory key, uint256 tokenId)
+        public
+        view
+        returns (string memory)
+    {
         Resolver resolver = Resolver(_registry.resolverOf(tokenId));
         return resolver.get(key, tokenId);
     }
 
-    function getByHash(uint256 keyHash, uint256 tokenId) public view returns (string memory key, string memory value) {
+    function getByHash(uint256 keyHash, uint256 tokenId)
+        public
+        view
+        returns (string memory key, string memory value)
+    {
         Resolver resolver = Resolver(_registry.resolverOf(tokenId));
         return resolver.getByHash(keyHash, tokenId);
     }
 
-    function getManyByHash(uint256[] memory keyHashes, uint256 tokenId) public view returns (string[] memory keys, string[] memory values) {
+    function getManyByHash(uint256[] memory keyHashes, uint256 tokenId)
+        public
+        view
+        returns (string[] memory keys, string[] memory values)
+    {
         Resolver resolver = Resolver(_registry.resolverOf(tokenId));
         return resolver.getManyByHash(keyHashes, tokenId);
     }
 
-    // TODO: figure out right way to do this without tokenId
     function registry() external view returns (address) {
         return address(_registry);
     }

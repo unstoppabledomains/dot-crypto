@@ -152,10 +152,21 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 }
 
                 const result = await proxy.getMany(keys, tokenId);
-                assert.equal(result.length, 2);
-                for (let i = 0; i < keys.length; i++) {
-                    assert.equal(result[i], values[i]);
-                }
+                assert.deepEqual(result, values);
+            });
+        });
+
+        describe('getData', () => {
+            it('should revert when resolver not found', async () => {
+                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+                await expectRevert.unspecified(proxy.getData([keys[0]], unknownTokenId));
+            });
+
+            it('should retrun data', async () => {
+                const data = await proxy.getData(keys, tokenId);
+                assert.equal(data.resolver, resolver.address);
+                assert.equal(data.owner, coinbase);
+                assert.deepEqual(data.values, values);
             });
         });
 
