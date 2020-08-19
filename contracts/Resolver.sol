@@ -5,9 +5,10 @@ import './Registry.sol';
 import './util/SignatureUtil.sol';
 import './controllers/MintingController.sol';
 import './IResolver.sol';
+import './IResolverReader.sol';
 // solium-disable error-reason
 
-contract Resolver is SignatureUtil, IResolver {
+contract Resolver is IResolverReader, SignatureUtil, IResolver {
 
     event Set(uint256 indexed tokenId, string indexed keyIndex, string indexed valueIndex, string key, string value);
     event NewKey(uint256 indexed tokenId, string indexed keyIndex, string key);
