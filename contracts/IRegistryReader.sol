@@ -1,8 +1,6 @@
 pragma solidity 0.5.12;
 
-import "@openzeppelin/contracts/introspection/IERC165.sol";
-
-contract IRegistryReader is IERC165 {
+interface IRegistryReader {
     function name() external view returns (string memory);
     function symbol() external view returns (string memory);
     function tokenURI(uint256 tokenId) external view returns (string memory);
@@ -34,31 +32,31 @@ contract IRegistryReader is IERC165 {
      * @dev Controller related function.
      * @return bool whether the account is a controller
      */
-    function isController(address account) public view returns (bool);
+    function isController(address account) external view returns (bool);
 
     /**
      * @dev Returns the number of NFTs in `owner`'s account. ERC721 related function.
      */
-    function balanceOf(address owner) public view returns (uint256);
+    function balanceOf(address owner) external view returns (uint256);
 
     /**
      * @dev Returns the owner of the NFT specified by `tokenId`. ERC721 related function.
      */
-    function ownerOf(uint256 tokenId) public view returns (address);
+    function ownerOf(uint256 tokenId) external view returns (address);
     
     /**
      * @dev ERC721 related function.
      */
-    function getApproved(uint256 tokenId) public view returns (address);
+    function getApproved(uint256 tokenId) external view returns (address);
     
     /**
      * @dev ERC721 related function.
      */
-    function isApprovedForAll(address owner, address operator) public view returns (bool);
+    function isApprovedForAll(address owner, address operator) external view returns (bool);
 
     /**
      * @dev Registry related function.
      * @return root hash.
      */
-    function root() public view returns (uint256);
+    function root() external view returns (uint256);
 }

@@ -1,9 +1,7 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
-import '@openzeppelin/contracts/introspection/IERC165.sol';
-
-contract IResolverReader is IERC165 {
+interface IResolverReader {
     /**
      * @dev Gets the nonce of the specified address.
      * @param tokenId token ID for nonce query
@@ -22,8 +20,8 @@ contract IResolverReader is IERC165 {
      * @param tokenId The token id to fetch.
      * @return The value string.
      */
-    function get(string memory key, uint256 tokenId)
-        public
+    function get(string calldata key, uint256 tokenId)
+        external
         view
         returns (string memory);
 
@@ -45,7 +43,7 @@ contract IResolverReader is IERC165 {
      * @return Key and value.
      */
     function getByHash(uint256 keyHash, uint256 tokenId)
-        public
+        external
         view
         returns (string memory key, string memory value);
 
@@ -55,8 +53,8 @@ contract IResolverReader is IERC165 {
      * @param tokenId The token id to set.
      * @return Keys and values.
      */
-    function getManyByHash(uint256[] memory keyHashes, uint256 tokenId)
-        public
+    function getManyByHash(uint256[] calldata keyHashes, uint256 tokenId)
+        external
         view
         returns (string[] memory keys, string[] memory values);
 }

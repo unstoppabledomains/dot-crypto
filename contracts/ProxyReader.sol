@@ -1,5 +1,4 @@
 pragma solidity 0.5.12;
-// TODO: check how to avoid experimental version
 pragma experimental ABIEncoderV2;
 
 import '@openzeppelin/contracts/introspection/ERC165.sol';
@@ -94,32 +93,50 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
         return _registry.childIdOf(tokenId, label);
     }
 
-    function isController(address account) public view returns (bool) {
+    function isController(address account) external view returns (bool) {
         return _registry.isController(account);
     }
 
-    function balanceOf(address owner) public view returns (uint256) {
+    function balanceOf(address owner) external view returns (uint256) {
         return _registry.balanceOf(owner);
     }
 
-    function ownerOf(uint256 tokenId) public view returns (address) {
+    function ownerOf(uint256 tokenId) external view returns (address) {
         return _registry.ownerOf(tokenId);
     }
 
-    function getApproved(uint256 tokenId) public view returns (address) {
+    function getApproved(uint256 tokenId) external view returns (address) {
         return _registry.getApproved(tokenId);
     }
 
     function isApprovedForAll(address owner, address operator)
-        public
+        external
         view
         returns (bool)
     {
         return _registry.isApprovedForAll(owner, operator);
     }
 
-    function root() public view returns (uint256) {
+    function root() external view returns (uint256) {
         return _registry.root();
+    }
+
+    function nonceOf(uint256 tokenId) external view returns (uint256) {
+        Resolver resolver = Resolver(_registry.resolverOf(tokenId));
+        return resolver.nonceOf(tokenId);
+    }
+
+    function registry() external view returns (address) {
+        return address(_registry);
+    }
+
+    function get(string calldata key, uint256 tokenId)
+        external
+        view
+        returns (string memory)
+    {
+        Resolver resolver = Resolver(_registry.resolverOf(tokenId));
+        return resolver.get(key, tokenId);
     }
 
     function getMany(string[] calldata keys, uint256 tokenId)
@@ -148,27 +165,13 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
     {
         resolver = _registry.resolverOf(tokenId);
         owner = _registry.ownerOf(tokenId);
-        
+
         Resolver resolverContract = Resolver(resolver);
         values = resolverContract.getMany(keys, tokenId);
     }
 
-    function nonceOf(uint256 tokenId) external view returns (uint256) {
-        Resolver resolver = Resolver(_registry.resolverOf(tokenId));
-        return resolver.nonceOf(tokenId);
-    }
-
-    function get(string memory key, uint256 tokenId)
-        public
-        view
-        returns (string memory)
-    {
-        Resolver resolver = Resolver(_registry.resolverOf(tokenId));
-        return resolver.get(key, tokenId);
-    }
-
     function getByHash(uint256 keyHash, uint256 tokenId)
-        public
+        external
         view
         returns (string memory key, string memory value)
     {
@@ -176,16 +179,12 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
         return resolver.getByHash(keyHash, tokenId);
     }
 
-    function getManyByHash(uint256[] memory keyHashes, uint256 tokenId)
-        public
+    function getManyByHash(uint256[] calldata keyHashes, uint256 tokenId)
+        external
         view
         returns (string[] memory keys, string[] memory values)
     {
         Resolver resolver = Resolver(_registry.resolverOf(tokenId));
         return resolver.getManyByHash(keyHashes, tokenId);
-    }
-
-    function registry() external view returns (address) {
-        return address(_registry);
     }
 }
