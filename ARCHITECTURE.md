@@ -224,6 +224,8 @@ Meta transaction requires 2 signature: one passed as a method argument and one c
 
 Example Signature generation for a `reset` method call for a domain:
 
+<!-- TODO convert from pseudocode to real code -->
+
 ``` typescript
 const domain = 'example.crypto';
 const methodName = 'reset';
