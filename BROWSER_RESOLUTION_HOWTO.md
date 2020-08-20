@@ -122,7 +122,7 @@ see [Domain Resolution](./ARCHITECTURE.md#domain-resolution).
 
 ## Browser Resolution Algorithm
 
-![Resolve Dweb website by direct reading from Ethereum and Decentralized network](./documentation/diagrams/browser-resolution/Resolve DWeb website by direct reading from Ethereum and Decentralized network.png)
+![Resolve Dweb website by direct reading from Ethereum and Decentralized network](./documentation/diagrams/browser-resolution/Resolve_DWeb_website_by_direct_reading_from_Ethereum_and_Decentralized_network.png)
 
 
 This section explains how different domain record configurations should be interpreted by browsers.
