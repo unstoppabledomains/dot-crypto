@@ -37,7 +37,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         assert.isTrue(isSupport);
     });
 
-    describe('Registry', () => {
+    describe('IRegistryReader', () => {
         it('should support IRegistryReader interface', async () => {
             const isSupport = await proxy.supportsInterface('0x6eabca0d');
             assert.isTrue(isSupport);
@@ -116,7 +116,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         });
     });
 
-    describe('Resolver', () => {
+    describe('IResolverReader', () => {
         it('should support IResolverReader interface', async () => {
             const isSupport = await proxy.supportsInterface('0xc897de98');
             assert.isTrue(isSupport);
@@ -156,20 +156,6 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
             });
         });
 
-        describe('getData', () => {
-            it('should revert when resolver not found', async () => {
-                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
-                await expectRevert.unspecified(proxy.getData([keys[0]], unknownTokenId));
-            });
-
-            it('should retrun data', async () => {
-                const data = await proxy.getData(keys, tokenId);
-                assert.equal(data.resolver, resolver.address);
-                assert.equal(data.owner, coinbase);
-                assert.deepEqual(data.values, values);
-            });
-        });
-
         it('should proxy nonceOf call', async () => {
             const result = await proxy.nonceOf(tokenId);
             const expected = await resolver.nonceOf(tokenId);
@@ -199,7 +185,40 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
             const keyHash = utils.keccak256(keys[0]);
             const result = await proxy.getManyByHash([keyHash], tokenId);
             const expected = await resolver.getManyByHash([keyHash], tokenId);
-            assert.deepEqual(result, expected)
+            assert.deepEqual(result, expected);
+        });
+    });
+
+    describe('IDataReader', () => {
+        it('should support IDataReader interface', async () => {
+            const isSupport = await proxy.supportsInterface('0x9229583e');
+            assert.isTrue(isSupport);
+        });
+
+        it('should revert when resolver not found', async () => {
+            const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+            await expectRevert.unspecified(proxy.getData([keys[0]], unknownTokenId));
+        });
+
+        it('should return data by keys', async () => {
+            const data = await proxy.getData(keys, tokenId);
+            assert.equal(data.resolver, resolver.address);
+            assert.equal(data.owner, coinbase);
+            assert.deepEqual(data.values, values);
+        });
+
+        it('should return data by hashes', async () => {
+            // arrange
+            const hashes = keys.map(utils.keccak256);
+            for (let i = 0; i < keys.length; i++) {
+                await resolver.set(keys[i], values[i], tokenId);
+            }
+
+            const data = await proxy.getDataByHash(hashes, tokenId);
+            assert.equal(data.resolver, resolver.address);
+            assert.equal(data.owner, coinbase);
+            assert.deepEqual(data.keys, keys);
+            assert.deepEqual(data.values, values);
         });
     });
 });

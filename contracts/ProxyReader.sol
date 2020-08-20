@@ -5,10 +5,11 @@ import '@openzeppelin/contracts/introspection/ERC165.sol';
 
 import './IRegistryReader.sol';
 import './IResolverReader.sol';
+import './IDataReader.sol';
 import './Registry.sol';
 import './Resolver.sol';
 
-contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
+contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
     string public constant NAME = 'Unstoppable Proxy Reader';
     string public constant VERSION = '0.1.0';
 
@@ -52,6 +53,14 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
      */
     bytes4 private constant _INTERFACE_ID_RESOLVER_READER = 0xc897de98;
 
+    /*
+     * bytes4(keccak256(abi.encodePacked('getData(string[],uint256)'))) == 0x91015f6b
+     * bytes4(keccak256(abi.encodePacked('getDataByHash(uint256[],uint256)'))) == 0x03280755
+     *
+     * => 0x91015f6b ^ 0x03280755 == 0x9229583e
+     */
+    bytes4 private constant _INTERFACE_ID_DATA_READER = 0x9229583e;
+
     constructor(Registry registry) public {
         require(address(registry) != address(0), 'Registry is empty');
         _registry = registry;
@@ -59,6 +68,7 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
         _registerInterface(_INTERFACE_ID_ERC165);
         _registerInterface(_INTERFACE_ID_REGISTRY_READER);
         _registerInterface(_INTERFACE_ID_RESOLVER_READER);
+        _registerInterface(_INTERFACE_ID_DATA_READER);
     }
 
     function name() external view returns (string memory) {
@@ -148,28 +158,6 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
         return resolver.getMany(keys, tokenId);
     }
 
-    /**
-     * @dev Function to get resolver address, owner address and multiple records.
-     * @param keys The keys to query the value of.
-     * @param tokenId The token id to fetch.
-     * @return Resolver address, owner address and values.
-     */
-    function getData(string[] calldata keys, uint256 tokenId)
-        external
-        view
-        returns (
-            address resolver,
-            address owner,
-            string[] memory values
-        )
-    {
-        resolver = _registry.resolverOf(tokenId);
-        owner = _registry.ownerOf(tokenId);
-
-        Resolver resolverContract = Resolver(resolver);
-        values = resolverContract.getMany(keys, tokenId);
-    }
-
     function getByHash(uint256 keyHash, uint256 tokenId)
         external
         view
@@ -186,5 +174,38 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader {
     {
         Resolver resolver = Resolver(_registry.resolverOf(tokenId));
         return resolver.getManyByHash(keyHashes, tokenId);
+    }
+
+    function getData(string[] calldata keys, uint256 tokenId)
+        external
+        view
+        returns (
+            address resolver,
+            address owner,
+            string[] memory values
+        )
+    {
+        resolver = _registry.resolverOf(tokenId);
+        owner = _registry.ownerOf(tokenId);
+
+        Resolver resolverContract = Resolver(resolver);
+        values = resolverContract.getMany(keys, tokenId);
+    }
+
+    function getDataByHash(uint256[] calldata keyHashes, uint256 tokenId)
+        external
+        view
+        returns (
+            address resolver,
+            address owner,
+            string[] memory keys,
+            string[] memory values
+        )
+    {
+        resolver = _registry.resolverOf(tokenId);
+        owner = _registry.ownerOf(tokenId);
+
+        Resolver resolverContract = Resolver(resolver);
+        (keys, values) = resolverContract.getManyByHash(keyHashes, tokenId);
     }
 }
