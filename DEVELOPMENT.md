@@ -64,44 +64,20 @@ dot-crypto call registry ownerOf $(dot-crypto call registry childOf $(dot-crypto
 
 ## Tests
 
-Ganache doesn't recover signatures correctly! As a result the tests are split up into `ganache-cli` and `geth -dev` tests.
-
-## Run Ganache Tests
-
 Run a ganache server in the background.
 
 ```sh
-yarn rpc:ganache
+yarn ganache:start
 ```
 
 Run the tests.
 
 ```sh
-yarn test:ganache
+yarn test
 ```
 
 Stop ganache server.
 
 ```sh
-yarn rpc:stop
-```
-
-## Run Geth Tests
-
-Run a geth dev server in the background.
-
-```sh
-yarn rpc:geth
-```
-
-Run the tests.
-
-```sh
-yarn test:geth
-```
-
-Stop geth server.
-
-```sh
-yarn rpc:stop
+yarn ganache:stop
 ```
