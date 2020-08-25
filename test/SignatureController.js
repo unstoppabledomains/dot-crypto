@@ -3,13 +3,14 @@ const SignatureController = artifacts.require(
   'controller/SignatureController.sol',
 )
 const MintingController = artifacts.require('controller/MintingController.sol')
-const { ZERO_ADDRESS } = require('./helpers/constants.js');
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 const assert = chai.assert
-const submitSigTransaction = require('./helpers/submitSigTransaction')
+const submitSigTransaction = require('./helpers/submitSigTransaction');
+const { ZERO_ADDRESS } = require('./helpers/constants.js');
+const expectRevert = require('./helpers/expectRevert.js');
 
 contract('SignatureController', ([coinbase, ...accounts]) => {
   let registry, mintingController, signatureController
@@ -148,15 +149,16 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       tok.toString()
     )
 
-    assert.equal(await registry.ownerOf(tok), ZERO_ADDRESS, 'should burn token')
-
     // should fail to burn non existent token
-    await assert.isRejected(submitSigTransaction(
-      signatureController,
-      registry,
-      coinbase,
-      'burn',
-      tok.toString())
+    await expectRevert(registry.ownerOf(tok), 'ERC721: owner query for nonexistent token');
+    await expectRevert(
+      submitSigTransaction(
+        signatureController,
+        registry,
+        coinbase,
+        'burn',
+        tok.toString()),
+      'ERC721: operator query for nonexistent token'
     )
   })
 
@@ -324,7 +326,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       'label'
     )
 
-    assert.equal(await registry.ownerOf(threeld), ZERO_ADDRESS, 'should burn token')
+    await expectRevert(registry.ownerOf(threeld), 'ERC721: owner query for nonexistent token');
 
     await registry.transferFrom(
       coinbase,
@@ -333,7 +335,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     )
 
     // should fail to mint token without permission
-    await assert.isRejected(
+    await expectRevert(
       submitSigTransaction(
         signatureController,
         registry,
@@ -342,6 +344,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
         tok.toString(),
         'label'
       ),
+      'INVALID_SIGNATURE'
     )
   })
 })
