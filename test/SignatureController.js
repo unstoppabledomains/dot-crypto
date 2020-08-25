@@ -8,7 +8,9 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 const assert = chai.assert
-const submitSigTransaction = require('./helpers/submitSigTransaction')
+const submitSigTransaction = require('./helpers/submitSigTransaction');
+const { ZERO_ADDRESS } = require('./helpers/constants.js');
+const expectRevert = require('./helpers/expectRevert.js');
 
 contract('SignatureController', ([coinbase, ...accounts]) => {
   let registry, mintingController, signatureController
@@ -142,24 +144,21 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await submitSigTransaction(
       signatureController,
       registry,
-      coinbase, 
+      coinbase,
       'burn',
       tok.toString()
     )
 
-    assert.equal(
-      await registry.ownerOf(tok),
-      '0x0000000000000000000000000000000000000000',
-      'should burn token',
-    )
-
     // should fail to burn non existent token
-    await assert.isRejected(submitSigTransaction(
-      signatureController,
-      registry,
-      coinbase,
-      'burn',
-      tok.toString())
+    await expectRevert(registry.ownerOf(tok), 'ERC721: owner query for nonexistent token');
+    await expectRevert(
+      submitSigTransaction(
+        signatureController,
+        registry,
+        coinbase,
+        'burn',
+        tok.toString()),
+      'ERC721: operator query for nonexistent token'
     )
   })
 
@@ -198,7 +197,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       submitSigTransaction(
         signatureController,
         registry,
-        coinbase, 
+        coinbase,
         'mintChild',
         coinbase,
         tok.toString(),
@@ -221,7 +220,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await submitSigTransaction(
       signatureController,
       registry,
-      coinbase, 
+      coinbase,
       'transferFromChild',
       coinbase,
       '0x1234567890123456789012345678901234567890',
@@ -246,7 +245,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       submitSigTransaction(
         signatureController,
         registry,
-        coinbase, 
+        coinbase,
         'transferFromChild',
         coinbase,
         '0x1234567890123456789012345678901234567890',
@@ -270,7 +269,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await submitSigTransaction(
       signatureController,
       registry,
-      coinbase, 
+      coinbase,
       'safeTransferFromChild',
       coinbase,
       '0x1234567890123456789012345678901234567890',
@@ -296,7 +295,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       submitSigTransaction(
         signatureController,
         registry,
-        coinbase, 
+        coinbase,
         'safeTransferFromChild',
         coinbase,
         '0x1234567890123456789012345678901234567890',
@@ -327,11 +326,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       'label'
     )
 
-    assert.equal(
-      await registry.ownerOf(threeld),
-      '0x0000000000000000000000000000000000000000',
-      'should burn token',
-    )
+    await expectRevert(registry.ownerOf(threeld), 'ERC721: owner query for nonexistent token');
 
     await registry.transferFrom(
       coinbase,
@@ -340,15 +335,16 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     )
 
     // should fail to mint token without permission
-    await assert.isRejected(
+    await expectRevert(
       submitSigTransaction(
         signatureController,
         registry,
-        coinbase, 
-        'burnChild', 
-        tok.toString(), 
+        coinbase,
+        'burnChild',
+        tok.toString(),
         'label'
       ),
+      'INVALID_SIGNATURE'
     )
   })
 })
