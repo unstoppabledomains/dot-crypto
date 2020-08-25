@@ -3,6 +3,7 @@ const SignatureController = artifacts.require(
   'controller/SignatureController.sol',
 )
 const MintingController = artifacts.require('controller/MintingController.sol')
+const { ZERO_ADDRESS } = require('./helpers/constants.js');
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
@@ -142,16 +143,12 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await submitSigTransaction(
       signatureController,
       registry,
-      coinbase, 
+      coinbase,
       'burn',
       tok.toString()
     )
 
-    assert.equal(
-      await registry.ownerOf(tok),
-      '0x0000000000000000000000000000000000000000',
-      'should burn token',
-    )
+    assert.equal(await registry.ownerOf(tok), ZERO_ADDRESS, 'should burn token')
 
     // should fail to burn non existent token
     await assert.isRejected(submitSigTransaction(
@@ -198,7 +195,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       submitSigTransaction(
         signatureController,
         registry,
-        coinbase, 
+        coinbase,
         'mintChild',
         coinbase,
         tok.toString(),
@@ -221,7 +218,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await submitSigTransaction(
       signatureController,
       registry,
-      coinbase, 
+      coinbase,
       'transferFromChild',
       coinbase,
       '0x1234567890123456789012345678901234567890',
@@ -246,7 +243,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       submitSigTransaction(
         signatureController,
         registry,
-        coinbase, 
+        coinbase,
         'transferFromChild',
         coinbase,
         '0x1234567890123456789012345678901234567890',
@@ -270,7 +267,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
     await submitSigTransaction(
       signatureController,
       registry,
-      coinbase, 
+      coinbase,
       'safeTransferFromChild',
       coinbase,
       '0x1234567890123456789012345678901234567890',
@@ -296,7 +293,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       submitSigTransaction(
         signatureController,
         registry,
-        coinbase, 
+        coinbase,
         'safeTransferFromChild',
         coinbase,
         '0x1234567890123456789012345678901234567890',
@@ -327,11 +324,7 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       'label'
     )
 
-    assert.equal(
-      await registry.ownerOf(threeld),
-      '0x0000000000000000000000000000000000000000',
-      'should burn token',
-    )
+    assert.equal(await registry.ownerOf(threeld), ZERO_ADDRESS, 'should burn token')
 
     await registry.transferFrom(
       coinbase,
@@ -344,9 +337,9 @@ contract('SignatureController', ([coinbase, ...accounts]) => {
       submitSigTransaction(
         signatureController,
         registry,
-        coinbase, 
-        'burnChild', 
-        tok.toString(), 
+        coinbase,
+        'burnChild',
+        tok.toString(),
         'label'
       ),
     )
