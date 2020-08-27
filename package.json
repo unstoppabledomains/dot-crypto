@@ -32,13 +32,15 @@
     "merge-contracts": "sol-merger \"./contracts/**/*.sol\" ./build",
     "prebuild": "yarn compile && rm -rf build",
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "check:links": "find . -type f -name '*.md' ! -path './node_modules/*' | xargs -l yarn markdown-link-check"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "ganache-cli": "^6.7.0",
+    "markdown-link-check": "^3.8.1",
     "node-fetch": "^2.6.0",
     "prettier": "^1.18.2",
     "sol-merger": "^3.1.0",
