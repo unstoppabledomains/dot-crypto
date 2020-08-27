@@ -10,38 +10,18 @@ CNS's goal is to be an alternative to classical domain names system (DNS) by fix
 * Decentralized registration
 * Decentralized access
 
-## Documentation:
+## Getting started
 
-### Pre-requirements
+If you're interested in contributing or compiling/testing the smart contracts, see our [development guide](./DEVELOPMENT.md).
 
-.crypto domain names registry is based on the following technologies:
-
-Required to resolve a domain:
-
-* [JSON](https://www.json.org/json-en.html) - standard data interchange format in web
-* [SHA-3](https://en.wikipedia.org/wiki/SHA-3) - modern secure cryptographic hashing algorithm
-* [Solidity ABI](https://solidity.readthedocs.io/en/v0.6.11/abi-spec.html) - function call parameters encoding/decoding algorithm
-* [Ethereum JSON RPC](https://eth.wiki/json-rpc/API) - access Ethereum blockchain data via JSON RPC interface
-
-Additionally required to manage domain records, transfer domains to other owner address and configure management permission:
-
-* [EIP-721](https://eips.ethereum.org/EIPS/eip-721) - ERC-721 Non-Fungible Token Standard
-* [Ethereum Transactions](https://docs.ethhub.io/using-ethereum/transactions/) - executing blockchain transactions
-
-A person reading the documentation is expected to understand the basics of those standards.
-
-### Pages 
-
-* [Architecture](./ARCHITECTURE.md) - detailed overview on CNS design
-* [Browser Resolution](./BROWSER_RESOLUTION_HOWTO.md) - Resolving CNS domain in a browser how-to
-* [Contributor's Guide](./DEVELOPMENT.md) - Contributor's guide on smart contract source code development and deployment
-* [Records Reference](./RECORDS_REFERENCE.md) - A table of all possible records that can be set for CNS domains
-
-## Resolution libraries
+### Resolution libraries
 
 Available domain resolution libraries to retrieve crypto registry data:
 
 * [resolution.js](https://github.com/unstoppabledomains/resolution)
+
+Work in progress:
+
 * [resolution-swift](https://github.com/unstoppabledomains/resolution-swift)
 * [resolution-java](https://github.com/unstoppabledomains/resolution-java)
 
