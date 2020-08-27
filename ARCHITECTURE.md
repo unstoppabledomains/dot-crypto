@@ -60,16 +60,16 @@
 
 ### DNS records
 
-[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/managing-domains/managing-domain-records#dns-records)
+[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/browser-resolution/browser-resolution-algorithm#dns-records)
 
 #### TTL
 
-[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/managing-domains/managing-domain-records#dns-records)
+[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/browser-resolution/browser-resolution-algorithm#dns-records)
 
 #### Authority responses
 
-[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/managing-domains/managing-domain-records#dns-records)
+[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/browser-resolution/browser-resolution-algorithm#dns-records)
 
 ### Distributed Web records
 
-[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/managing-domains/managing-domain-records#distributed-web-records)
+[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/browser-resolution/browser-resolution-algorithm#distributed-web-records)

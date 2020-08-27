@@ -38,7 +38,7 @@
 
 ## Records related to browser resolution
 
-[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/browser-resolution/records)
+[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/browser-resolution/browser-resolution-algorithm#records-related-to-browser-resolution)
 
 ## Browser Resolution Algorithm
 
