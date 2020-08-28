@@ -16,3 +16,6 @@ pids
 *.pid
 *.seed
 *.pid.lock
+
+coverage/
+coverage.json

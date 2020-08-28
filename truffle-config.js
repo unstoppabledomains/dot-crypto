@@ -22,6 +22,13 @@ module.exports = {
       network_id: '1337',
       gas: 4401670,
     },
+    coverage: {
+      host: '127.0.0.1',
+      port: 7555,
+      network_id: '*',
+      gas: 0xfffffffffff,
+      gasPrice: 0x01
+    },
   },
   compilers: {
     solc: {
@@ -32,5 +39,6 @@ module.exports = {
       },
     },
   },
-  contracts_build_directory: 'truffle_artifacts',
+  contracts_build_directory: 'truffle-artifacts',
+  plugins: ['solidity-coverage'],
 }
