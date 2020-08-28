@@ -1,6 +1,9 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - master
 
 jobs:
   build:
@@ -8,10 +11,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: "12.x"
+
       - run: yarn install
+
+      - name: Change permissions
+        run: chmod +x ./scripts/test.sh
+
       - run: yarn test-ci
       - run: yarn coverage
