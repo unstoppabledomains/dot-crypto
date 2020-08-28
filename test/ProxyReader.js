@@ -29,7 +29,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
     });
 
     it('should revert when registry is empty', async () => {
-        await expectRevert(ProxyReader.new(ZERO_ADDRESS), '-Registry is empty');
+        await expectRevert(ProxyReader.new(ZERO_ADDRESS), 'Registry is empty');
     });
 
     it('should support IERC165 interface', async () => {
