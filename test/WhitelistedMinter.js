@@ -11,7 +11,7 @@ chai.use(chaiAsPromised)
 const assert = chai.assert
 const {BN} = web3.utils
 
-contract.only('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
+contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
   let whitelistedMinter, registry, mintingController
 
   beforeEach(async () => {
