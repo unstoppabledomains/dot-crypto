@@ -12,6 +12,9 @@ import "../Resolver.sol";
  * @dev Defines the functions for distribution of Second Level Domains (SLD)s.
  */
 contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
+    string public constant NAME = 'Unstoppable Whitelisted Minter';
+    string public constant VERSION = '0.1.0';
+
     MintingController internal _mintingController;
     Resolver internal _resolver;
     Registry internal _registry;
