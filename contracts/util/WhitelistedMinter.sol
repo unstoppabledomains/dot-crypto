@@ -95,6 +95,17 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 
+    function mintSLDWithResolver(
+        address to,
+        string memory label,
+        string[] memory keys,
+        string[] memory values,
+        address resolver
+    ) public onlyWhitelisted {
+        _mintingController.mintSLDWithResolver(to, label, resolver);
+        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+    }
+
     function safeMintSLDToDefaultResolver(
         address to,
         string memory label,
@@ -103,6 +114,17 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     ) public onlyWhitelisted {
         _mintingController.safeMintSLDWithResolver(to, label, address(_resolver));
         _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+    }
+
+    function safeMintSLDWithResolver(
+        address to,
+        string memory label,
+        string[] memory keys,
+        string[] memory values,
+        address resolver
+    ) public onlyWhitelisted {
+        _mintingController.safeMintSLDWithResolver(to, label, resolver);
+        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 
     function safeMintSLDToDefaultResolver(
@@ -114,6 +136,18 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     ) public onlyWhitelisted {
         _mintingController.safeMintSLDWithResolver(to, label, address(_resolver), _data);
         _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+    }
+
+    function safeMintSLDWithResolver(
+        address to,
+        string memory label,
+        string[] memory keys,
+        string[] memory values,
+        bytes memory _data,
+        address resolver
+    ) public onlyWhitelisted {
+        _mintingController.safeMintSLDWithResolver(to, label, resolver, _data);
+        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 
     function setDefaultResolver(address resolver) external onlyWhitelistAdmin {
