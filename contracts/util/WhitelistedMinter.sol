@@ -36,10 +36,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         payable
         onlyWhitelisted
     {
-        require(
-            receiver != address(0x0),
-            "WhitelistedMinter: receiver must be non-zero."
-        );
+        require(receiver != address(0x0), "WhitelistedMinter: RECEIVER_IS_EMPTY");
 
         renounceWhitelisted();
         receiver.transfer(msg.value);
@@ -53,10 +50,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         payable
         onlyWhitelisted
     {
-        require(
-            receiver != address(0x0),
-            "WhitelistedMinter: receiver must be non-zero."
-        );
+        require(receiver != address(0x0), "WhitelistedMinter: RECEIVER_IS_EMPTY");
 
         _addWhitelisted(receiver);
         renounceWhitelisted();

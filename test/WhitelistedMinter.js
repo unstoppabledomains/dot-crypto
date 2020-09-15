@@ -65,7 +65,7 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     it('revert when zero account', async () => {
       await expectRevert(
         whitelistedMinter.closeWhitelisted(ZERO_ADDRESS, {from: coinbase}),
-        'WhitelistedMinter: receiver must be non-zero.',
+        'WhitelistedMinter: RECEIVER_IS_EMPTY',
       )
     })
 
@@ -110,14 +110,14 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     it('revert when rotateing by non-whitelisted account', async () => {
       await expectRevert(
         whitelistedMinter.rotateWhitelisted(accounts[0], {from: accounts[0]}),
-        'WhitelistedRole: caller does not have the Whitelisted role ',
+        'WhitelistedRole: caller does not have the Whitelisted role',
       )
     })
 
     it('revert when zero account', async () => {
       await expectRevert(
         whitelistedMinter.rotateWhitelisted(ZERO_ADDRESS, {from: coinbase}),
-        'WhitelistedMinter: receiver must be non-zero.',
+        'WhitelistedMinter: RECEIVER_IS_EMPTY',
       )
     })
 
