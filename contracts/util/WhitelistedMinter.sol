@@ -89,7 +89,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 
-    function safeMintSLDWithResolver(
+    function safeMintSLDToResolver(
         address to,
         string memory label,
         string[] memory keys,
@@ -110,7 +110,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 
-    function mintSLDWithResolver(
+    function mintSLDToResolver(
         address to,
         string memory label,
         string[] memory keys,
@@ -132,7 +132,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 
-    function safeMintSLDWithResolver(
+    function safeMintSLDToResolver(
         address to,
         string memory label,
         string[] memory keys,
