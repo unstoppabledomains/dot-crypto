@@ -85,29 +85,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         string[] memory keys,
         string[] memory values
     ) public onlyWhitelisted {
-        _mintingController.mintSLDWithResolver(to, label, address(_resolver));
-        _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
-    }
-
-    function safeMintSLDToResolver(
-        address to,
-        string memory label,
-        string[] memory keys,
-        string[] memory values,
-        address resolver
-    ) public onlyWhitelisted {
-        _mintingController.safeMintSLDWithResolver(to, label, resolver);
-        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
-    }
-
-    function safeMintSLDToDefaultResolver(
-        address to,
-        string memory label,
-        string[] memory keys,
-        string[] memory values
-    ) public onlyWhitelisted {
-        _mintingController.safeMintSLDWithResolver(to, label, address(_resolver));
-        _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+        mintSLDToResolver(to, label, keys, values, address(_resolver));
     }
 
     function mintSLDToResolver(
@@ -125,11 +103,30 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         address to,
         string memory label,
         string[] memory keys,
+        string[] memory values
+    ) public onlyWhitelisted {
+        safeMintSLDToResolver(to, label, keys, values, address(_resolver));
+    }
+
+    function safeMintSLDToResolver(
+        address to,
+        string memory label,
+        string[] memory keys,
+        string[] memory values,
+        address resolver
+    ) public onlyWhitelisted {
+        _mintingController.safeMintSLDWithResolver(to, label, resolver);
+        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+    }
+
+    function safeMintSLDToDefaultResolver(
+        address to,
+        string memory label,
+        string[] memory keys,
         string[] memory values,
         bytes memory _data
     ) public onlyWhitelisted {
-        _mintingController.safeMintSLDWithResolver(to, label, address(_resolver), _data);
-        _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+        safeMintSLDToResolver(to, label, keys, values, _data, address(_resolver));
     }
 
     function safeMintSLDToResolver(
