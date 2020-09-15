@@ -13,7 +13,7 @@ const assert = chai.assert
 const {BN} = web3.utils
 
 contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
-  let whitelistedMinter, registry, mintingController, resolver
+  let whitelistedMinter, registry, mintingController, resolver, customResolver
 
   beforeEach(async () => {
     registry = await Registry.deployed()
@@ -24,6 +24,14 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     })
     await whitelistedMinter.addWhitelisted(coinbase)
     await mintingController.addMinter(whitelistedMinter.address)
+
+    customResolver = await Resolver.new(
+      registry.address,
+      mintingController.address,
+      {
+        from: coinbase,
+      },
+    )
   })
 
   describe('renounce minter', () => {
@@ -184,6 +192,35 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       assert.equal(await registry.ownerOf(tokenId), coinbase)
     })
 
+    it('revert minting with custom resolver when account is not whitelisted', async () => {
+      const funcSig = 'mintSLD(address,string,address)'
+      await expectRevert(
+        whitelistedMinter.methods[funcSig](
+          coinbase,
+          'test-1aw',
+          customResolver.address,
+          {
+            from: accounts[0],
+          },
+        ),
+        'WhitelistedRole: caller does not have the Whitelisted role',
+      )
+    })
+
+    it('mint domain with custom resolver', async () => {
+      const funcSig = 'mintSLD(address,string,address)'
+      await whitelistedMinter.methods[funcSig](
+        coinbase,
+        'test-1kq',
+        customResolver.address,
+      )
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-1kq',
+      )
+      assert.equal(await registry.ownerOf(tokenId), coinbase)
+    })
+
     it('revert minting domain with default resolver when account is not whitelisted', async () => {
       await expectRevert(
         whitelistedMinter.mintSLDToDefaultResolver(
@@ -236,6 +273,26 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       )
     })
 
+    it('mint domain with default resolver without records', async () => {
+      await whitelistedMinter.setDefaultResolver(resolver.address)
+
+      await whitelistedMinter.mintSLDToDefaultResolver(
+        coinbase,
+        'test-1la',
+        [],
+        [],
+        {
+          from: coinbase,
+        },
+      )
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-1la',
+      )
+      assert.equal(await registry.ownerOf(tokenId), coinbase)
+    })
+
     it('revert minting domain with resolver when zero resolver', async () => {
       await expectRevert.unspecified(
         whitelistedMinter.mintSLDToResolver(
@@ -265,13 +322,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     })
 
     it('mint domain with custom resolver', async () => {
-      const customResolver = await Resolver.new(
-        registry.address,
-        mintingController.address,
-        {
-          from: coinbase,
-        },
-      )
       await whitelistedMinter.mintSLDToResolver(
         coinbase,
         'test-1q2',
@@ -289,12 +339,34 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         'test-1q2-value1',
       )
     })
+
+    it('mint domain with custom resolver without records', async () => {
+      await whitelistedMinter.setDefaultResolver(resolver.address)
+
+      await whitelistedMinter.mintSLDToResolver(
+        coinbase,
+        'test-1lp',
+        [],
+        [],
+        customResolver.address,
+        {
+          from: coinbase,
+        },
+      )
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-1lp',
+      )
+      assert.equal(await registry.ownerOf(tokenId), coinbase)
+    })
   })
 
   describe('safe mint second level domain', () => {
     it('revert safe minting when account is not whitelisted', async () => {
+      const funcSig = 'safeMintSLD(address,string)'
       await expectRevert(
-        whitelistedMinter.safeMintSLD(coinbase, 'test-2oa', {
+        whitelistedMinter.methods[funcSig](coinbase, 'test-2oa', {
           from: accounts[0],
         }),
         'WhitelistedRole: caller does not have the Whitelisted role',
@@ -306,6 +378,35 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       const tokenId = await registry.childIdOf(
         await registry.root(),
         'test-2oa',
+      )
+      assert.equal(await registry.ownerOf(tokenId), coinbase)
+    })
+
+    it('revert safe minting with custom domain when account is not whitelisted', async () => {
+      const funcSig = 'safeMintSLD(address,string,address)'
+      await expectRevert(
+        whitelistedMinter.methods[funcSig](
+          coinbase,
+          'test-2lt',
+          customResolver.address,
+          {
+            from: accounts[0],
+          },
+        ),
+        'WhitelistedRole: caller does not have the Whitelisted role',
+      )
+    })
+
+    it('safe mint domain with custom resolver', async () => {
+      const funcSig = 'safeMintSLD(address,string,address)'
+      await whitelistedMinter.methods[funcSig](
+        coinbase,
+        'test-2ms',
+        customResolver.address,
+      )
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-2ms',
       )
       assert.equal(await registry.ownerOf(tokenId), coinbase)
     })
@@ -356,6 +457,22 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       )
     })
 
+    it('safe mint domain with default resolver without records', async () => {
+      const funcSig =
+        'safeMintSLDToDefaultResolver(address,string,string[],string[])'
+      await whitelistedMinter.setDefaultResolver(resolver.address)
+
+      await whitelistedMinter.methods[funcSig](coinbase, 'test-2ll', [], [], {
+        from: coinbase,
+      })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-2ll',
+      )
+      assert.equal(await registry.ownerOf(tokenId), coinbase)
+    })
+
     it('revert safe minting domain with resolver when zero resolver', async () => {
       await expectRevert.unspecified(
         whitelistedMinter.safeMintSLDToResolver(
@@ -387,13 +504,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     })
 
     it('safe mint domain with custom resolver', async () => {
-      const customResolver = await Resolver.new(
-        registry.address,
-        mintingController.address,
-        {
-          from: coinbase,
-        },
-      )
       await whitelistedMinter.safeMintSLDToResolver(
         coinbase,
         'test-2qd',
@@ -411,12 +521,27 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         'test-2qd-value1',
       )
     })
+
+    it('safe mint domain with custom resolver without records', async () => {
+      await whitelistedMinter.safeMintSLDToResolver(
+        coinbase,
+        'test-2kd',
+        [],
+        [],
+        customResolver.address,
+      )
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-2kd',
+      )
+      assert.equal(await registry.ownerOf(tokenId), coinbase)
+    })
   })
 
   describe('safe mint(data) second level domain', () => {
     it('revert safe minting when account is not whitelisted', async () => {
       const funcSig = 'safeMintSLD(address,string,bytes)'
-
       await expectRevert(
         whitelistedMinter.methods[funcSig](coinbase, 'test-3oa', '0x', {
           from: accounts[0],
@@ -427,12 +552,43 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
 
     it('safe mint domain', async () => {
       const funcSig = 'safeMintSLD(address,string,bytes)'
-
       await whitelistedMinter.methods[funcSig](coinbase, 'test-3oa', '0x')
 
       const tokenId = await registry.childIdOf(
         await registry.root(),
         'test-3oa',
+      )
+      assert.equal(await registry.ownerOf(tokenId), coinbase)
+    })
+
+    it('revert safe minting with custom resolver when account is not whitelisted', async () => {
+      const funcSig = 'safeMintSLD(address,string,bytes,address)'
+      await expectRevert(
+        whitelistedMinter.methods[funcSig](
+          coinbase,
+          'test-3dd',
+          '0x',
+          customResolver.address,
+          {
+            from: accounts[0],
+          },
+        ),
+        'WhitelistedRole: caller does not have the Whitelisted role',
+      )
+    })
+
+    it('safe mint domain with custom resolver', async () => {
+      const funcSig = 'safeMintSLD(address,string,bytes,address)'
+      await whitelistedMinter.methods[funcSig](
+        coinbase,
+        'test-3de',
+        '0x',
+        customResolver.address,
+      )
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-3de',
       )
       assert.equal(await registry.ownerOf(tokenId), coinbase)
     })
@@ -484,6 +640,29 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       )
     })
 
+    it('safe mint domain with default resolver without records', async () => {
+      const funcSig =
+        'safeMintSLDToDefaultResolver(address,string,string[],string[],bytes)'
+      await whitelistedMinter.setDefaultResolver(resolver.address)
+
+      await whitelistedMinter.methods[funcSig](
+        coinbase,
+        'test-2rr',
+        [],
+        [],
+        '0x',
+        {
+          from: coinbase,
+        },
+      )
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-2rr',
+      )
+      assert.equal(await registry.ownerOf(tokenId), coinbase)
+    })
+
     it('revert safe minting domain with resolver when zero resolver', async () => {
       await expectRevert.unspecified(
         whitelistedMinter.safeMintSLDToResolver(
@@ -517,13 +696,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     })
 
     it('safe mint domain with custom resolver', async () => {
-      const customResolver = await Resolver.new(
-        registry.address,
-        mintingController.address,
-        {
-          from: coinbase,
-        },
-      )
       await whitelistedMinter.safeMintSLDToResolver(
         coinbase,
         'test-3re',
@@ -541,6 +713,23 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         await customResolver.get('test-3re-key1', tokenId),
         'test-3re-value1',
       )
+    })
+
+    it('safe mint domain with custom resolver without records', async () => {
+      await whitelistedMinter.safeMintSLDToResolver(
+        coinbase,
+        'test-3ht',
+        [],
+        [],
+        '0x',
+        customResolver.address,
+      )
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-3ht',
+      )
+      assert.equal(await registry.ownerOf(tokenId), coinbase)
     })
   })
 })
