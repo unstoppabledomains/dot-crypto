@@ -236,20 +236,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       )
     })
 
-    it('revert minting domain with default resolver when resolver is empty', async () => {
-      await expectRevert.unspecified(
-        whitelistedMinter.mintSLDToDefaultResolver(
-          coinbase,
-          'test-1ka',
-          [],
-          [],
-          {
-            from: coinbase,
-          },
-        ),
-      )
-    })
-
     it('mint domain with default resolver', async () => {
       await whitelistedMinter.setDefaultResolver(resolver.address)
 
@@ -291,18 +277,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         'test-1la',
       )
       assert.equal(await registry.ownerOf(tokenId), coinbase)
-    })
-
-    it('revert minting domain with resolver when zero resolver', async () => {
-      await expectRevert.unspecified(
-        whitelistedMinter.mintSLDToResolver(
-          coinbase,
-          'test-1q2',
-          [],
-          [],
-          ZERO_ADDRESS,
-        ),
-      )
     })
 
     it('revert minting domain with resolver when account is not whitelisted', async () => {
@@ -422,16 +396,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       )
     })
 
-    it('revert safe minting domain with default resolver when resolver is empty', async () => {
-      const funcSig =
-        'safeMintSLDToDefaultResolver(address,string,string[],string[])'
-      await expectRevert.unspecified(
-        whitelistedMinter.methods[funcSig](coinbase, 'test-2ka', [], [], {
-          from: coinbase,
-        }),
-      )
-    })
-
     it('safe mint domain with default resolver', async () => {
       const funcSig =
         'safeMintSLDToDefaultResolver(address,string,string[],string[])'
@@ -471,18 +435,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         'test-2ll',
       )
       assert.equal(await registry.ownerOf(tokenId), coinbase)
-    })
-
-    it('revert safe minting domain with resolver when zero resolver', async () => {
-      await expectRevert.unspecified(
-        whitelistedMinter.safeMintSLDToResolver(
-          coinbase,
-          'test-2qd',
-          [],
-          [],
-          ZERO_ADDRESS,
-        ),
-      )
     })
 
     it('revert safe minting domain with resolver when account is not whitelisted', async () => {
@@ -604,16 +556,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       )
     })
 
-    it('revert safe minting domain with default resolver when resolver is empty', async () => {
-      const funcSig =
-        'safeMintSLDToDefaultResolver(address,string,string[],string[],bytes)'
-      await expectRevert.unspecified(
-        whitelistedMinter.methods[funcSig](coinbase, 'test-2ka', [], [], '0x', {
-          from: coinbase,
-        }),
-      )
-    })
-
     it('safe mint domain with default resolver', async () => {
       const funcSig =
         'safeMintSLDToDefaultResolver(address,string,string[],string[],bytes)'
@@ -661,19 +603,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         'test-2rr',
       )
       assert.equal(await registry.ownerOf(tokenId), coinbase)
-    })
-
-    it('revert safe minting domain with resolver when zero resolver', async () => {
-      await expectRevert.unspecified(
-        whitelistedMinter.safeMintSLDToResolver(
-          coinbase,
-          'test-3ca',
-          [],
-          [],
-          '0x',
-          ZERO_ADDRESS,
-        ),
-      )
     })
 
     it('revert when minting by non-whitelisted account', async () => {

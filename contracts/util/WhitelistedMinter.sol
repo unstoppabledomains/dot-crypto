@@ -13,7 +13,7 @@ import "../Resolver.sol";
  */
 contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     string public constant NAME = 'Unstoppable Whitelisted Minter';
-    string public constant VERSION = '0.1.0';
+    string public constant VERSION = '0.2.0';
 
     MintingController internal _mintingController;
     Resolver internal _resolver;
@@ -121,7 +121,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         address resolver
     ) public onlyWhitelisted {
         _mintingController.mintSLDWithResolver(to, label, resolver);
-        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+        configResolver(label, keys, values, resolver);
     }
 
     function safeMintSLDToDefaultResolver(
@@ -141,7 +141,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         address resolver
     ) public onlyWhitelisted {
         _mintingController.safeMintSLDWithResolver(to, label, resolver);
-        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+        configResolver(label, keys, values, resolver);
     }
 
     function safeMintSLDToDefaultResolver(
@@ -163,10 +163,23 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         address resolver
     ) public onlyWhitelisted {
         _mintingController.safeMintSLDWithResolver(to, label, resolver, _data);
-        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+        configResolver(label, keys, values, resolver);
     }
 
     function setDefaultResolver(address resolver) external onlyWhitelistAdmin {
         _resolver = Resolver(resolver);
+    }
+
+    function configResolver(
+        string memory label,
+        string[] memory keys,
+        string[] memory values,
+        address resolver
+    ) private {
+        if(keys.length == 0) {
+            return;
+        }
+
+        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 }
