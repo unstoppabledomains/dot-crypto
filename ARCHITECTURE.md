@@ -1,10 +1,10 @@
 # Architecture
 
-[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/domain-registry-essentials/general-overview)
+[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/domain-registry-essentials/architecture-overview)
 
 ## Registry Essentials
 
-[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/domain-registry-essentials/general-overview)
+[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/domain-registry-essentials/architecture-overview#registry)
 
 ### Namehashing Domain Name
 
@@ -16,11 +16,11 @@
 
 ### Registry Controllers
 
-[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/domain-registry-essentials/general-overview#registry-controllers)
+[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/domain-registry-essentials/architecture-overview#smart-contract-architecture)
 
 ### Domains Minting and Hierarchy
 
-[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/domain-registry-essentials/general-overview#domains-minting-and-hierarchy)
+[Moved to GitBook](https://unstoppable-domains.gitbook.io/unstoppable-domains/domain-registry-essentials/architecture-overview#domain-hierarchy-and-ownership)
 
 ## Resolving a domain
 
