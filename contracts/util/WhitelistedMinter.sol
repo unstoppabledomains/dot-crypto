@@ -64,14 +64,6 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         _mintingController.mintSLD(to, label);
     }
 
-    function mintSLD(
-        address to,
-        string memory label,
-        address resolver
-    ) public onlyWhitelisted {
-        _mintingController.mintSLDWithResolver(to, label, resolver);
-    }
-
     function safeMintSLD(address to, string calldata label)
         external
         onlyWhitelisted
@@ -81,27 +73,10 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
 
     function safeMintSLD(
         address to,
-        string memory label,
-        address resolver
-    ) public onlyWhitelisted {
-        _mintingController.safeMintSLDWithResolver(to, label, resolver);
-    }
-
-    function safeMintSLD(
-        address to,
         string calldata label,
         bytes calldata _data
     ) external onlyWhitelisted {
         _mintingController.safeMintSLD(to, label, _data);
-    }
-
-    function safeMintSLD(
-        address to,
-        string memory label,
-        bytes memory _data,
-        address resolver
-    ) public onlyWhitelisted {
-        _mintingController.safeMintSLDWithResolver(to, label, resolver, _data);
     }
 
     function mintSLDToDefaultResolver(
