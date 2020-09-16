@@ -13,7 +13,7 @@ import "../Resolver.sol";
  */
 contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     string public constant NAME = 'Unstoppable Whitelisted Minter';
-    string public constant VERSION = '0.1.0';
+    string public constant VERSION = '0.2.0';
 
     MintingController internal _mintingController;
     Resolver internal _resolver;
@@ -85,8 +85,18 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         string[] memory keys,
         string[] memory values
     ) public onlyWhitelisted {
-        _mintingController.mintSLDWithResolver(to, label, address(_resolver));
-        _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+        mintSLDToResolver(to, label, keys, values, address(_resolver));
+    }
+
+    function mintSLDToResolver(
+        address to,
+        string memory label,
+        string[] memory keys,
+        string[] memory values,
+        address resolver
+    ) public onlyWhitelisted {
+        _mintingController.mintSLDWithResolver(to, label, resolver);
+        preconfigureResolver(label, keys, values, resolver);
     }
 
     function safeMintSLDToDefaultResolver(
@@ -95,8 +105,18 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         string[] memory keys,
         string[] memory values
     ) public onlyWhitelisted {
-        _mintingController.safeMintSLDWithResolver(to, label, address(_resolver));
-        _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+        safeMintSLDToResolver(to, label, keys, values, address(_resolver));
+    }
+
+    function safeMintSLDToResolver(
+        address to,
+        string memory label,
+        string[] memory keys,
+        string[] memory values,
+        address resolver
+    ) public onlyWhitelisted {
+        _mintingController.safeMintSLDWithResolver(to, label, resolver);
+        preconfigureResolver(label, keys, values, resolver);
     }
 
     function safeMintSLDToDefaultResolver(
@@ -106,11 +126,35 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         string[] memory values,
         bytes memory _data
     ) public onlyWhitelisted {
-        _mintingController.safeMintSLDWithResolver(to, label, address(_resolver), _data);
-        _resolver.preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+        safeMintSLDToResolver(to, label, keys, values, _data, address(_resolver));
+    }
+
+    function safeMintSLDToResolver(
+        address to,
+        string memory label,
+        string[] memory keys,
+        string[] memory values,
+        bytes memory _data,
+        address resolver
+    ) public onlyWhitelisted {
+        _mintingController.safeMintSLDWithResolver(to, label, resolver, _data);
+        preconfigureResolver(label, keys, values, resolver);
     }
 
     function setDefaultResolver(address resolver) external onlyWhitelistAdmin {
         _resolver = Resolver(resolver);
+    }
+
+    function preconfigureResolver(
+        string memory label,
+        string[] memory keys,
+        string[] memory values,
+        address resolver
+    ) private {
+        if(keys.length == 0) {
+            return;
+        }
+
+        Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 }

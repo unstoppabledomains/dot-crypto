@@ -27,7 +27,7 @@ module.exports = {
       port: 7555,
       network_id: '*',
       gas: 0xfffffffffff,
-      gasPrice: 0x01
+      gasPrice: 0x01,
     },
   },
   compilers: {
@@ -41,4 +41,12 @@ module.exports = {
   },
   contracts_build_directory: 'truffle-artifacts',
   plugins: ['solidity-coverage'],
+  mocha: {
+    reporter: 'eth-gas-reporter',
+    reporterOptions: {
+      currency: 'USD',
+      excludeContracts: ['Migrations', 'Simple'],
+      showMethodSig: true,
+    },
+  },
 }
