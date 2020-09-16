@@ -84,7 +84,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         string memory label,
         string[] memory keys,
         string[] memory values
-    ) public {
+    ) public onlyWhitelisted {
         mintSLDToResolver(to, label, keys, values, address(_resolver));
     }
 
@@ -104,7 +104,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         string memory label,
         string[] memory keys,
         string[] memory values
-    ) public {
+    ) public onlyWhitelisted {
         safeMintSLDToResolver(to, label, keys, values, address(_resolver));
     }
 
@@ -125,7 +125,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         string[] memory keys,
         string[] memory values,
         bytes memory _data
-    ) public {
+    ) public onlyWhitelisted {
         safeMintSLDToResolver(to, label, keys, values, _data, address(_resolver));
     }
 
