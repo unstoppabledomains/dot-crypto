@@ -96,7 +96,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         address resolver
     ) public onlyWhitelisted {
         _mintingController.mintSLDWithResolver(to, label, resolver);
-        configResolver(label, keys, values, resolver);
+        preconfigureResolver(label, keys, values, resolver);
     }
 
     function safeMintSLDToDefaultResolver(
@@ -116,7 +116,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         address resolver
     ) public onlyWhitelisted {
         _mintingController.safeMintSLDWithResolver(to, label, resolver);
-        configResolver(label, keys, values, resolver);
+        preconfigureResolver(label, keys, values, resolver);
     }
 
     function safeMintSLDToDefaultResolver(
@@ -138,14 +138,14 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         address resolver
     ) public onlyWhitelisted {
         _mintingController.safeMintSLDWithResolver(to, label, resolver, _data);
-        configResolver(label, keys, values, resolver);
+        preconfigureResolver(label, keys, values, resolver);
     }
 
     function setDefaultResolver(address resolver) external onlyWhitelistAdmin {
         _resolver = Resolver(resolver);
     }
 
-    function configResolver(
+    function preconfigureResolver(
         string memory label,
         string[] memory keys,
         string[] memory values,
