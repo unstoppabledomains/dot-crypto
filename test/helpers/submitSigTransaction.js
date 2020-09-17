@@ -1,3 +1,4 @@
+const Web3 = require('web3')
 const {sign} = require('./signature')
 
 async function submitSigTransaction(
