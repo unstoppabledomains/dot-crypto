@@ -1,6 +1,7 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
+import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 import "./BulkWhitelistedRole.sol";
 import "../controllers/IMintingController.sol";
 import "../controllers/MintingController.sol";
@@ -12,6 +13,8 @@ import "../Resolver.sol";
  * @dev Defines the functions for distribution of Second Level Domains (SLD)s.
  */
 contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
+    using ECDSA for bytes32;
+
     string public constant NAME = 'Unstoppable Whitelisted Minter';
     string public constant VERSION = '0.2.0';
 
@@ -61,6 +64,12 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         external
         onlyWhitelisted
     {
+        _mintingController.mintSLD(to, label);
+    }
+
+    function mintSLDFor(address to, string calldata label, bytes calldata signature) external {
+        bytes4 selector = bytes4(keccak256('mintSLD(address,string)'));
+        verifySigner(keccak256(abi.encodeWithSelector(selector, to, label)), signature);
         _mintingController.mintSLD(to, label);
     }
 
@@ -156,5 +165,35 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         }
 
         Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
+    }
+
+    function verifySigner(bytes32 data, bytes memory signature) private view {
+        address signer = keccak256(abi.encodePacked(data, address(this)))
+            .toEthSignedMessageHash()
+            .recover(signature);
+        require(signer != address(0), 'WhitelistedMinter: SIGNATURE_IS_INVALID');
+        require(isWhitelisted(signer), 'WhitelistedMinter: SIGNER_IS_NOT_WHITELISTED');
+    }
+
+    /**
+     * Proxy is an alternative solution for meta-transactions
+     * Disadvantages:
+     *  - the function can proxy any call, even we dont need to do this for some functions
+     *  - in order to execute the logic the contract should be whitelisted by its own. lol
+     * Advantages:
+     *  - minimizing amount of code
+     *  - no needs to sign one function signature, but execute another function (very confusing)
+     */
+    function proxy(bytes calldata data, bytes calldata signature) external {
+        // TODO: signature validation based on data + address(this)
+        // TODO: rights validation
+
+        (bool success,) = address(this).call(data);
+        require(success, 'FAIL');
+
+        // Disadvantages of the 'call':
+        // - low-level function *
+        // - fail reason is unclear when 'call' failed
+        // - unclear how to return complex result from 'call'
     }
 }

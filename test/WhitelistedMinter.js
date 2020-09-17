@@ -1,5 +1,6 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
+const Web3 = require('web3')
 
 const Registry = artifacts.require('registry/Registry.sol')
 const Resolver = artifacts.require('registry/Resolver.sol')
@@ -7,6 +8,7 @@ const MintingController = artifacts.require('controller/MintingController.sol')
 const WhitelistedMinter = artifacts.require('util/WhitelistedMinter.sol')
 const expectRevert = require('./helpers/expectRevert.js')
 const {ZERO_ADDRESS} = require('./helpers/constants.js')
+const {sign} = require('./helpers/signature.js')
 
 chai.use(chaiAsPromised)
 const assert = chai.assert
@@ -305,6 +307,165 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       )
       assert.equal(await registry.ownerOf(tokenId), coinbase)
     })
+  })
+
+  describe('meta-mint second level domain', () => {
+    const calcSignature = async (
+      contract,
+      address,
+      functionSig,
+      from,
+      ...args
+    ) => {
+      const web3 = new Web3(contract.constructor.web3.currentProvider)
+      const abi = contract.constructor._json.abi.find(
+        v => v.signature === web3.eth.abi.encodeFunctionSignature(functionSig),
+      )
+
+      return await sign(
+        from,
+        {
+          type: 'bytes32',
+          value: Web3.utils.keccak256(
+            web3.eth.abi.encodeFunctionCall(abi, args),
+          ),
+        },
+        {
+          type: 'address',
+          value: address,
+        },
+      )
+    }
+
+    it('revert meta-mint when signature is empty', async () => {
+      const funcSig = 'mintSLDFor(address,string,bytes)'
+
+      await expectRevert(
+        whitelistedMinter.methods[funcSig](accounts[0], 'test-m1af', '0x', {
+          from: accounts[1],
+        }),
+        'WhitelistedMinter: SIGNATURE_IS_INVALID',
+      )
+    })
+
+    it('revert meta-mint when signer is not whitelisted', async () => {
+      var signature = await calcSignature(
+        whitelistedMinter,
+        whitelistedMinter.address,
+        'mintSLD(address,string)',
+        accounts[0],
+        accounts[0],
+        'test-m1pp',
+      )
+      const funcSig = 'mintSLDFor(address,string,bytes)'
+
+      await expectRevert(
+        whitelistedMinter.methods[funcSig](
+          accounts[0],
+          'test-m1pp',
+          signature,
+          {
+            from: accounts[1],
+          },
+        ),
+        'WhitelistedMinter: SIGNER_IS_NOT_WHITELISTED',
+      )
+    })
+
+    it('revert meta-mint when signature does not match', async () => {
+      var signature = await calcSignature(
+        whitelistedMinter,
+        whitelistedMinter.address,
+        'mintSLD(address,string)',
+        coinbase,
+        accounts[0],
+        'wrong-label',
+      )
+      const funcSig = 'mintSLDFor(address,string,bytes)'
+
+      await expectRevert(
+        whitelistedMinter.methods[funcSig](
+          accounts[0],
+          'test-m1pp',
+          signature,
+          {
+            from: accounts[1],
+          },
+        ),
+        'WhitelistedMinter: SIGNER_IS_NOT_WHITELISTED',
+      )
+    })
+
+    it('revert meta-mint when signature generated for different contract', async () => {
+      var signature = await calcSignature(
+        whitelistedMinter,
+        faucet,
+        'mintSLD(address,string)',
+        coinbase,
+        accounts[0],
+        'wrong-label',
+      )
+      const funcSig = 'mintSLDFor(address,string,bytes)'
+
+      await expectRevert(
+        whitelistedMinter.methods[funcSig](
+          accounts[0],
+          'test-m1pp',
+          signature,
+          {
+            from: accounts[1],
+          },
+        ),
+        'WhitelistedMinter: SIGNER_IS_NOT_WHITELISTED',
+      )
+    })
+
+    it('meta-mint domain', async () => {
+      var signature = await calcSignature(
+        whitelistedMinter,
+        whitelistedMinter.address,
+        'mintSLD(address,string)',
+        coinbase,
+        accounts[0],
+        'test-m1qp',
+      )
+      const funcSig = 'mintSLDFor(address,string,bytes)'
+
+      await whitelistedMinter.methods[funcSig](
+        accounts[0],
+        'test-m1qp',
+        signature,
+        {
+          from: accounts[1],
+        },
+      )
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-m1qp',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
+    })
+
+    // it.skip('proxy', async () => {
+    //   await whitelistedMinter.addWhitelisted(whitelistedMinter.address)
+
+    //   const web3 = new Web3(whitelistedMinter.constructor.web3.currentProvider)
+    //   let encodedFunctionSig = web3.eth.abi.encodeFunctionSignature(
+    //     'mintSLD(address,string)',
+    //   )
+    //   const abi = whitelistedMinter.constructor._json.abi.find(
+    //     v => v.signature === encodedFunctionSig,
+    //   )
+    //   const data = web3.eth.abi.encodeFunctionCall(abi, [
+    //     accounts[0],
+    //     'test-p1aaa',
+    //   ])
+    //   console.log(data)
+    //   await whitelistedMinter.proxy(data, {
+    //     from: accounts[0],
+    //   })
+    // })
   })
 
   describe('safe mint second level domain', () => {
