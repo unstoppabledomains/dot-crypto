@@ -1,5 +1,7 @@
 # .crypto
 
+[![Unstoppable Domains Documentation](https://img.shields.io/badge/docs-unstoppabledomains.com-blue)](https://docs.unstoppabledomains.com/)
+
 Crypto Registry Naming Service (CNS) is a naming service implemented using Ethereum Smart Contract Platform.
 Each name inside CNS has a format of a domain name in `.crypto` top level domain space. Like `example.crypto`.
 
@@ -9,6 +11,8 @@ CNS's goal is to be an alternative to classical domain names system (DNS) by fix
 - Ensure permanent ownership of the domain by the owner
 - Decentralized registration
 - Decentralized access
+
+CNS documentation is available at [docs.unstoppabledomains.com](https://docs.unstoppabledomains.com/).
 
 ## Getting started
 
