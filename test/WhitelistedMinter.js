@@ -447,25 +447,24 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
     })
 
-    // it.skip('proxy', async () => {
-    //   await whitelistedMinter.addWhitelisted(whitelistedMinter.address)
+    it('proxy meta-mint', async () => {
+      await whitelistedMinter.addWhitelisted(whitelistedMinter.address)
 
-    //   const web3 = new Web3(whitelistedMinter.constructor.web3.currentProvider)
-    //   let encodedFunctionSig = web3.eth.abi.encodeFunctionSignature(
-    //     'mintSLD(address,string)',
-    //   )
-    //   const abi = whitelistedMinter.constructor._json.abi.find(
-    //     v => v.signature === encodedFunctionSig,
-    //   )
-    //   const data = web3.eth.abi.encodeFunctionCall(abi, [
-    //     accounts[0],
-    //     'test-p1aaa',
-    //   ])
-    //   console.log(data)
-    //   await whitelistedMinter.proxy(data, {
-    //     from: accounts[0],
-    //   })
-    // })
+      const web3 = new Web3(whitelistedMinter.constructor.web3.currentProvider)
+      let encodedFunctionSig = web3.eth.abi.encodeFunctionSignature(
+        'mintSLD(address,string)',
+      )
+      const abi = whitelistedMinter.constructor._json.abi.find(
+        v => v.signature === encodedFunctionSig,
+      )
+      const data = web3.eth.abi.encodeFunctionCall(abi, [
+        accounts[0],
+        'test-p1aaa',
+      ])
+      await whitelistedMinter.proxy(data, '0x', {
+        from: accounts[0],
+      })
+    })
   })
 
   describe('safe mint second level domain', () => {

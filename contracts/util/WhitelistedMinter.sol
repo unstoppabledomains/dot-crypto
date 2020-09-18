@@ -178,22 +178,30 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     /**
      * Proxy is an alternative solution for meta-transactions
      * Disadvantages:
-     *  - the function can proxy any call, even we dont need to do this for some functions
+     *  - the function can proxy any call, even we don't need to do this for some functions
      *  - in order to execute the logic the contract should be whitelisted by its own. lol
      * Advantages:
      *  - minimizing amount of code
      *  - no needs to sign one function signature, but execute another function (very confusing)
      */
-    function proxy(bytes calldata data, bytes calldata signature) external {
+    function proxy(bytes calldata data, bytes calldata signature) external returns(bytes memory) {
         // TODO: signature validation based on data + address(this)
         // TODO: rights validation
 
-        (bool success,) = address(this).call(data);
-        require(success, 'FAIL');
+        (bool success, bytes memory result) = address(this).call(data);
+        if (success == false) {
+            assembly {
+                let ptr := mload(0x40)
+                let size := returndatasize
+                returndatacopy(ptr, 0, size)
+                revert(ptr, size)
+            }
+        }
 
-        // Disadvantages of the 'call':
-        // - low-level function *
-        // - fail reason is unclear when 'call' failed
+        // Disadvantages of the implementation:
+        // - low-level function 'call'
+        // - inline assembly
         // - unclear how to return complex result from 'call'
+        return result;
     }
 }
