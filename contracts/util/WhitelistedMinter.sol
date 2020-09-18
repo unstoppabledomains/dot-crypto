@@ -185,8 +185,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
      *  - no needs to sign one function signature, but execute another function (very confusing)
      */
     function proxy(bytes calldata data, bytes calldata signature) external returns(bytes memory) {
-        // TODO: signature validation based on data + address(this)
-        // TODO: rights validation
+        verifySigner(keccak256(data), signature);
 
         (bool success, bytes memory result) = address(this).call(data);
         if (success == false) {

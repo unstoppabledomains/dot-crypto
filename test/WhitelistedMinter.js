@@ -446,24 +446,113 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       )
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
     })
+  })
+
+  describe('proxy meta-mint second level domain', () => {
+    const getCallData = (contract, funcSig, ...args) => {
+      const web3 = new Web3(contract.constructor.web3.currentProvider)
+      let encodedFunctionSig = web3.eth.abi.encodeFunctionSignature(funcSig)
+      const abi = contract.constructor._json.abi.find(
+        v => v.signature === encodedFunctionSig,
+      )
+      return web3.eth.abi.encodeFunctionCall(abi, args)
+    }
+
+    const calcSignature = async (data, address, from) => {
+      return await sign(
+        from,
+        {
+          type: 'bytes32',
+          value: Web3.utils.keccak256(data),
+        },
+        {
+          type: 'address',
+          value: address,
+        },
+      )
+    }
+
+    it('revert proxy meta-mint when proxy-contract is not whitelisted', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'mintSLD(address,string)',
+        accounts[0],
+        'test-p1-revert',
+      )
+      const signature = await calcSignature(
+        data,
+        whitelistedMinter.address,
+        coinbase,
+      )
+
+      await expectRevert(
+        whitelistedMinter.proxy(data, signature, {
+          from: accounts[0],
+        }),
+        'WhitelistedRole: caller does not have the Whitelisted role',
+      )
+    })
+
+    it('revert proxy meta-mint when signer is not whitelisted', async () => {
+      await whitelistedMinter.addWhitelisted(whitelistedMinter.address)
+
+      const data = getCallData(
+        whitelistedMinter,
+        'mintSLD(address,string)',
+        accounts[0],
+        'test-p1-revert',
+      )
+      const signature = await calcSignature(data, faucet, coinbase)
+
+      await expectRevert(
+        whitelistedMinter.proxy(data, signature, {
+          from: accounts[0],
+        }),
+        'WhitelistedMinter: SIGNER_IS_NOT_WHITELISTED',
+      )
+    })
+
+    it('revert proxy meta-mint when signature is empty', async () => {
+      await whitelistedMinter.addWhitelisted(whitelistedMinter.address)
+
+      const data = getCallData(
+        whitelistedMinter,
+        'mintSLD(address,string)',
+        accounts[0],
+        'test-p1-revert',
+      )
+
+      await expectRevert(
+        whitelistedMinter.proxy(data, '0x', {
+          from: accounts[0],
+        }),
+        'WhitelistedMinter: SIGNATURE_IS_INVALID',
+      )
+    })
 
     it('proxy meta-mint', async () => {
       await whitelistedMinter.addWhitelisted(whitelistedMinter.address)
 
-      const web3 = new Web3(whitelistedMinter.constructor.web3.currentProvider)
-      let encodedFunctionSig = web3.eth.abi.encodeFunctionSignature(
+      const data = getCallData(
+        whitelistedMinter,
         'mintSLD(address,string)',
-      )
-      const abi = whitelistedMinter.constructor._json.abi.find(
-        v => v.signature === encodedFunctionSig,
-      )
-      const data = web3.eth.abi.encodeFunctionCall(abi, [
         accounts[0],
-        'test-p1aaa',
-      ])
-      await whitelistedMinter.proxy(data, '0x', {
+        'test-p1-p1aaa',
+      )
+      const signature = await calcSignature(
+        data,
+        whitelistedMinter.address,
+        coinbase,
+      )
+      await whitelistedMinter.proxy(data, signature, {
         from: accounts[0],
       })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-p1-p1aaa',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
     })
   })
 
