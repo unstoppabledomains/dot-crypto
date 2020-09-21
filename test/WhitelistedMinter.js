@@ -530,6 +530,28 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       )
     })
 
+    it('revert proxy meta-mint when unsupported call', async () => {
+      await whitelistedMinter.addWhitelisted(whitelistedMinter.address)
+
+      const data = getCallData(
+        whitelistedMinter,
+        'setDefaultResolver(address)',
+        accounts[0],
+      )
+      const signature = await calcSignature(
+        data,
+        whitelistedMinter.address,
+        coinbase,
+      )
+
+      await expectRevert(
+        whitelistedMinter.proxy(data, signature, {
+          from: accounts[1],
+        }),
+        'WhitelistedMinter: UNSUPPORTED_CALL',
+      )
+    })
+
     it('proxy meta-mint', async () => {
       await whitelistedMinter.addWhitelisted(whitelistedMinter.address)
 
@@ -545,7 +567,7 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         coinbase,
       )
       await whitelistedMinter.proxy(data, signature, {
-        from: accounts[0],
+        from: accounts[1],
       })
 
       const tokenId = await registry.childIdOf(

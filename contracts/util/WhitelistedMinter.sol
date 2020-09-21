@@ -16,11 +16,56 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     using ECDSA for bytes32;
 
     string public constant NAME = 'Unstoppable Whitelisted Minter';
-    string public constant VERSION = '0.2.0';
+    string public constant VERSION = '0.3.0';
 
     MintingController internal _mintingController;
     Resolver internal _resolver;
     Registry internal _registry;
+
+    /*
+     * bytes4(keccak256('mintSLD(address,string)')) == 0x4c0b0ed2
+     */
+    bytes4 private constant _SIG_MINT = 0x4c0b0ed2;
+
+    /*
+     * bytes4(keccak256('mintSLDToDefaultResolver(address,string,string[],string[])')) == 0x3d7989fe
+     */
+    bytes4 private constant _SIG_MINT_DEF_RESOLVER = 0x3d7989fe;
+
+    /*
+     * bytes4(keccak256('mintSLDToResolver(address,string,string[],string[],address)')) == 0xaceb4764
+     */
+    bytes4 private constant _SIG_MINT_RESOLVER = 0xaceb4764;
+
+    /*
+     * bytes4(keccak256('safeMintSLD(address,string)')) == 0xb2da2979
+     */
+    bytes4 private constant _SIG_SAFE_MINT = 0xb2da2979;
+
+    /*
+     * bytes4(keccak256('safeMintSLD(address,string,bytes)')) == 0xbe362e2e
+     */
+    bytes4 private constant _SIG_SAFE_MINT_DATA = 0xbe362e2e;
+
+    /*
+     * bytes4(keccak256('safeMintSLDToDefaultResolver(address,string,string[],string[])')) == 0x61050ffd
+     */
+    bytes4 private constant _SIG_SAFE_MINT_DEF_RESOLVER = 0x61050ffd;
+
+    /*
+     * bytes4(keccak256('safeMintSLDToDefaultResolver(address,string,string[],string[],bytes)')) == 0x4b18abea
+     */
+    bytes4 private constant _SIG_SAFE_MINT_DEF_RESOLVER_DATA = 0x4b18abea;
+
+    /*
+     * bytes4(keccak256('safeMintSLDToResolver(address,string,string[],string[],address)')) == 0x4b44c01a
+     */
+    bytes4 private constant _SIG_SAFE_MINT_RESOLVER = 0x4b44c01a;
+
+    /*
+     * bytes4(keccak256('safeMintSLDToResolver(address,string,string[],string[],bytes,address)')) == 0x898851f8
+     */
+    bytes4 private constant _SIG_SAFE_MINT_RESOLVER_DATA = 0x898851f8;
 
     constructor(MintingController mintingController) public {
         _mintingController = mintingController;
@@ -67,9 +112,11 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         _mintingController.mintSLD(to, label);
     }
 
+    /*
+     * 0x4c0b0ed2 == bytes4(keccak256('mintSLD(address,string)'))
+     */
     function mintSLDFor(address to, string calldata label, bytes calldata signature) external {
-        bytes4 selector = bytes4(keccak256('mintSLD(address,string)'));
-        verifySigner(keccak256(abi.encodeWithSelector(selector, to, label)), signature);
+        verifySigner(keccak256(abi.encodeWithSelector(0x4c0b0ed2, to, label)), signature);
         _mintingController.mintSLD(to, label);
     }
 
@@ -175,10 +222,30 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         require(isWhitelisted(signer), 'WhitelistedMinter: SIGNER_IS_NOT_WHITELISTED');
     }
 
+    function verifyCall(bytes memory data) private pure {
+        bytes4 sig;
+        /* solium-disable-next-line security/no-inline-assembly */
+        assembly {
+            sig := mload(add(data, add(0x20, 0)))
+        }
+
+        bool isSupported = sig == _SIG_MINT ||
+            sig == _SIG_MINT_DEF_RESOLVER ||
+            sig == _SIG_MINT_RESOLVER ||
+            sig == _SIG_SAFE_MINT ||
+            sig == _SIG_SAFE_MINT_DATA ||
+            sig == _SIG_SAFE_MINT_DEF_RESOLVER ||
+            sig == _SIG_SAFE_MINT_DEF_RESOLVER_DATA ||
+            sig == _SIG_SAFE_MINT_RESOLVER ||
+            sig == _SIG_SAFE_MINT_RESOLVER_DATA;
+
+        require(isSupported, 'WhitelistedMinter: UNSUPPORTED_CALL');
+    }
+
     /**
      * Proxy is an alternative solution for meta-transactions
      * Disadvantages:
-     *  - the function can proxy any call, even we don't need to do this for some functions
+     *  + the function can proxy any call, even we don't need to do this for some functions
      *  - in order to execute the logic the contract should be whitelisted by its own. lol
      * Advantages:
      *  - minimizing amount of code
@@ -186,9 +253,12 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
      */
     function proxy(bytes calldata data, bytes calldata signature) external returns(bytes memory) {
         verifySigner(keccak256(data), signature);
+        bytes memory _data = data;
+        verifyCall(_data);
 
         (bool success, bytes memory result) = address(this).call(data);
         if (success == false) {
+            /* solium-disable-next-line security/no-inline-assembly */
             assembly {
                 let ptr := mload(0x40)
                 let size := returndatasize
@@ -196,11 +266,6 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
                 revert(ptr, size)
             }
         }
-
-        // Disadvantages of the implementation:
-        // - low-level function 'call'
-        // - inline assembly
-        // - unclear how to return complex result from 'call'
         return result;
     }
 }
