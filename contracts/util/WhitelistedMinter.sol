@@ -194,6 +194,12 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         _resolver = Resolver(resolver);
     }
 
+    /**
+     * Proxy allows execute transaction on behalf of whitelisted minter.
+     * The function verify signature of call data parameter before execution.
+     * It allows anybody send transaction on-chain when minter has provided proper parameters.
+     * The function allows to proxying calls of fixed functions. The restriction defined in function `verifyCall`
+     */
     function proxy(bytes calldata data, bytes calldata signature) external returns(bytes memory) {
         verifySigner(keccak256(data), signature);
         bytes memory _data = data;
