@@ -54,8 +54,8 @@ Common rules for smart contract development.
 It is useful to use `Version` of smart contracts, it helps analyzing deployed contract. Besides versions it is useful to receive `Name` of smart contract, when the contract is not verified.
 
 ```
-    string public constant NAME = 'Unstoppable Whitelisted Minter';
-    string public constant VERSION = '0.1.0';
+string public constant NAME = 'Unstoppable Whitelisted Minter';
+string public constant VERSION = '0.1.0';
 ```
 
 We agreed to use three-part version number. Semantic - `{major}.{minor}.{patch}`

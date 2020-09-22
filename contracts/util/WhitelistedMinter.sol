@@ -70,6 +70,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     constructor(MintingController mintingController) public {
         _mintingController = mintingController;
         _registry = Registry(mintingController.registry());
+        _addWhitelisted(address(this));
     }
 
     function renounceMinter() external onlyWhitelistAdmin {
@@ -109,14 +110,6 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         external
         onlyWhitelisted
     {
-        _mintingController.mintSLD(to, label);
-    }
-
-    /*
-     * 0x4c0b0ed2 == bytes4(keccak256('mintSLD(address,string)'))
-     */
-    function mintSLDFor(address to, string calldata label, bytes calldata signature) external {
-        verifySigner(keccak256(abi.encodeWithSelector(0x4c0b0ed2, to, label)), signature);
         _mintingController.mintSLD(to, label);
     }
 
@@ -201,6 +194,25 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         _resolver = Resolver(resolver);
     }
 
+    function proxy(bytes calldata data, bytes calldata signature) external returns(bytes memory) {
+        verifySigner(keccak256(data), signature);
+        bytes memory _data = data;
+        verifyCall(_data);
+
+        /* solium-disable-next-line security/no-low-level-calls */
+        (bool success, bytes memory result) = address(this).call(data);
+        if (success == false) {
+            /* solium-disable-next-line security/no-inline-assembly */
+            assembly {
+                let ptr := mload(0x40)
+                let size := returndatasize
+                returndatacopy(ptr, 0, size)
+                revert(ptr, size)
+            }
+        }
+        return result;
+    }
+
     function preconfigureResolver(
         string memory label,
         string[] memory keys,
@@ -240,32 +252,5 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
             sig == _SIG_SAFE_MINT_RESOLVER_DATA;
 
         require(isSupported, 'WhitelistedMinter: UNSUPPORTED_CALL');
-    }
-
-    /**
-     * Proxy is an alternative solution for meta-transactions
-     * Disadvantages:
-     *  + the function can proxy any call, even we don't need to do this for some functions
-     *  - in order to execute the logic the contract should be whitelisted by its own. lol
-     * Advantages:
-     *  - minimizing amount of code
-     *  - no needs to sign one function signature, but execute another function (very confusing)
-     */
-    function proxy(bytes calldata data, bytes calldata signature) external returns(bytes memory) {
-        verifySigner(keccak256(data), signature);
-        bytes memory _data = data;
-        verifyCall(_data);
-
-        (bool success, bytes memory result) = address(this).call(data);
-        if (success == false) {
-            /* solium-disable-next-line security/no-inline-assembly */
-            assembly {
-                let ptr := mload(0x40)
-                let size := returndatasize
-                returndatacopy(ptr, 0, size)
-                revert(ptr, size)
-            }
-        }
-        return result;
     }
 }
