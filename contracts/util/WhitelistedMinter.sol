@@ -15,6 +15,8 @@ import "../Resolver.sol";
 contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     using ECDSA for bytes32;
 
+    event Relayed(address indexed sender, bytes32 dataHash);
+
     string public constant NAME = 'Unstoppable Whitelisted Minter';
     string public constant VERSION = '0.3.0';
 
@@ -194,14 +196,19 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         _resolver = Resolver(resolver);
     }
 
+    function getDefaultResolver() external view returns (address) {
+        return address(_resolver);
+    }
+
     /**
-     * Proxy allows execute transaction on behalf of whitelisted minter.
+     * Relay allows execute transaction on behalf of whitelisted minter.
      * The function verify signature of call data parameter before execution.
      * It allows anybody send transaction on-chain when minter has provided proper parameters.
-     * The function allows to proxying calls of fixed functions. The restriction defined in function `verifyCall`
+     * The function allows to relaying calls of fixed functions. The restriction defined in function `verifyCall`
      */
-    function proxy(bytes calldata data, bytes calldata signature) external returns(bytes memory) {
-        verifySigner(keccak256(data), signature);
+    function relay(bytes calldata data, bytes calldata signature) external returns(bytes memory) {
+        bytes32 dataHash = keccak256(data);
+        verifySigner(dataHash, signature);
         bytes memory _data = data;
         verifyCall(_data);
 
@@ -216,6 +223,8 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
                 revert(ptr, size)
             }
         }
+
+        emit Relayed(msg.sender, dataHash);
         return result;
     }
 
