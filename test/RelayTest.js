@@ -2,23 +2,23 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const Web3 = require('web3')
 
-const ProxyText = artifacts.require('util/ProxyTest.sol')
+const RelayTest = artifacts.require('util/RelayTest.sol')
 const expectRevert = require('./helpers/expectRevert.js')
 
 chai.use(chaiAsPromised)
 const {assert} = chai
 
-contract.skip('ProxyText', ([coinbase]) => {
-  let proxyTest
+contract.skip('RelayTest', ([coinbase]) => {
+  let relayTest
 
   before(async () => {
-    proxyTest = await ProxyText.new({
+    relayTest = await RelayTest.new({
       from: coinbase,
     })
   })
 
   function getCallData(web3, method, ...params) {
-    const abi = ProxyText.toJSON().abi.find(v => v.name === method)
+    const abi = RelayTest.toJSON().abi.find(v => v.name === method)
     return web3.eth.abi.encodeFunctionCall(abi, params)
   }
 
@@ -43,14 +43,14 @@ contract.skip('ProxyText', ([coinbase]) => {
 
   describe('Ganache', () => {
     it('revert get string', async () => {
-      const web3 = new Web3(proxyTest.constructor.web3.currentProvider)
-      const abi = ProxyText.toJSON().abi.find(v => v.name === 'getString')
+      const web3 = new Web3(relayTest.constructor.web3.currentProvider)
+      const abi = RelayTest.toJSON().abi.find(v => v.name === 'getString')
       const data = web3.eth.abi.encodeFunctionCall(abi, [0])
 
       await expectRevert(
         web3.eth.call(
           {
-            to: proxyTest.address,
+            to: relayTest.address,
             data,
           },
           'latest',
@@ -61,14 +61,14 @@ contract.skip('ProxyText', ([coinbase]) => {
   })
 
   describe('Ropsten', () => {
-    const to = '0xcEB5675bb721eBA2aB838F5dCD8329D97b4e68eF'
+    const to = '0xc13e670D7f74C6505792501B76B73227d008AA7d'
     const pKey = process.env.ROPSTEN_PRIVATE_KEY
     const web3 = new Web3(
       `https://ropsten.infura.io/v3/${process.env.INFURA_TEST_KEY}`,
     )
 
     const setString = async (key, value) => {
-      const contract = new web3.eth.Contract(ProxyText.toJSON().abi, to)
+      const contract = new web3.eth.Contract(RelayTest.toJSON().abi, to)
       const setStringData = contract.methods.setString(key, value).encodeABI()
       const signedTx = await web3.eth.accounts.signTransaction(
         {
@@ -82,33 +82,33 @@ contract.skip('ProxyText', ([coinbase]) => {
       console.debug('tx', tx)
     }
 
-    it('return same response(direct and proxy) when get string revert', async () => {
+    it('return same response(direct and relay) when get string revert', async () => {
       const data = getCallData(web3, 'getString', 0)
       const directCall = await web3.eth.call({to, data}, 'latest')
       console.log('directCall', directCall)
 
       const sig = await calcSignature(web3, pKey, data, to)
-      const proxyData = getCallData(web3, 'proxy', data, sig.signature)
-      const proxyCall = await web3.eth.call({to, data: proxyData}, 'latest')
-      console.debug('proxyCall', proxyCall)
+      const relayData = getCallData(web3, 'relay', data, sig.signature)
+      const relayCall = await web3.eth.call({to, data: relayData}, 'latest')
+      console.debug('relayCall', relayCall)
 
-      assert.equal(directCall, proxyCall)
+      assert.equal(directCall, relayCall)
     })
 
-    it('return same response(direct and proxy) when get uint revert', async () => {
+    it('return same response(direct and relay) when get uint revert', async () => {
       const data = getCallData(web3, 'getUint', 0)
       const directCall = await web3.eth.call({to, data}, 'latest')
       console.debug('directCall', directCall)
 
       const sig = await calcSignature(web3, pKey, data, to)
-      const proxyData = getCallData(web3, 'proxy', data, sig.signature)
-      const proxyCall = await web3.eth.call({to, data: proxyData}, 'latest')
-      console.debug('directProxyCall', proxyCall)
+      const relayData = getCallData(web3, 'relay', data, sig.signature)
+      const relayCall = await web3.eth.call({to, data: relayData}, 'latest')
+      console.debug('directRelayCall', relayCall)
 
-      assert.equal(directCall, proxyCall)
+      assert.equal(directCall, relayCall)
     })
 
-    it('return same response(direct and proxy) when get string', async () => {
+    it('return same response(direct and relay) when get string', async () => {
       // await setString(1, 'hello')
 
       const data = getCallData(web3, 'getString', 1)
@@ -116,19 +116,19 @@ contract.skip('ProxyText', ([coinbase]) => {
       console.debug('directCall', directCall)
 
       const sig = await calcSignature(web3, pKey, data, to)
-      const proxyData = getCallData(web3, 'proxy', data, sig.signature)
-      const proxyCall = await web3.eth.call({to, data: proxyData}, 'latest')
-      console.debug('proxyCall', proxyCall)
+      const relayData = getCallData(web3, 'relay', data, sig.signature)
+      const relayCall = await web3.eth.call({to, data: relayData}, 'latest')
+      console.debug('relayCall', relayCall)
 
-      const proxyCallDecode = web3.eth.abi.decodeParameters(
+      const relayCallDecode = web3.eth.abi.decodeParameters(
         ['bytes'],
-        proxyCall,
+        relayCall,
       )
-      assert.equal(directCall, proxyCallDecode['0'])
+      assert.equal(directCall, relayCallDecode['0'])
 
       const decodedOutput = web3.eth.abi.decodeParameters(
         ['string'],
-        proxyCallDecode['0'],
+        relayCallDecode['0'],
       )
       assert.equal('hello', decodedOutput['0'])
     })
