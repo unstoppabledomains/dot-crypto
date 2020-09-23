@@ -686,6 +686,9 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
       expectEvent(receipt, 'Relayed', {
         sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x3d7989fe00000000000000000000000000000000000000000000000000000000',
         dataHash: Web3.utils.keccak256(data),
       })
     })
@@ -710,8 +713,12 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         'test-p1-p1arr',
       )
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
+
       expectEvent(receipt, 'Relayed', {
         sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0xaceb476400000000000000000000000000000000000000000000000000000000',
         dataHash: Web3.utils.keccak256(data),
       })
     })
@@ -735,6 +742,9 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
       expectEvent(receipt, 'Relayed', {
         sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0xb2da297900000000000000000000000000000000000000000000000000000000',
         dataHash: Web3.utils.keccak256(data),
       })
     })
@@ -759,6 +769,9 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
       expectEvent(receipt, 'Relayed', {
         sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0xbe362e2e00000000000000000000000000000000000000000000000000000000',
         dataHash: Web3.utils.keccak256(data),
       })
     })
@@ -784,6 +797,9 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
       expectEvent(receipt, 'Relayed', {
         sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x61050ffd00000000000000000000000000000000000000000000000000000000',
         dataHash: Web3.utils.keccak256(data),
       })
     })
@@ -810,6 +826,9 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
       expectEvent(receipt, 'Relayed', {
         sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x4b18abea00000000000000000000000000000000000000000000000000000000',
         dataHash: Web3.utils.keccak256(data),
       })
     })
@@ -836,6 +855,9 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
       expectEvent(receipt, 'Relayed', {
         sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x4b44c01a00000000000000000000000000000000000000000000000000000000',
         dataHash: Web3.utils.keccak256(data),
       })
     })
@@ -863,6 +885,9 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
       assert.equal(await registry.ownerOf(tokenId), accounts[0])
       expectEvent(receipt, 'Relayed', {
         sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x898851f800000000000000000000000000000000000000000000000000000000',
         dataHash: Web3.utils.keccak256(data),
       })
     })

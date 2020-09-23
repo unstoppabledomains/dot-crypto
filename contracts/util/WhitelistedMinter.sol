@@ -15,7 +15,7 @@ import "../Resolver.sol";
 contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
     using ECDSA for bytes32;
 
-    event Relayed(address indexed sender, bytes32 dataHash);
+    event Relayed(address indexed sender, address indexed signer, bytes4 indexed funcSig, bytes32 dataHash);
 
     string public constant NAME = 'Unstoppable Whitelisted Minter';
     string public constant VERSION = '0.3.0';
@@ -208,9 +208,9 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
      */
     function relay(bytes calldata data, bytes calldata signature) external returns(bytes memory) {
         bytes32 dataHash = keccak256(data);
-        verifySigner(dataHash, signature);
+        address signer = verifySigner(dataHash, signature);
         bytes memory _data = data;
-        verifyCall(_data);
+        bytes4 funcSig = verifyCall(_data);
 
         /* solium-disable-next-line security/no-low-level-calls */
         (bool success, bytes memory result) = address(this).call(data);
@@ -224,7 +224,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
             }
         }
 
-        emit Relayed(msg.sender, dataHash);
+        emit Relayed(msg.sender, signer, funcSig, dataHash);
         return result;
     }
 
@@ -241,16 +241,15 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
         Resolver(resolver).preconfigure(keys, values, _registry.childIdOf(_registry.root(), label));
     }
 
-    function verifySigner(bytes32 data, bytes memory signature) private view {
-        address signer = keccak256(abi.encodePacked(data, address(this)))
+    function verifySigner(bytes32 data, bytes memory signature) private view returns(address signer) {
+        signer = keccak256(abi.encodePacked(data, address(this)))
             .toEthSignedMessageHash()
             .recover(signature);
         require(signer != address(0), 'WhitelistedMinter: SIGNATURE_IS_INVALID');
         require(isWhitelisted(signer), 'WhitelistedMinter: SIGNER_IS_NOT_WHITELISTED');
     }
 
-    function verifyCall(bytes memory data) private pure {
-        bytes4 sig;
+    function verifyCall(bytes memory data) private pure returns(bytes4 sig) {
         /* solium-disable-next-line security/no-inline-assembly */
         assembly {
             sig := mload(add(data, add(0x20, 0)))
