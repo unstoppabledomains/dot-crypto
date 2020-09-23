@@ -1,12 +1,15 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
+const Web3 = require('web3')
 
 const Registry = artifacts.require('registry/Registry.sol')
 const Resolver = artifacts.require('registry/Resolver.sol')
 const MintingController = artifacts.require('controller/MintingController.sol')
 const WhitelistedMinter = artifacts.require('util/WhitelistedMinter.sol')
 const expectRevert = require('./helpers/expectRevert.js')
+const expectEvent = require('./helpers/expectEvent.js')
 const {ZERO_ADDRESS} = require('./helpers/constants.js')
+const {sign} = require('./helpers/signature.js')
 
 chai.use(chaiAsPromised)
 const assert = chai.assert
@@ -24,6 +27,7 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     })
     await whitelistedMinter.addWhitelisted(coinbase)
     await mintingController.addMinter(whitelistedMinter.address)
+    await whitelistedMinter.setDefaultResolver(resolver.address)
 
     customResolver = await Resolver.new(
       registry.address,
@@ -32,6 +36,29 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         from: coinbase,
       },
     )
+  })
+
+  describe('default resolver', () => {
+    it('should return default resolver', async () => {
+      const result = await whitelistedMinter.getDefaultResolver()
+      assert.equal(result, resolver.address)
+    })
+
+    it('should update default resolver', async () => {
+      await whitelistedMinter.setDefaultResolver(customResolver.address)
+
+      const result = await whitelistedMinter.getDefaultResolver()
+      assert.equal(result, customResolver.address)
+    })
+
+    it('should revert when setting by by non-admin', async () => {
+      await expectRevert(
+        whitelistedMinter.setDefaultResolver(customResolver.address, {
+          from: accounts[0],
+        }),
+        'WhitelistAdminRole: caller does not have the WhitelistAdmin role',
+      )
+    })
   })
 
   describe('renounce minter', () => {
@@ -208,8 +235,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     })
 
     it('mint domain with default resolver', async () => {
-      await whitelistedMinter.setDefaultResolver(resolver.address)
-
       await whitelistedMinter.mintSLDToDefaultResolver(
         coinbase,
         'test-1ka',
@@ -231,8 +256,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     })
 
     it('mint domain with default resolver without records', async () => {
-      await whitelistedMinter.setDefaultResolver(resolver.address)
-
       await whitelistedMinter.mintSLDToDefaultResolver(
         coinbase,
         'test-1la',
@@ -286,8 +309,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     })
 
     it('mint domain with custom resolver without records', async () => {
-      await whitelistedMinter.setDefaultResolver(resolver.address)
-
       await whitelistedMinter.mintSLDToResolver(
         coinbase,
         'test-1lp',
@@ -341,7 +362,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     it('safe mint domain with default resolver', async () => {
       const funcSig =
         'safeMintSLDToDefaultResolver(address,string,string[],string[])'
-      await whitelistedMinter.setDefaultResolver(resolver.address)
 
       await whitelistedMinter.methods[funcSig](
         coinbase,
@@ -366,7 +386,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     it('safe mint domain with default resolver without records', async () => {
       const funcSig =
         'safeMintSLDToDefaultResolver(address,string,string[],string[])'
-      await whitelistedMinter.setDefaultResolver(resolver.address)
 
       await whitelistedMinter.methods[funcSig](coinbase, 'test-2ll', [], [], {
         from: coinbase,
@@ -469,7 +488,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     it('safe mint domain with default resolver', async () => {
       const funcSig =
         'safeMintSLDToDefaultResolver(address,string,string[],string[],bytes)'
-      await whitelistedMinter.setDefaultResolver(resolver.address)
 
       await whitelistedMinter.methods[funcSig](
         coinbase,
@@ -495,7 +513,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
     it('safe mint domain with default resolver without records', async () => {
       const funcSig =
         'safeMintSLDToDefaultResolver(address,string,string[],string[],bytes)'
-      await whitelistedMinter.setDefaultResolver(resolver.address)
 
       await whitelistedMinter.methods[funcSig](
         coinbase,
@@ -569,6 +586,310 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
         'test-3ht',
       )
       assert.equal(await registry.ownerOf(tokenId), coinbase)
+    })
+  })
+
+  describe('relay', () => {
+    const getCallData = (contract, funcSig, ...args) => {
+      const web3 = new Web3(contract.constructor.web3.currentProvider)
+      let encodedFunctionSig = web3.eth.abi.encodeFunctionSignature(funcSig)
+      const abi = contract.constructor._json.abi.find(
+        v => v.signature === encodedFunctionSig,
+      )
+      return web3.eth.abi.encodeFunctionCall(abi, args)
+    }
+
+    const calcSignature = async (data, address, from) => {
+      address = address || whitelistedMinter.address
+      from = from || coinbase
+
+      return await sign(
+        from,
+        {
+          type: 'bytes32',
+          value: Web3.utils.keccak256(data),
+        },
+        {
+          type: 'address',
+          value: address,
+        },
+      )
+    }
+
+    it('revert relay meta-mint when signer is not whitelisted', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'mintSLD(address,string)',
+        accounts[0],
+        'test-p1-revert',
+      )
+      const signature = await calcSignature(data, faucet)
+
+      await expectRevert(
+        whitelistedMinter.relay(data, signature, {
+          from: accounts[0],
+        }),
+        'WhitelistedMinter: SIGNER_IS_NOT_WHITELISTED',
+      )
+    })
+
+    it('revert relay meta-mint when signature is empty', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'mintSLD(address,string)',
+        accounts[0],
+        'test-p1-revert',
+      )
+
+      await expectRevert(
+        whitelistedMinter.relay(data, '0x', {
+          from: accounts[0],
+        }),
+        'WhitelistedMinter: SIGNATURE_IS_INVALID',
+      )
+    })
+
+    it('revert relay meta-mint when unsupported call', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'setDefaultResolver(address)',
+        accounts[0],
+      )
+      const signature = await calcSignature(data)
+
+      await expectRevert(
+        whitelistedMinter.relay(data, signature, {
+          from: accounts[1],
+        }),
+        'WhitelistedMinter: UNSUPPORTED_CALL',
+      )
+    })
+
+    it('relay meta-mint to default resolver', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'mintSLDToDefaultResolver(address,string,string[],string[])',
+        accounts[0],
+        'test-p1-p1adr',
+        [],
+        [],
+      )
+      const signature = await calcSignature(data)
+      const receipt = await whitelistedMinter.relay(data, signature, {
+        from: accounts[1],
+      })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-p1-p1adr',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
+      expectEvent(receipt, 'Relayed', {
+        sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x3d7989fe00000000000000000000000000000000000000000000000000000000',
+        dataHash: Web3.utils.keccak256(data),
+      })
+    })
+
+    it('relay meta-mint to custom resolver', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'mintSLDToResolver(address,string,string[],string[],address)',
+        accounts[0],
+        'test-p1-p1arr',
+        [],
+        [],
+        customResolver.address,
+      )
+      const signature = await calcSignature(data)
+      const receipt = await whitelistedMinter.relay(data, signature, {
+        from: accounts[1],
+      })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-p1-p1arr',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
+
+      expectEvent(receipt, 'Relayed', {
+        sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0xaceb476400000000000000000000000000000000000000000000000000000000',
+        dataHash: Web3.utils.keccak256(data),
+      })
+    })
+
+    it('relay meta-safe mint', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'safeMintSLD(address,string)',
+        accounts[0],
+        'test-p1-p1sapr',
+      )
+      const signature = await calcSignature(data)
+      const receipt = await whitelistedMinter.relay(data, signature, {
+        from: accounts[1],
+      })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-p1-p1sapr',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
+      expectEvent(receipt, 'Relayed', {
+        sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0xb2da297900000000000000000000000000000000000000000000000000000000',
+        dataHash: Web3.utils.keccak256(data),
+      })
+    })
+
+    it('relay meta-safe mint with data', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'safeMintSLD(address,string,bytes)',
+        accounts[0],
+        'test-p1-p1saor',
+        '0x',
+      )
+      const signature = await calcSignature(data)
+      const receipt = await whitelistedMinter.relay(data, signature, {
+        from: accounts[1],
+      })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-p1-p1saor',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
+      expectEvent(receipt, 'Relayed', {
+        sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0xbe362e2e00000000000000000000000000000000000000000000000000000000',
+        dataHash: Web3.utils.keccak256(data),
+      })
+    })
+
+    it('relay meta-safe mint to default resolver', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'safeMintSLDToDefaultResolver(address,string,string[],string[])',
+        accounts[0],
+        'test-p1-p1slla',
+        [],
+        [],
+      )
+      const signature = await calcSignature(data)
+      const receipt = await whitelistedMinter.relay(data, signature, {
+        from: accounts[1],
+      })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-p1-p1slla',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
+      expectEvent(receipt, 'Relayed', {
+        sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x61050ffd00000000000000000000000000000000000000000000000000000000',
+        dataHash: Web3.utils.keccak256(data),
+      })
+    })
+
+    it('relay meta-safe mint to default resolver with data', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'safeMintSLDToDefaultResolver(address,string,string[],string[],bytes)',
+        accounts[0],
+        'test-p1-p1slql',
+        [],
+        [],
+        '0x',
+      )
+      const signature = await calcSignature(data)
+      const receipt = await whitelistedMinter.relay(data, signature, {
+        from: accounts[1],
+      })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-p1-p1slql',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
+      expectEvent(receipt, 'Relayed', {
+        sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x4b18abea00000000000000000000000000000000000000000000000000000000',
+        dataHash: Web3.utils.keccak256(data),
+      })
+    })
+
+    it('relay meta-safe mint to custom resolver', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'safeMintSLDToResolver(address,string,string[],string[],address)',
+        accounts[0],
+        'test-p1-p1slee',
+        [],
+        [],
+        customResolver.address,
+      )
+      const signature = await calcSignature(data)
+      const receipt = await whitelistedMinter.relay(data, signature, {
+        from: accounts[1],
+      })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-p1-p1slee',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
+      expectEvent(receipt, 'Relayed', {
+        sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x4b44c01a00000000000000000000000000000000000000000000000000000000',
+        dataHash: Web3.utils.keccak256(data),
+      })
+    })
+
+    it('relay meta-safe mint to custom resolver with data', async () => {
+      const data = getCallData(
+        whitelistedMinter,
+        'safeMintSLDToResolver(address,string,string[],string[],bytes,address)',
+        accounts[0],
+        'test-p1-p1sppq',
+        [],
+        [],
+        '0x',
+        customResolver.address,
+      )
+      const signature = await calcSignature(data)
+      const receipt = await whitelistedMinter.relay(data, signature, {
+        from: accounts[1],
+      })
+
+      const tokenId = await registry.childIdOf(
+        await registry.root(),
+        'test-p1-p1sppq',
+      )
+      assert.equal(await registry.ownerOf(tokenId), accounts[0])
+      expectEvent(receipt, 'Relayed', {
+        sender: accounts[1],
+        signer: coinbase,
+        funcSig:
+          '0x898851f800000000000000000000000000000000000000000000000000000000',
+        dataHash: Web3.utils.keccak256(data),
+      })
     })
   })
 })
