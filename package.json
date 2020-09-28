@@ -52,6 +52,7 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
+    "@chainlink/contracts": "^0.0.10",
     "@openzeppelin/contracts": "2.3.0",
     "@types/web3": "^1.0.20",
     "@types/yargs": "^13.0.3",

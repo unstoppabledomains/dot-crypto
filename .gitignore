@@ -3,6 +3,7 @@ build/
 .chaindata/
 abi/
 EthereumController.key
+.idea
 
 logs
 *.log

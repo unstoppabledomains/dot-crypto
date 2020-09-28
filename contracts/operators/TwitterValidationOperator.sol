@@ -4,22 +4,22 @@ pragma experimental ABIEncoderV2;
 import "@openzeppelin/contracts/access/roles/WhitelistedRole.sol";
 import "@openzeppelin/contracts/access/roles/CapperRole.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@chainlink/contracts/src/v0.5/interfaces/LinkTokenInterface.sol";
+import "../util/ERC677Receiver.sol";
 import "../IRegistry.sol";
 import "../IResolver.sol";
 
-interface LinkTokenInterface {
-  function transfer(address to, uint256 value) external returns (bool success);
-  function balanceOf(address _owner) external view returns (uint256 balance);
-}
-
-contract TwitterValidationOperator is WhitelistedRole, CapperRole {
+contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receiver {
     using SafeMath for uint256;
 
-    event Validation(uint256 indexed tokenId);
-    event PaymentSet(uint256 paymentPerValidation);
+    event Validation(uint256 indexed tokenId); // todo add owner for filtering. Add separate event for validation from user.
+    event ValidationRequest(uint256 indexed tokenId, address indexed owner, string code);
+    event PaymentSet(uint256 operatorPaymentPerValidation, uint256 userPaymentPerValidation);
 
-    uint256 public withdrawableTokens;
-    uint256 public paymentPerValidation;
+    uint256 public operatorWithdrawableTokens;
+    uint256 public userWithdrawableTokens;
+    uint256 public operatorPaymentPerValidation;
+    uint256 public userPaymentPerValidation;
 
     IRegistry internal Registry;
     LinkTokenInterface internal LinkToken;
@@ -46,18 +46,35 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole {
 
     /**
     * @dev Reverts if amount requested is greater than withdrawable balance
-    * @param _amount The given amount to compare to `withdrawableTokens`
+    * @param _withdrawableAmount Amount to withdraw
+    * @param _amount The given amount to compare to `_withdrawableAmount`
     */
-    modifier hasAvailableFunds(uint256 _amount) {
-        require(withdrawableTokens >= _amount, "Amount requested is greater than withdrawable balance");
+    modifier hasAvailableFunds(uint256 _withdrawableAmount, uint256 _amount) {
+        require(_withdrawableAmount >= _amount, "Amount requested is greater than withdrawable balance");
         _;
     }
 
     /**
      * @dev Reverts if contract doesn not have enough LINK tokens to fulfil validation
      */
-    modifier hasAvailableBalance() {
-        require(LinkToken.balanceOf(address(this)) >= withdrawableTokens.add(paymentPerValidation), "Not enough of LINK tokens on balance");
+    modifier hasAvailableOperatorBalance() { // todo figure out available balances for user and operator tokens
+        require(LinkToken.balanceOf(address(this)).sub(userWithdrawableTokens) >= operatorWithdrawableTokens.add(operatorPaymentPerValidation), "Not enough of LINK tokens on balance");
+        _;
+    }
+
+    /**
+     * @dev Reverts if method called not from LINK token contract
+     */
+    modifier linkTokenOnly() {
+        require(msg.sender == address(LinkToken), "Method can be invoked only from LinkToken smart contract");
+        _;
+    }
+
+    /**
+     * @dev Reverts if user sent incorrect amount of LINK tokens
+     */
+    modifier correctTokensAmount(uint256 _value) {
+        require(_value == userPaymentPerValidation, "Amount should be equal to userPaymentPerValidation");
         _;
     }
 
@@ -69,10 +86,10 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole {
      * @param _tokenId Domain token ID
      */
     function setValidation(string calldata _username, string calldata _signature, uint256 _tokenId)
-      external
-      onlyWhitelisted
-      hasAvailableBalance {
-        withdrawableTokens = withdrawableTokens.add(paymentPerValidation);
+    external
+    onlyWhitelisted
+    hasAvailableOperatorBalance {
+        operatorWithdrawableTokens = operatorWithdrawableTokens.add(operatorPaymentPerValidation);
         IResolver Resolver = IResolver(Registry.resolverOf(_tokenId));
         Resolver.set("social.twitter.username", _username, _tokenId);
         Resolver.set("validation.social.twitter.username", _signature, _tokenId);
@@ -83,18 +100,20 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole {
      * @notice Method returns true if Node Operator able to set validation
      * @dev Returns true or error
      */
-    function canSetValidation() external view onlyWhitelisted hasAvailableBalance returns (bool) {
+    function canSetOperatorValidation() external view onlyWhitelisted hasAvailableOperatorBalance returns (bool) {
         return true;
     }
 
     /**
-     * @notice Method allows to update payment per one validation in LINK tokens
-     * @dev Sets paymentPerValidation variable
-     * @param _paymentPerValidation Amount in LINK tokens
+     * @notice Method allows to update payments per one validation in LINK tokens
+     * @dev Sets operatorPaymentPerValidation and userPaymentPerValidation variables
+     * @param _operatorPaymentPerValidation Payment amount in LINK tokens when verification initiated via Operator
+     * @param _userPaymentPerValidation Payment amount in LINK tokens when verification initiated directly by user via Smart Contract call
      */
-    function setPaymentPerValidation(uint256 _paymentPerValidation) external onlyCapper {
-        paymentPerValidation = _paymentPerValidation;
-        emit PaymentSet(paymentPerValidation);
+    function setPaymentPerValidation(uint256 _operatorPaymentPerValidation, uint256 _userPaymentPerValidation) external onlyCapper {
+        operatorPaymentPerValidation = _operatorPaymentPerValidation;
+        userPaymentPerValidation = _userPaymentPerValidation;
+        emit PaymentSet(operatorPaymentPerValidation, userPaymentPerValidation);
     }
 
     /**
@@ -103,9 +122,36 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole {
     * @param _recipient The address to send the LINK token to
     * @param _amount The amount to send (specified in wei)
     */
-    function withdraw(address _recipient, uint256 _amount) external onlyWhitelistAdmin hasAvailableFunds(_amount) {
-        withdrawableTokens = withdrawableTokens.sub(_amount);
+    function withdrawOperatorTokens(address _recipient, uint256 _amount) external onlyWhitelistAdmin hasAvailableFunds(operatorWithdrawableTokens, _amount) {
+        operatorWithdrawableTokens = operatorWithdrawableTokens.sub(_amount);
         assert(LinkToken.transfer(_recipient, _amount));
     }
 
+    /**
+    * @notice Allows the node operator to withdraw earned LINK to a given address
+    * @dev The owner of the contract can be another wallet and does not have to be a Chainlink node
+    * @param _recipient The address to send the LINK token to
+    * @param _amount The amount to send (specified in wei)
+    */
+    function withdrawUserTokens(address _recipient, uint256 _amount) external onlyWhitelistAdmin hasAvailableFunds(userWithdrawableTokens, _amount) {
+        userWithdrawableTokens = userWithdrawableTokens.sub(_amount);
+        assert(LinkToken.transfer(_recipient, _amount));
+    }
+
+    /**
+    * @notice Initiate Twitter validation
+    * @dev Method invoked when LINK tokens transferred via transferAndCall method. Requires additional encoded data
+    * @param _sender Original token sender
+    * @param _value Tokens amount
+    * @param _data Encoded additional data needed to initiate domain verification: `abi.encode(uint256 tokenId, string code)`
+    */
+    function onTokenTransfer(address _sender, uint256 _value, bytes calldata _data) external linkTokenOnly correctTokensAmount(_value) {
+        uint256 _tokenId;
+        string memory _code;
+        (_tokenId, _code) = abi.decode(_data, (uint256, string));
+        address _owner = Registry.ownerOf(_tokenId);
+        require(_owner == _sender, "Can't initiate verification for domain that you do not own");
+        require(bytes(_code).length > 0, "Validation code should not be empty");
+        emit ValidationRequest(_tokenId, _owner, _code);
+    }
 }
