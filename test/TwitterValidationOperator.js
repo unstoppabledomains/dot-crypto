@@ -180,17 +180,17 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, paymentCa
     await operator.setValidation('rainberk', 'signature', domainTokenId, 0, {from: whitelisted})
   })
 
-  it('should pass canSetOperatorValidation check', async () => {
-    assert.isTrue(await operator.canSetOperatorValidation({from: whitelisted}))
+  it('should pass canSetValidation check', async () => {
+    assert.isTrue(await operator.canSetValidation({from: whitelisted}))
   })
 
-  it('should fail canSetOperatorValidation from non-whitelisted address', async () => {
-    await assert.isRejected(operator.canSetOperatorValidation())
+  it('should fail canSetValidation from non-whitelisted address', async () => {
+    await assert.isRejected(operator.canSetValidation())
   })
 
-  it('should fail canSetOperatorValidation if not enough balance', async () => {
+  it('should fail canSetValidation if not enough balance', async () => {
     await operator.setPaymentPerValidation(999999, 0, {from: paymentCapper})
-    await assert.isRejected(operator.canSetOperatorValidation({from: whitelisted}))
+    await assert.isRejected(operator.canSetValidation({from: whitelisted}))
   })
 
   it('should set payment per validation for operator and user', async () => {

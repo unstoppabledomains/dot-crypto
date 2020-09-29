@@ -106,7 +106,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     * @notice Method returns true if Node Operator able to set validation
     * @dev Returns true or error
     */
-    function canSetOperatorValidation() external view onlyWhitelisted hasAvailableBalance returns (bool) {
+    function canSetValidation() external view onlyWhitelisted hasAvailableBalance returns (bool) {
         return true;
     }
 
