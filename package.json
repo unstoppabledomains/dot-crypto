@@ -38,6 +38,7 @@
     "check:links": "find . -type f -name '*.md' ! -path './node_modules/*' | xargs -l yarn markdown-link-check"
   },
   "devDependencies": {
+    "@truffle/hdwallet-provider": "^1.1.0",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
