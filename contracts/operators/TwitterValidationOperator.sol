@@ -141,9 +141,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     * @param _data Encoded additional data needed to initiate domain verification: `abi.encode(uint256 tokenId, string code)`
     */
     function onTokenTransfer(address _sender, uint256 _value, bytes calldata _data) external linkTokenOnly correctTokensAmount(_value) {
-        uint256 _tokenId;
-        string memory _code;
-        (_tokenId, _code) = abi.decode(_data, (uint256, string));
+        (uint256 _tokenId, string memory _code) = abi.decode(_data, (uint256, string));
         address _owner = Registry.ownerOf(_tokenId);
         require(_owner == _sender, "Can't initiate verification for domain that you do not own");
         require(bytes(_code).length > 0, "Validation code should not be empty");
