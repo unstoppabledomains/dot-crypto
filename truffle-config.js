@@ -1,4 +1,4 @@
-const HDWalletProvider = require("@truffle/hdwallet-provider");
+const HDWalletProvider = require('@truffle/hdwallet-provider')
 
 module.exports = {
   networks: {
@@ -24,12 +24,13 @@ module.exports = {
       network_id: '1337',
       gas: 4401670,
     },
-    ropsten: {
+    rinkeby: {
       provider: () =>
         new HDWalletProvider(
-          process.env.ROPSTEN_PRIVATE_KEY,
-         `https://ropsten.infura.io/v3/${process.env.INFURA_TEST_KEY}`),
-      network_id: '3',
+          process.env.RINKEBY_PRIVATE_KEY,
+          `https://rinkeby.infura.io/v3/${process.env.INFURA_TEST_KEY}`,
+        ),
+      network_id: '4',
     },
     coverage: {
       host: '127.0.0.1',

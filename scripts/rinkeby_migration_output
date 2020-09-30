@@ -1,0 +1,150 @@
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 10000000 (0x989680)
+
+
+1_initial_migration.js
+======================
+
+   Replacing 'Migrations'
+   ----------------------
+   > transaction hash:    0x256159a58a64b39aaba7d7c41f5ce49398b7e4e5f4142d24600b57e3e3c36039
+   > Blocks: 0            Seconds: 12
+   > contract address:    0xCe1916C461bB6842eFb2f4a781916192e5358632
+   > block number:        7288052
+   > block timestamp:     1601477025
+   > account:             0x084Ac37CDEfE1d3b68a63c08B203EFc3ccAB9742
+   > balance:             17.577920357
+   > gas used:            225237 (0x36fd5)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00450474 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.00450474 ETH
+
+
+2_deploy-contracts.js
+=====================
+
+   Replacing 'Registry'
+   --------------------
+   > transaction hash:    0xd9c19ebcd613f60fcf31966e1b5e351d2072e2c57edd41f908a89acac8ba207b
+   > Blocks: 0            Seconds: 12
+   > contract address:    0xA9B077fc9Ab05d3d504c4b238B64Fa9f4e4e2B70
+   > block number:        7288054
+   > block timestamp:     1601477055
+   > account:             0x084Ac37CDEfE1d3b68a63c08B203EFc3ccAB9742
+   > balance:             17.504232397
+   > gas used:            3642035 (0x3792b3)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0728407 ETH
+
+
+   Replacing 'SignatureController'
+   -------------------------------
+   > transaction hash:    0xad6b2a2ac93767b26d562ea796c570a771f283140b8cf4be3a13c6bb46dea330
+   > Blocks: 0            Seconds: 8
+   > contract address:    0x3170C312eB2D7365E7fe52cFaD97599BF73311E4
+   > block number:        7288055
+   > block timestamp:     1601477070
+   > account:             0x084Ac37CDEfE1d3b68a63c08B203EFc3ccAB9742
+   > balance:             17.452295017
+   > gas used:            2596869 (0x27a005)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.05193738 ETH
+
+
+   Replacing 'MintingController'
+   -----------------------------
+   > transaction hash:    0x8d451dc34cb2bb28377088ed29ca1a2d0c2782fbb7a78d94fe9951352388adb7
+   > Blocks: 0            Seconds: 8
+   > contract address:    0xf5412e75100266fec70FDCe9AB307a3C8F17bb78
+   > block number:        7288056
+   > block timestamp:     1601477085
+   > account:             0x084Ac37CDEfE1d3b68a63c08B203EFc3ccAB9742
+   > balance:             17.420096177
+   > gas used:            1609942 (0x1890d6)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.03219884 ETH
+
+
+   Replacing 'URIPrefixController'
+   -------------------------------
+   > transaction hash:    0x71826dd957d02de862fd5053dd972456fc14da813483eb0768d7983bd9da5f06
+   > Blocks: 0            Seconds: 8
+   > contract address:    0x0Eff1dD18dBC53F3563ab2E41CBd30aB4be449A3
+   > block number:        7288057
+   > block timestamp:     1601477100
+   > account:             0x084Ac37CDEfE1d3b68a63c08B203EFc3ccAB9742
+   > balance:             17.406270377
+   > gas used:            691290 (0xa8c5a)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0138258 ETH
+
+
+   Replacing 'WhitelistedMinter'
+   -----------------------------
+   > transaction hash:    0x98817292915224a000e01e5ac192899c31c1f1c15ec87bac023fb355525b091d
+   > Blocks: 0            Seconds: 12
+   > contract address:    0x1BdF1D8696E3D39d76C47d056bC6D4408feF2574
+   > block number:        7288061
+   > block timestamp:     1601477160
+   > account:             0x084Ac37CDEfE1d3b68a63c08B203EFc3ccAB9742
+   > balance:             17.342472817
+   > gas used:            3055166 (0x2e9e3e)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.06110332 ETH
+
+
+   Replacing 'Resolver'
+   --------------------
+   > transaction hash:    0xd4b893aac3d1bcc50103f8aeac2cea9215a477b8685cc7b4b48aa743b4b1d0fb
+   > Blocks: 0            Seconds: 8
+   > contract address:    0x76d374016C124615D6ee0b86456f2AAEE093FEf8
+   > block number:        7288065
+   > block timestamp:     1601477220
+   > account:             0x084Ac37CDEfE1d3b68a63c08B203EFc3ccAB9742
+   > balance:             17.284659677
+   > gas used:            2752084 (0x29fe54)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.05504168 ETH
+
+
+   Replacing 'Simple'
+   ------------------
+   > transaction hash:    0xe73b714cb27233909ff4add63328c483a8064596f95fe6818efd72fd7d219e2d
+   > Blocks: 0            Seconds: 8
+   > contract address:    0x2cCea85349cc1c7756524dd818dcBF6c4Fac7C97
+   > block number:        7288066
+   > block timestamp:     1601477235
+   > account:             0x084Ac37CDEfE1d3b68a63c08B203EFc3ccAB9742
+   > balance:             17.280675057
+   > gas used:            199231 (0x30a3f)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00398462 ETH
+
+Migrated!
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.29093234 ETH
+
+
+Summary
+=======
+> Total deployments:   8
+> Final cost:          0.29543708 ETH
