@@ -86,7 +86,7 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, paymentCa
       await operator.withdraw(fundsReceiver, withdrawableTokens + 1)
       assert.fail('withdraw function should fail when trying withdraw too much tokens')
     } catch (e) {
-      assert.equal(e.reason, 'Amount requested is greater than withdrawable balance')
+      assert.equal(e.reason, 'TwitterValidationOperator: TOO_MANY_TOKENS_REQUESTED')
     }
   })
 
@@ -160,7 +160,7 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, paymentCa
       await operator.setValidation('rainberk', 'signature', domainTokenId, 0, {from: whitelisted})
       assert.fail('setValidation function should fail if does not have enough LINK on balance')
     } catch (e) {
-      assert.equal(e.reason, 'Not enough of LINK tokens on balance')
+      assert.equal(e.reason, 'TwitterValidationOperator: NOT_ENOUGH_TOKENS_ON_CONTRACT_BALANCE')
     }
   })
 
@@ -229,7 +229,7 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, paymentCa
       await linkToken.transferAndCall(operator.address, userPaymentPerValidation, validationData)
       assert.fail('transferAndCall function should fail if incorrect amount of LINK tokens was sent')
     } catch (e) {
-      assert.equal(e.reason, 'Amount should be equal to userPaymentPerValidation')
+      assert.equal(e.reason, 'TwitterValidationOperator: INCORRECT_TOKENS_AMOUNT')
     }
   })
 
@@ -240,7 +240,7 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, paymentCa
       await operator.onTokenTransfer(coinbase, userPaymentPerValidation, validationData)
       assert.fail('onTokenTransfer function should fail if called not from LINK token smart contract')
     } catch (e) {
-      assert.equal(e.reason, 'Method can be invoked from LinkToken smart contract only')
+      assert.equal(e.reason, 'TwitterValidationOperator: CAN_CALL_FROM_LINK_TOKEN_ONLY')
     }
   })
 
@@ -248,7 +248,24 @@ contract('TwitterValidationOperator', function([coinbase, whitelisted, paymentCa
     await registry.approve(ZERO_ADDRESS, domainTokenId)
     const userPaymentPerValidation = 2
     const validationData = web3.eth.abi.encodeParameters(['uint256', 'string'], [domainTokenId.toString(), 'adDweFs12'])
-    await assert.isRejected(linkToken.transferAndCall(operator.address, userPaymentPerValidation, validationData))
+    try {
+      await linkToken.transferAndCall(operator.address, userPaymentPerValidation, validationData)
+      assert.fail('transferAndCall function should fail if validation contract is not approved')
+    } catch (e) {
+      assert.equal(e.reason, 'TwitterValidationOperator: OPERATOR_SHOULD_BE_APPROVED')
+    }
+  })
+
+  it('should fail if sender doesn not have access to domain', async () => {
+    const userPaymentPerValidation = 2
+    await linkToken.transfer(validationRequester, userPaymentPerValidation)
+    const validationData = web3.eth.abi.encodeParameters(['uint256', 'string'], [domainTokenId.toString(), 'adDweFs12'])
+    try {
+      await linkToken.transferAndCall(operator.address, userPaymentPerValidation, validationData, {from: validationRequester})
+      assert.fail('transferAndCall function should fail if requested does not have access to domain')
+    } catch (e) {
+      assert.equal(e.reason, 'TwitterValidationOperator: SENDER_DOES_NOT_HAVE_ACCESS_TO_DOMAIN')
+    }
   })
 
   it('should set validation initiated from blockchain', async () => {

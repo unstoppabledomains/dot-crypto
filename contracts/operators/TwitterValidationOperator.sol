@@ -10,6 +10,9 @@ import "../IRegistry.sol";
 import "../IResolver.sol";
 
 contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receiver {
+    string public constant NAME = 'Chainlink Twitter Validation Operator';
+    string public constant VERSION = '0.2.0';
+
     using SafeMath for uint256;
 
     event Validation(uint256 indexed tokenId, uint256 requestId, uint256 paymentAmount);
@@ -23,8 +26,8 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     uint256 private frozenTokens;
     uint256 private lastRequestId = 1;
     mapping(uint256 => uint256) private userRequests;
-    IRegistry private Registry;
-    LinkTokenInterface private LinkToken;
+    IRegistry private registry;
+    LinkTokenInterface private linkToken;
 
     /**
     * @notice Deploy with the address of the LINK token, domains registry and payment amount in LINK for one valiation
@@ -34,11 +37,11 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     * @param _paymentCappers Addresses allowed to update payment amount per validation
     */
     constructor (IRegistry _registry, LinkTokenInterface _linkToken, address[] memory _paymentCappers) public {
-        require(address(_registry) != address(0), "Registry address can not be zero");
-        require(address(_linkToken) != address(0), "LINK token address can not be zero");
-        require(_paymentCappers.length > 0, "You should provide at least one address for setting payment per validation");
-        Registry = _registry;
-        LinkToken = _linkToken;
+        require(address(_registry) != address(0), "TwitterValidationOperator: INVALID_REGISTRY_ADDRESS");
+        require(address(_linkToken) != address(0), "TwitterValidationOperator: INVALID_LINK_TOKEN_ADDRESS");
+        require(_paymentCappers.length > 0, "TwitterValidationOperator: NO_CAPPERS_PROVIDED");
+        registry = _registry;
+        linkToken = _linkToken;
         uint256 cappersCount = _paymentCappers.length;
         for (uint256 i = 0; i < cappersCount; i++) {
             addCapper(_paymentCappers[i]);
@@ -51,7 +54,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     * @param _amount The given amount to compare to `withdrawableTokens`
     */
     modifier hasAvailableFunds(uint256 _amount) {
-        require(withdrawableTokens >= _amount, "Amount requested is greater than withdrawable balance");
+        require(withdrawableTokens >= _amount, "TwitterValidationOperator: TOO_MANY_TOKENS_REQUESTED");
         _;
     }
 
@@ -61,7 +64,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     modifier hasAvailableBalance() {
         require(
             availableBalance() >= withdrawableTokens.add(operatorPaymentPerValidation),
-            "Not enough of LINK tokens on balance"
+            "TwitterValidationOperator: NOT_ENOUGH_TOKENS_ON_CONTRACT_BALANCE"
         );
         _;
     }
@@ -70,7 +73,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
      * @dev Reverts if method called not from LINK token contract
      */
     modifier linkTokenOnly() {
-        require(msg.sender == address(LinkToken), "Method can be invoked from LinkToken smart contract only");
+        require(msg.sender == address(linkToken), "TwitterValidationOperator: CAN_CALL_FROM_LINK_TOKEN_ONLY");
         _;
     }
 
@@ -78,7 +81,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
      * @dev Reverts if user sent incorrect amount of LINK tokens
      */
     modifier correctTokensAmount(uint256 _value) {
-        require(_value == userPaymentPerValidation, "Amount should be equal to userPaymentPerValidation");
+        require(_value == userPaymentPerValidation, "TwitterValidationOperator: INCORRECT_TOKENS_AMOUNT");
         _;
     }
 
@@ -96,7 +99,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     hasAvailableBalance {
         uint256 _payment = calculatePaymentForValidation(_requestId);
         withdrawableTokens = withdrawableTokens.add(_payment);
-        IResolver Resolver = IResolver(Registry.resolverOf(_tokenId));
+        IResolver Resolver = IResolver(registry.resolverOf(_tokenId));
         Resolver.set("social.twitter.username", _username, _tokenId);
         Resolver.set("validation.social.twitter.username", _signature, _tokenId);
         emit Validation(_tokenId, _requestId, _payment);
@@ -130,7 +133,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     */
     function withdraw(address _recipient, uint256 _amount) external onlyWhitelistAdmin hasAvailableFunds(_amount) {
         withdrawableTokens = withdrawableTokens.sub(_amount);
-        assert(LinkToken.transfer(_recipient, _amount));
+        assert(linkToken.transfer(_recipient, _amount));
     }
 
     /**
@@ -142,14 +145,13 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     */
     function onTokenTransfer(address _sender, uint256 _value, bytes calldata _data) external linkTokenOnly correctTokensAmount(_value) {
         (uint256 _tokenId, string memory _code) = abi.decode(_data, (uint256, string));
-        address _owner = Registry.ownerOf(_tokenId);
-        require(_owner == _sender, "Can't initiate verification for domain that you do not own");
-        require(bytes(_code).length > 0, "Validation code should not be empty");
-        require(Registry.isApprovedOrOwner(address(this), _tokenId));
+        require(registry.isApprovedOrOwner(_sender, _tokenId), "TwitterValidationOperator: SENDER_DOES_NOT_HAVE_ACCESS_TO_DOMAIN");
+        require(bytes(_code).length > 0, "TwitterValidationOperator: CODE_IS_EMPTY");
+        require(registry.isApprovedOrOwner(address(this), _tokenId), "TwitterValidationOperator: OPERATOR_SHOULD_BE_APPROVED");
         frozenTokens = frozenTokens.add(_value);
         userRequests[lastRequestId] = _value;
 
-        emit ValidationRequest(_tokenId, _owner, lastRequestId, _code);
+        emit ValidationRequest(_tokenId, registry.ownerOf(_tokenId), lastRequestId, _code);
         lastRequestId = lastRequestId.add(1);
     }
 
@@ -158,11 +160,11 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     * @dev Returns tokens amount
     */
     function availableBalance() public view returns (uint256) {
-        return LinkToken.balanceOf(address(this)).sub(frozenTokens);
+        return linkToken.balanceOf(address(this)).sub(frozenTokens);
     }
 
     function calculatePaymentForValidation(uint256 _requestId) private returns (uint256 _paymentPerValidation) {
-        if (_requestId > 0) { // Validation was requested from Smart Contract. We need to search for price in mapping
+        if (_requestId > 0) {// Validation was requested from Smart Contract. We need to search for price in mapping
             _paymentPerValidation = userRequests[_requestId];
             frozenTokens = frozenTokens.sub(_paymentPerValidation);
             delete userRequests[_requestId];
