@@ -25,9 +25,6 @@ Available domain resolution libraries to retrieve crypto registry data:
 
 - [resolution.js](https://github.com/unstoppabledomains/resolution)
 - [resolution-java](https://github.com/unstoppabledomains/resolution-java)
-
-Work in progress:
-
 - [resolution-swift](https://github.com/unstoppabledomains/resolution-swift)
 
 These libraries are only set to read data from crypto registry making them lightweight and fit for most application that do not require domain management compatibilities.
