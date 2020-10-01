@@ -24,12 +24,13 @@ const CONFIG = {
     mintingControllerAddress: '0xb0EE56339C3253361730F50c08d3d7817ecD60Ca',
     sourceWhitelistedMinterAddress:
       '0xB485D89aBA096Fc9F117fA28B80dC8AAC7971049',
-    targetWhitelistedMinterAddress: '',
+    targetWhitelistedMinterAddress:
+      '0xd3fF3377b0ceade1303dAF9Db04068ef8a650757',
     privateKey: process.env.MAINNET_PRIVATE_KEY,
     minterPrivateKey: process.env.MINTER_PRIVATE_KEY,
     relayerPrivateKey: process.env.MINTER_PRIVATE_KEY,
     relay: false,
-    gasPrice: 60000000000, // 60 gwei
+    gasPrice: 50000000000, // 50 gwei
     chunkSize: 100,
   },
 }
@@ -113,7 +114,7 @@ async function migrateWhitelistedMinters({config, web3, contract, account}) {
       to: contract._address,
       config,
     })
-    console.log('Whitelisted')
+    console.log('Whitelisted', array.length, 'minters')
   }
 }
 
@@ -235,9 +236,11 @@ async function getWhitelistedAdmins({config, web3}) {
   return events
     .filter(
       async e =>
-        await sourceContract.methods.isWhitelistAdmin(e.address).call(),
+        await sourceContract.methods
+          .isWhitelistAdmin(e.returnValues.account)
+          .call(),
     )
-    .map(e => e.address)
+    .map(e => e.returnValues.account)
 }
 
 async function sign(account, data, address) {
@@ -259,7 +262,7 @@ let gasUsed
 ;(async function() {
   console.log('Start migration')
 
-  const config = CONFIG.rinkeby
+  const config = CONFIG.mainnet
   const {rpcUrl, privateKey, minterPrivateKey, relayerPrivateKey} = config
 
   const web3 = new Web3(rpcUrl)
@@ -283,8 +286,8 @@ let gasUsed
 
   await migrateWhitelistedMinters(options)
   await migrateWhitelistedAdmins(options)
-  await addWhitelistedMinterToController(options)
-  await verifyMint(options)
+  // await addWhitelistedMinterToController(options)
+  // await verifyMint(options)
   // await renounceAdmin(options)
 
   console.log('Completed migration')
