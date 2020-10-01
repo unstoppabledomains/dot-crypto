@@ -4,18 +4,32 @@ const whitelistedMinterContract = require('./../truffle-artifacts/WhitelistedMin
 const mintingControllerContract = require('./../truffle-artifacts/MintingController.json')
 const accounts = require('./accounts.json')
 
+// NOTES: Source WhitelistedMinter requires to have 0xd5534bc03144b4d8be84c7282c625fd3ff05c5d3 whitelisted address for Rinkeby
 const CONFIG = {
   rinkeby: {
     rpcUrl: `https://rinkeby.infura.io/v3/${process.env.INFURA_TEST_KEY}`,
-    mintingControllerAddress: '0xf5412e75100266fec70FDCe9AB307a3C8F17bb78',
+    mintingControllerAddress: '0x641c06c8E0e42aF6f903614f7D6532Ae3C60dC4b',
     sourceWhitelistedMinterAddress:
-      '0x1BdF1D8696E3D39d76C47d056bC6D4408feF2574',
+      '0x7B44Dd1beec7ab65f7FFD5E364400ec7b9F49217',
     targetWhitelistedMinterAddress: '',
     privateKey: process.env.RINKEBY_PRIVATE_KEY,
     minterPrivateKey: process.env.MINTER_PRIVATE_KEY,
-    relayerPrivateKey: process.env.RINKEBY_MINTER_PRIVATE_KEY,
+    relayerPrivateKey: process.env.RINKEBY_RELAYER_PRIVATE_KEY,
     relay: true,
     gasPrice: 2000000000, // 2 gwei
+    chunkSize: 100,
+  },
+  mainnet: {
+    rpcUrl: `https://mainnet.infura.io/v3/${process.env.INFURA_TEST_KEY}`,
+    mintingControllerAddress: '0xb0EE56339C3253361730F50c08d3d7817ecD60Ca',
+    sourceWhitelistedMinterAddress:
+      '0xB485D89aBA096Fc9F117fA28B80dC8AAC7971049',
+    targetWhitelistedMinterAddress: '',
+    privateKey: process.env.MAINNET_PRIVATE_KEY,
+    minterPrivateKey: process.env.MINTER_PRIVATE_KEY,
+    relayerPrivateKey: process.env.MINTER_PRIVATE_KEY,
+    relay: false,
+    gasPrice: 60000000000, // 60 gwei
     chunkSize: 100,
   },
 }
@@ -267,11 +281,11 @@ let gasUsed
 
   options.contract = contract
 
-  await addWhitelistedMinterToController(options)
   await migrateWhitelistedMinters(options)
   await migrateWhitelistedAdmins(options)
+  await addWhitelistedMinterToController(options)
   await verifyMint(options)
-  await renounceAdmin(options)
+  // await renounceAdmin(options)
 
   console.log('Completed migration')
 
@@ -284,3 +298,10 @@ let gasUsed
   console.log(`Final cost: ${web3.utils.fromWei(cost, 'ether')} ETH`)
   console.log()
 })()
+
+// Last Rinkeby migration (600 minters)
+// Summary
+// =======
+// Gas price: 2000000000 wei
+// Gas used: 17833280
+// Final cost: 0.03566656 ETH
