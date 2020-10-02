@@ -57,6 +57,7 @@ module.exports = {
       currency: 'USD',
       excludeContracts: ['Migrations', 'Simple'],
       showMethodSig: true,
+      showTimeSpent: true,
     },
   },
 }
