@@ -50,6 +50,14 @@ These libraries are only set to read data from crypto registry making them light
 | Resolver **(legacy)**                                                    | [0xa1cac442be6673c49f8e74ffc7c4fd746f3cbd0d](https://etherscan.io/address/0xa1cac442be6673c49f8e74ffc7c4fd746f3cbd0d) <br>[0x878bc2f3f717766ab69c0a5f9a6144931e61aed3](https://etherscan.io/address/0x878bc2f3f717766ab69c0a5f9a6144931e61aed3) |
 | [ProxyReader](./contracts/ProxyReader.sol)                               | [0x7ea9Ee21077F84339eDa9C80048ec6db678642B1](https://etherscan.io/address/0x7ea9Ee21077F84339eDa9C80048ec6db678642B1)                                                                                                                           |
 
+## Pre-requirements
+
+- Solc compiler
+
+```
+brew install https://raw.githubusercontent.com/ethereum/homebrew-ethereum/4d13060698e7f0cdac9ec24627b6485122b8f1b6/solidity.rb
+```
+
 ## Coding guidelines
 
 Common rules for smart contract development.
