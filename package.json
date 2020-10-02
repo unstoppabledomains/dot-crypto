@@ -30,12 +30,13 @@
     "test": "truffle test",
     "test-ci": "./scripts/test.sh",
     "coverage": "truffle run coverage",
-    "compile": "./compile.sh && yarn merge-contracts",
+    "compile": "./scripts/compile.sh && yarn merge-contracts",
     "merge-contracts": "sol-merger \"./contracts/**/*.sol\" ./build",
     "prebuild": "yarn compile && rm -rf build",
     "build": "tsc",
     "watch": "tsc --watch",
-    "check:links": "find . -type f -name '*.md' ! -path './node_modules/*' | xargs -l yarn markdown-link-check"
+    "check:links": "find . -type f -name '*.md' ! -path './node_modules/*' | xargs -l yarn markdown-link-check",
+    "check:size": "./scripts/erc170_check.sh"
   },
   "devDependencies": {
     "@truffle/hdwallet-provider": "^1.1.0",

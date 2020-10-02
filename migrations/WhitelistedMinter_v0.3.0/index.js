@@ -1,7 +1,7 @@
 const Web3 = require('web3')
 
-const whitelistedMinterContract = require('./../truffle-artifacts/WhitelistedMinter.json')
-const mintingControllerContract = require('./../truffle-artifacts/MintingController.json')
+const whitelistedMinterContract = require('../../truffle-artifacts/WhitelistedMinter.json')
+const mintingControllerContract = require('../../truffle-artifacts/MintingController.json')
 const accounts = require('./accounts.json')
 
 // NOTES: Source WhitelistedMinter requires to have 0xd5534bc03144b4d8be84c7282c625fd3ff05c5d3 whitelisted address for Rinkeby
@@ -262,7 +262,7 @@ let gasUsed
 ;(async function() {
   console.log('Start migration')
 
-  const config = CONFIG.mainnet
+  const config = CONFIG.rinkeby
   const {rpcUrl, privateKey, minterPrivateKey, relayerPrivateKey} = config
 
   const web3 = new Web3(rpcUrl)
@@ -287,7 +287,7 @@ let gasUsed
   await migrateWhitelistedMinters(options)
   await migrateWhitelistedAdmins(options)
   // await addWhitelistedMinterToController(options)
-  // await verifyMint(options)
+  await verifyMint(options)
   // await renounceAdmin(options)
 
   console.log('Completed migration')
@@ -301,10 +301,3 @@ let gasUsed
   console.log(`Final cost: ${web3.utils.fromWei(cost, 'ether')} ETH`)
   console.log()
 })()
-
-// Last Rinkeby migration (600 minters)
-// Summary
-// =======
-// Gas price: 2000000000 wei
-// Gas used: 17833280
-// Final cost: 0.03566656 ETH
