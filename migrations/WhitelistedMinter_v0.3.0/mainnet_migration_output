@@ -664,3 +664,18 @@ https://etherscan.io/tx/0x2a26e76bdada19f12647a03b805904c20cd40654a922ccefb8bced
 
 
 Previous WhitelistedMinter - 0xB485D89aBA096Fc9F117fA28B80dC8AAC7971049
+
+
+
+-> % node ./migrations/WhitelistedMinter_v0.3.0
+Start migration
+WhitelistedMinter contract 0xd3fF3377b0ceade1303dAF9Db04068ef8a650757
+Minting... reseller-test-domain-1601905388026
+Minted reseller-test-domain-1601905388026
+Completed migration
+
+Summary
+=======
+Gas price: 50000000000 wei
+Gas used: 147830
+Final cost: 0.0073915 ETH

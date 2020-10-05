@@ -141,7 +141,7 @@ async function migrateWhitelistedAdmins({config, web3, contract, account}) {
 
 async function verifyMint(options) {
   const {web3, account, minter, relayer, contract, config} = options
-  const domainName = `test-domain-${Date.now()}`
+  const domainName = `reseller-test-domain-${Date.now()}`
 
   console.log('Minting...', domainName)
   const mintSLD = await contract.methods.mintSLD(account.address, domainName)
