@@ -1,4 +1,5 @@
 const Web3 = require('web3')
+const verify = require('verify-on-etherscan')
 
 const whitelistedMinterContract = require('../../truffle-artifacts/WhitelistedMinter.json')
 const mintingControllerContract = require('../../truffle-artifacts/MintingController.json')
@@ -16,6 +17,7 @@ const CONFIG = {
     minterPrivateKey: process.env.MINTER_PRIVATE_KEY,
     relayerPrivateKey: process.env.RINKEBY_RELAYER_PRIVATE_KEY,
     relay: true,
+    etherscanApiKey: process.env.ETHERSCAN_API_KEY,
     gasPrice: 2000000000, // 2 gwei
     chunkSize: 100,
   },
@@ -28,8 +30,9 @@ const CONFIG = {
       '0xd3fF3377b0ceade1303dAF9Db04068ef8a650757',
     privateKey: process.env.MAINNET_PRIVATE_KEY,
     minterPrivateKey: process.env.MINTER_PRIVATE_KEY,
-    relayerPrivateKey: process.env.MINTER_PRIVATE_KEY,
+    relayerPrivateKey: process.env.MAINNET_P2_PRIVATE_KEY,
     relay: false,
+    etherscanApiKey: process.env.ETHERSCAN_API_KEY,
     gasPrice: 50000000000, // 50 gwei
     chunkSize: 100,
   },
@@ -170,6 +173,30 @@ async function verifyMint(options) {
   console.log('Minted', domainName)
 }
 
+// NOTES: in order to verify contract an artifact should have filled networks block, eg:
+/*
+"networks": {
+    "1": {
+      "events": {},
+      "links": {},
+      "address": "0xd3fF3377b0ceade1303dAF9Db04068ef8a650757",
+      "transactionHash": "0x8ebf93c852d050b3553098928922e74f2016ac300b73a11c7ca600951af04df5"
+    }
+  },
+*/
+async function verifyContract({web3, config}) {
+  const {etherscanApiKey} = config
+  const data = {
+    artifacts: ['./truffle-artifacts/WhitelistedMinter.json'],
+    apiKey: etherscanApiKey,
+    web3,
+    optimizer: {enabled: false, runs: 200},
+    verbose: true,
+  }
+  const result = await verify(data)
+  console.log(result)
+}
+
 async function renounceAdmin({web3, account, contract, config}) {
   console.log('Renouncing admin...', account.address)
   const renounceWhitelistAdmin = await contract.methods.renounceWhitelistAdmin()
@@ -262,7 +289,7 @@ let gasUsed
 ;(async function() {
   console.log('Start migration')
 
-  const config = CONFIG.rinkeby
+  const config = CONFIG.mainnet
   const {rpcUrl, privateKey, minterPrivateKey, relayerPrivateKey} = config
 
   const web3 = new Web3(rpcUrl)
@@ -288,6 +315,14 @@ let gasUsed
   await migrateWhitelistedAdmins(options)
   // await addWhitelistedMinterToController(options)
   await verifyMint(options)
+
+  // verify minting via relay
+  if (!options.config.relay) {
+    const relayOptions = {...options, config: {...options.config, relay: true}}
+    await verifyMint(relayOptions)
+  }
+
+  // await verifyContract(options)
   // await renounceAdmin(options)
 
   console.log('Completed migration')
