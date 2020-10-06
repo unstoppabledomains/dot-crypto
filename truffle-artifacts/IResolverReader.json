@@ -1,0 +1,1648 @@
+{
+  "contractName": "IResolverReader",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "nonceOf",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "registry",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "key",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "get",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "string[]",
+          "name": "keys",
+          "type": "string[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getMany",
+      "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "",
+          "type": "string[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "keyHash",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getByHash",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "key",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "value",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "keyHashes",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getManyByHash",
+      "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "keys",
+          "type": "string[]"
+        },
+        {
+          "internalType": "string[]",
+          "name": "values",
+          "type": "string[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"get\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"keyHash\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getByHash\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"value\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"keys\",\"type\":\"string[]\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getMany\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"keyHashes\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getManyByHash\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"keys\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"values\",\"type\":\"string[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"nonceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"registry\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"get(string,uint256)\":{\"details\":\"Function to get record.\",\"params\":{\"key\":\"The key to query the value of.\",\"tokenId\":\"The token id to fetch.\"},\"return\":\"The value string.\"},\"getByHash(uint256,uint256)\":{\"details\":\"Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.\",\"params\":{\"keyHash\":\"The key to query the value of.\",\"tokenId\":\"The token id to set.\"},\"return\":\"Key and value.\"},\"getMany(string[],uint256)\":{\"details\":\"Function to get multiple record.\",\"params\":{\"keys\":\"The keys to query the value of.\",\"tokenId\":\"The token id to fetch.\"},\"return\":\"The values.\"},\"getManyByHash(uint256[],uint256)\":{\"details\":\"Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.\",\"params\":{\"keyHashes\":\"The key to query the value of.\",\"tokenId\":\"The token id to set.\"},\"return\":\"Keys and values.\"},\"nonceOf(uint256)\":{\"details\":\"Gets the nonce of the specified address.\",\"params\":{\"tokenId\":\"token ID for nonce query\"},\"return\":\"nonce of the given address\"},\"registry()\":{\"return\":\"registry address\"}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolverReader.sol\":\"IResolverReader\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolverReader.sol\":{\"keccak256\":\"0x2cddc22ceb0613d0bbfac316d94c8073e6b36038c04b1eff1ef3cede92f6510d\",\"urls\":[\"bzz-raw://41c52f64a5100ccbe1b2b2280fbaf9b42c37e8ccc47da5d1bc43f982d006de47\",\"dweb:/ipfs/QmT65jGZoCmS98mc49eMrVwkB8c38acDtzvV1nRLgN8qm2\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity 0.5.12;\npragma experimental ABIEncoderV2;\n\ninterface IResolverReader {\n    /**\n     * @dev Gets the nonce of the specified address.\n     * @param tokenId token ID for nonce query\n     * @return nonce of the given address\n     */\n    function nonceOf(uint256 tokenId) external view returns (uint256);\n\n    /**\n     * @return registry address\n     */\n    function registry() external view returns (address);\n\n    /**\n     * @dev Function to get record.\n     * @param key The key to query the value of.\n     * @param tokenId The token id to fetch.\n     * @return The value string.\n     */\n    function get(string calldata key, uint256 tokenId)\n        external\n        view\n        returns (string memory);\n\n    /**\n     * @dev Function to get multiple record.\n     * @param keys The keys to query the value of.\n     * @param tokenId The token id to fetch.\n     * @return The values.\n     */\n    function getMany(string[] calldata keys, uint256 tokenId)\n        external\n        view\n        returns (string[] memory);\n\n    /**\n     * @dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.\n     * @param keyHash The key to query the value of.\n     * @param tokenId The token id to set.\n     * @return Key and value.\n     */\n    function getByHash(uint256 keyHash, uint256 tokenId)\n        external\n        view\n        returns (string memory key, string memory value);\n\n    /**\n     * @dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.\n     * @param keyHashes The key to query the value of.\n     * @param tokenId The token id to set.\n     * @return Keys and values.\n     */\n    function getManyByHash(uint256[] calldata keyHashes, uint256 tokenId)\n        external\n        view\n        returns (string[] memory keys, string[] memory values);\n}\n",
+  "sourcePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolverReader.sol",
+  "ast": {
+    "absolutePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolverReader.sol",
+    "exportedSymbols": {
+      "IResolverReader": [
+        390
+      ]
+    },
+    "id": 391,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 331,
+        "literals": [
+          "solidity",
+          "0.5",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:4"
+      },
+      {
+        "id": 332,
+        "literals": [
+          "experimental",
+          "ABIEncoderV2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "24:33:4"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 390,
+        "linearizedBaseContracts": [
+          390
+        ],
+        "name": "IResolverReader",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Gets the nonce of the specified address.\n@param tokenId token ID for nonce query\n@return nonce of the given address",
+            "id": 339,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "nonceOf",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 335,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 334,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 339,
+                  "src": "266:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 333,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "266:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "265:17:4"
+            },
+            "returnParameters": {
+              "id": 338,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 337,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 339,
+                  "src": "306:7:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 336,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "306:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "305:9:4"
+            },
+            "scope": 390,
+            "src": "249:66:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@return registry address",
+            "id": 344,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "registry",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 340,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "386:2:4"
+            },
+            "returnParameters": {
+              "id": 343,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 342,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 344,
+                  "src": "412:7:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 341,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "412:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "411:9:4"
+            },
+            "scope": 390,
+            "src": "369:52:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to get record.\n@param key The key to query the value of.\n@param tokenId The token id to fetch.\n@return The value string.",
+            "id": 353,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "get",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 349,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 346,
+                  "name": "key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 353,
+                  "src": "619:19:4",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 345,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "619:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 348,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 353,
+                  "src": "640:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 347,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "640:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "618:38:4"
+            },
+            "returnParameters": {
+              "id": 352,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 351,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 353,
+                  "src": "704:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 350,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "704:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "703:15:4"
+            },
+            "scope": 390,
+            "src": "606:113:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to get multiple record.\n@param keys The keys to query the value of.\n@param tokenId The token id to fetch.\n@return The values.",
+            "id": 364,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getMany",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 359,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 356,
+                  "name": "keys",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 364,
+                  "src": "926:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_calldata_$dyn_calldata_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 354,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "926:6:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 355,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "926:8:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 358,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 364,
+                  "src": "950:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 357,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "950:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "925:41:4"
+            },
+            "returnParameters": {
+              "id": 363,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 362,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 364,
+                  "src": "1014:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 360,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1014:6:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 361,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1014:8:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1013:17:4"
+            },
+            "scope": 390,
+            "src": "909:122:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.\n@param keyHash The key to query the value of.\n@param tokenId The token id to set.\n@return Key and value.",
+            "id": 375,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getByHash",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 369,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 366,
+                  "name": "keyHash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 375,
+                  "src": "1323:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 365,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1323:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 368,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 375,
+                  "src": "1340:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 367,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1340:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1322:34:4"
+            },
+            "returnParameters": {
+              "id": 374,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 371,
+                  "name": "key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 375,
+                  "src": "1404:17:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 370,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1404:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 373,
+                  "name": "value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 375,
+                  "src": "1423:19:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 372,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1423:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1403:40:4"
+            },
+            "scope": 390,
+            "src": "1304:140:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.\n@param keyHashes The key to query the value of.\n@param tokenId The token id to set.\n@return Keys and values.",
+            "id": 389,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getManyByHash",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 381,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 378,
+                  "name": "keyHashes",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 389,
+                  "src": "1747:28:4",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 376,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1747:7:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 377,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1747:9:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 380,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 389,
+                  "src": "1777:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 379,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1777:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1746:47:4"
+            },
+            "returnParameters": {
+              "id": 388,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 384,
+                  "name": "keys",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 389,
+                  "src": "1841:20:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 382,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1841:6:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 383,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1841:8:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 387,
+                  "name": "values",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 389,
+                  "src": "1863:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 385,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1863:6:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 386,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1863:8:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1840:46:4"
+            },
+            "scope": 390,
+            "src": "1724:163:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 391,
+        "src": "59:1830:4"
+      }
+    ],
+    "src": "0:1890:4"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolverReader.sol",
+    "exportedSymbols": {
+      "IResolverReader": [
+        390
+      ]
+    },
+    "id": 391,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 331,
+        "literals": [
+          "solidity",
+          "0.5",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:4"
+      },
+      {
+        "id": 332,
+        "literals": [
+          "experimental",
+          "ABIEncoderV2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "24:33:4"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 390,
+        "linearizedBaseContracts": [
+          390
+        ],
+        "name": "IResolverReader",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Gets the nonce of the specified address.\n@param tokenId token ID for nonce query\n@return nonce of the given address",
+            "id": 339,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "nonceOf",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 335,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 334,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 339,
+                  "src": "266:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 333,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "266:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "265:17:4"
+            },
+            "returnParameters": {
+              "id": 338,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 337,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 339,
+                  "src": "306:7:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 336,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "306:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "305:9:4"
+            },
+            "scope": 390,
+            "src": "249:66:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@return registry address",
+            "id": 344,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "registry",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 340,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "386:2:4"
+            },
+            "returnParameters": {
+              "id": 343,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 342,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 344,
+                  "src": "412:7:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 341,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "412:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "411:9:4"
+            },
+            "scope": 390,
+            "src": "369:52:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to get record.\n@param key The key to query the value of.\n@param tokenId The token id to fetch.\n@return The value string.",
+            "id": 353,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "get",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 349,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 346,
+                  "name": "key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 353,
+                  "src": "619:19:4",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 345,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "619:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 348,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 353,
+                  "src": "640:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 347,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "640:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "618:38:4"
+            },
+            "returnParameters": {
+              "id": 352,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 351,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 353,
+                  "src": "704:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 350,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "704:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "703:15:4"
+            },
+            "scope": 390,
+            "src": "606:113:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function to get multiple record.\n@param keys The keys to query the value of.\n@param tokenId The token id to fetch.\n@return The values.",
+            "id": 364,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getMany",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 359,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 356,
+                  "name": "keys",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 364,
+                  "src": "926:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_calldata_$dyn_calldata_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 354,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "926:6:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 355,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "926:8:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 358,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 364,
+                  "src": "950:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 357,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "950:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "925:41:4"
+            },
+            "returnParameters": {
+              "id": 363,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 362,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 364,
+                  "src": "1014:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 360,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1014:6:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 361,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1014:8:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1013:17:4"
+            },
+            "scope": 390,
+            "src": "909:122:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.\n@param keyHash The key to query the value of.\n@param tokenId The token id to set.\n@return Key and value.",
+            "id": 375,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getByHash",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 369,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 366,
+                  "name": "keyHash",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 375,
+                  "src": "1323:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 365,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1323:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 368,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 375,
+                  "src": "1340:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 367,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1340:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1322:34:4"
+            },
+            "returnParameters": {
+              "id": 374,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 371,
+                  "name": "key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 375,
+                  "src": "1404:17:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 370,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1404:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 373,
+                  "name": "value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 375,
+                  "src": "1423:19:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 372,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1423:6:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1403:40:4"
+            },
+            "scope": 390,
+            "src": "1304:140:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.\n@param keyHashes The key to query the value of.\n@param tokenId The token id to set.\n@return Keys and values.",
+            "id": 389,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getManyByHash",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 381,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 378,
+                  "name": "keyHashes",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 389,
+                  "src": "1747:28:4",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 376,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1747:7:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 377,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1747:9:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 380,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 389,
+                  "src": "1777:15:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 379,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1777:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1746:47:4"
+            },
+            "returnParameters": {
+              "id": 388,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 384,
+                  "name": "keys",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 389,
+                  "src": "1841:20:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 382,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1841:6:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 383,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1841:8:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 387,
+                  "name": "values",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 389,
+                  "src": "1863:22:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 385,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1863:6:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 386,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1863:8:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1840:46:4"
+            },
+            "scope": 390,
+            "src": "1724:163:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 391,
+        "src": "59:1830:4"
+      }
+    ],
+    "src": "0:1890:4"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.12+commit.7709ece9.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2020-10-05T14:41:20.133Z",
+  "devdoc": {
+    "methods": {
+      "get(string,uint256)": {
+        "details": "Function to get record.",
+        "params": {
+          "key": "The key to query the value of.",
+          "tokenId": "The token id to fetch."
+        },
+        "return": "The value string."
+      },
+      "getByHash(uint256,uint256)": {
+        "details": "Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.",
+        "params": {
+          "keyHash": "The key to query the value of.",
+          "tokenId": "The token id to set."
+        },
+        "return": "Key and value."
+      },
+      "getMany(string[],uint256)": {
+        "details": "Function to get multiple record.",
+        "params": {
+          "keys": "The keys to query the value of.",
+          "tokenId": "The token id to fetch."
+        },
+        "return": "The values."
+      },
+      "getManyByHash(uint256[],uint256)": {
+        "details": "Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.",
+        "params": {
+          "keyHashes": "The key to query the value of.",
+          "tokenId": "The token id to set."
+        },
+        "return": "Keys and values."
+      },
+      "nonceOf(uint256)": {
+        "details": "Gets the nonce of the specified address.",
+        "params": {
+          "tokenId": "token ID for nonce query"
+        },
+        "return": "nonce of the given address"
+      },
+      "registry()": {
+        "return": "registry address"
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

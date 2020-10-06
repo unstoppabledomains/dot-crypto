@@ -1,7 +1,7 @@
 import {existsSync, readFileSync} from 'fs'
 import {isAbsolute, join} from 'path'
 import * as Web3 from 'web3'
-import ask from './ask.js'
+import ask from './ask'
 import yargs = require('yargs')
 
 const config = require('../.cli-config.json')

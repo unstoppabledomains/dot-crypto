@@ -30,14 +30,16 @@
     "test": "truffle test",
     "test-ci": "./scripts/test.sh",
     "coverage": "truffle run coverage",
-    "compile": "./compile.sh && yarn merge-contracts",
+    "compile": "./scripts/compile.sh && yarn merge-contracts",
     "merge-contracts": "sol-merger \"./contracts/**/*.sol\" ./build",
     "prebuild": "yarn compile && rm -rf build",
     "build": "tsc",
     "watch": "tsc --watch",
-    "check:links": "find . -type f -name '*.md' ! -path './node_modules/*' | xargs -l yarn markdown-link-check"
+    "check:links": "find . -type f -name '*.md' ! -path './node_modules/*' | xargs -l yarn markdown-link-check",
+    "check:size": "./scripts/erc170_check.sh"
   },
   "devDependencies": {
+    "@truffle/hdwallet-provider": "^1.1.0",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
@@ -49,7 +51,8 @@
     "sol-merger": "^3.1.0",
     "solc": "0.5.12",
     "truffle": "^5.0.39",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "verify-on-etherscan": "^1.2.1"
   },
   "dependencies": {
     "@chainlink/contracts": "^0.0.10",

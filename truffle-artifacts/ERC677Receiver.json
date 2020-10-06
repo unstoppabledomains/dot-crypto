@@ -1,0 +1,353 @@
+{
+  "contractName": "ERC677Receiver",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_sender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_data",
+          "type": "bytes"
+        }
+      ],
+      "name": "onTokenTransfer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"_sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"onTokenTransfer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"onTokenTransfer(address,uint256,bytes)\":{\"details\":\"Method invoked when tokens transferred via transferAndCall method\",\"params\":{\"_data\":\"Additional data passed to contract\",\"_sender\":\"Original token sender\",\"_value\":\"Tokens amount\"}}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/util/ERC677Receiver.sol\":\"ERC677Receiver\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/util/ERC677Receiver.sol\":{\"keccak256\":\"0x3bdd27f034ebc0085822ad3afe5adc05a6bb6ea48a730551fe5a26a1ed962b94\",\"urls\":[\"bzz-raw://71704f6d70e34b55d1ced804a2c1a9b63a3009b8411eeb46a2b7958c3f832516\",\"dweb:/ipfs/QmS9eEjJxqWRUP1XmkSVfMJJA95Urywkqv44Wrw1XpFU8J\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity 0.5.12;\n\ncontract ERC677Receiver {\n    /**\n    * @dev Method invoked when tokens transferred via transferAndCall method\n    * @param _sender Original token sender\n    * @param _value Tokens amount\n    * @param _data Additional data passed to contract\n    */\n    function onTokenTransfer(address _sender, uint256 _value, bytes calldata _data) external;\n}\n",
+  "sourcePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/util/ERC677Receiver.sol",
+  "ast": {
+    "absolutePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/util/ERC677Receiver.sol",
+    "exportedSymbols": {
+      "ERC677Receiver": [
+        4260
+      ]
+    },
+    "id": 4261,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4250,
+        "literals": [
+          "solidity",
+          "0.5",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:21"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 4260,
+        "linearizedBaseContracts": [
+          4260
+        ],
+        "name": "ERC677Receiver",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Method invoked when tokens transferred via transferAndCall method\n@param _sender Original token sender\n@param _value Tokens amount\n@param _data Additional data passed to contract",
+            "id": 4259,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "onTokenTransfer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4257,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4252,
+                  "name": "_sender",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4259,
+                  "src": "303:15:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4251,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "303:7:21",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4254,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4259,
+                  "src": "320:14:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4253,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "320:7:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4256,
+                  "name": "_data",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4259,
+                  "src": "336:20:21",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 4255,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "336:5:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "302:55:21"
+            },
+            "returnParameters": {
+              "id": 4258,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "366:0:21"
+            },
+            "scope": 4260,
+            "src": "278:89:21",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4261,
+        "src": "25:344:21"
+      }
+    ],
+    "src": "0:370:21"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/util/ERC677Receiver.sol",
+    "exportedSymbols": {
+      "ERC677Receiver": [
+        4260
+      ]
+    },
+    "id": 4261,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4250,
+        "literals": [
+          "solidity",
+          "0.5",
+          ".12"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:21"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 4260,
+        "linearizedBaseContracts": [
+          4260
+        ],
+        "name": "ERC677Receiver",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": "@dev Method invoked when tokens transferred via transferAndCall method\n@param _sender Original token sender\n@param _value Tokens amount\n@param _data Additional data passed to contract",
+            "id": 4259,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "onTokenTransfer",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4257,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4252,
+                  "name": "_sender",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4259,
+                  "src": "303:15:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 4251,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "303:7:21",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4254,
+                  "name": "_value",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4259,
+                  "src": "320:14:21",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4253,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "320:7:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4256,
+                  "name": "_data",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4259,
+                  "src": "336:20:21",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 4255,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "336:5:21",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "302:55:21"
+            },
+            "returnParameters": {
+              "id": 4258,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "366:0:21"
+            },
+            "scope": 4260,
+            "src": "278:89:21",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4261,
+        "src": "25:344:21"
+      }
+    ],
+    "src": "0:370:21"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.12+commit.7709ece9.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2020-10-05T14:41:20.180Z",
+  "devdoc": {
+    "methods": {
+      "onTokenTransfer(address,uint256,bytes)": {
+        "details": "Method invoked when tokens transferred via transferAndCall method",
+        "params": {
+          "_data": "Additional data passed to contract",
+          "_sender": "Original token sender",
+          "_value": "Tokens amount"
+        }
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

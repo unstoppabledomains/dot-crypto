@@ -18,6 +18,32 @@ const {BN} = web3.utils
 contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
   let whitelistedMinter, registry, mintingController, resolver, customResolver
 
+  const getCallData = (contract, funcSig, ...args) => {
+    const web3 = new Web3(contract.constructor.web3.currentProvider)
+    let encodedFunctionSig = web3.eth.abi.encodeFunctionSignature(funcSig)
+    const abi = contract.constructor._json.abi.find(
+      v => v.signature === encodedFunctionSig,
+    )
+    return web3.eth.abi.encodeFunctionCall(abi, args)
+  }
+
+  const calcSignature = async (data, address, from) => {
+    address = address || whitelistedMinter.address
+    from = from || coinbase
+
+    return await sign(
+      from,
+      {
+        type: 'bytes32',
+        value: Web3.utils.keccak256(data),
+      },
+      {
+        type: 'address',
+        value: address,
+      },
+    )
+  }
+
   beforeEach(async () => {
     registry = await Registry.deployed()
     resolver = await Resolver.deployed()
@@ -590,32 +616,6 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
   })
 
   describe('relay', () => {
-    const getCallData = (contract, funcSig, ...args) => {
-      const web3 = new Web3(contract.constructor.web3.currentProvider)
-      let encodedFunctionSig = web3.eth.abi.encodeFunctionSignature(funcSig)
-      const abi = contract.constructor._json.abi.find(
-        v => v.signature === encodedFunctionSig,
-      )
-      return web3.eth.abi.encodeFunctionCall(abi, args)
-    }
-
-    const calcSignature = async (data, address, from) => {
-      address = address || whitelistedMinter.address
-      from = from || coinbase
-
-      return await sign(
-        from,
-        {
-          type: 'bytes32',
-          value: Web3.utils.keccak256(data),
-        },
-        {
-          type: 'address',
-          value: address,
-        },
-      )
-    }
-
     it('revert relay meta-mint when signer is not whitelisted', async () => {
       const data = getCallData(
         whitelistedMinter,
@@ -890,6 +890,204 @@ contract('WhitelistedMinter', function([coinbase, faucet, ...accounts]) {
           '0x898851f800000000000000000000000000000000000000000000000000000000',
         dataHash: Web3.utils.keccak256(data),
       })
+    })
+  })
+
+  describe('Gas consumption', () => {
+    const keys1 = ['test-key1']
+    const keys2 = [...keys1, 'test-key2']
+    const keys5 = [...keys2, 'test-key3', 'test-key4', 'test-key5']
+    const keys10 = [
+      ...keys5,
+      'test-key6',
+      'test-key7',
+      'test-key8',
+      'test-key9',
+      'test-key10',
+    ]
+    const values1 = ['test-value1']
+    const values2 = [...values1, 'test-value2']
+    const values5 = [...values2, 'test-value3', 'test-value4', 'test-value5']
+    const values10 = [
+      ...values5,
+      'test-value6',
+      'test-value7',
+      'test-value8',
+      'test-value9',
+      'test-value10',
+    ]
+
+    function percDiff(a, b) {
+      return -((a - b) / a) * 100
+    }
+
+    const getCases = () => {
+      const {address: addr} = customResolver
+      return [
+        {
+          func: 'mintSLD',
+          funcSig: 'mintSLD(address,string)',
+          params: [accounts[0], 't1-w1-'],
+        },
+        {
+          func: 'mintSLDToDefaultResolver',
+          funcSig: 'mintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-l0-', [], []],
+        },
+        {
+          func: 'mintSLDToDefaultResolver',
+          funcSig: 'mintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-l1-', keys1, values1],
+        },
+        {
+          func: 'mintSLDToDefaultResolver',
+          funcSig: 'mintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-l2-', keys2, values2],
+        },
+        {
+          func: 'mintSLDToDefaultResolver',
+          funcSig: 'mintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-l5-', keys5, values5],
+        },
+        {
+          func: 'mintSLDToDefaultResolver',
+          funcSig: 'mintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-l10-', keys10, values10],
+        },
+        {
+          func: 'mintSLDToResolver',
+          funcSig:
+            'mintSLDToResolver(address,string,string[],string[],address)',
+          params: [accounts[0], 't1-g0-', [], [], addr],
+        },
+        {
+          func: 'mintSLDToResolver',
+          funcSig:
+            'mintSLDToResolver(address,string,string[],string[],address)',
+          params: [accounts[0], 't1-g1-', keys1, values1, addr],
+        },
+        {
+          func: 'mintSLDToResolver',
+          funcSig:
+            'mintSLDToResolver(address,string,string[],string[],address)',
+          params: [accounts[0], 't1-g2-', keys2, values2, addr],
+        },
+        {
+          func: 'mintSLDToResolver',
+          funcSig:
+            'mintSLDToResolver(address,string,string[],string[],address)',
+          params: [accounts[0], 't1-g5-', keys5, values5, addr],
+        },
+        {
+          func: 'mintSLDToResolver',
+          funcSig:
+            'mintSLDToResolver(address,string,string[],string[],address)',
+          params: [accounts[0], 't1-g10-', keys10, values10, addr],
+        },
+        {
+          func: 'safeMintSLD',
+          funcSig: 'safeMintSLD(address,string)',
+          params: [accounts[0], 't1-m1-'],
+        },
+        {
+          func: 'safeMintSLD',
+          funcSig: 'safeMintSLD(address,string,bytes)',
+          params: [accounts[0], 't1-y1-', '0x'],
+        },
+        {
+          func: 'safeMintSLDToDefaultResolver',
+          funcSig:
+            'safeMintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-c0-', [], []],
+        },
+        {
+          func: 'safeMintSLDToDefaultResolver',
+          funcSig:
+            'safeMintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-c1-', keys1, values1],
+        },
+        {
+          func: 'safeMintSLDToDefaultResolver',
+          funcSig:
+            'safeMintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-c2-', keys2, values2],
+        },
+        {
+          func: 'safeMintSLDToDefaultResolver',
+          funcSig:
+            'safeMintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-c5-', keys5, values5],
+        },
+        {
+          func: 'safeMintSLDToDefaultResolver',
+          funcSig:
+            'safeMintSLDToDefaultResolver(address,string,string[],string[])',
+          params: [accounts[0], 't1-c10-', keys10, values10],
+        },
+        {
+          func: 'safeMintSLDToResolver',
+          funcSig:
+            'safeMintSLDToResolver(address,string,string[],string[],bytes,address)',
+          params: [accounts[0], 't1-qq-', [], [], '0x', addr],
+        },
+        {
+          func: 'safeMintSLDToResolver',
+          funcSig:
+            'safeMintSLDToResolver(address,string,string[],string[],bytes,address)',
+          params: [accounts[0], 't1-qw-', keys1, values1, '0x1234', addr],
+        },
+        {
+          func: 'safeMintSLDToResolver',
+          funcSig:
+            'safeMintSLDToResolver(address,string,string[],string[],bytes,address)',
+          params: [accounts[0], 't1-qe-', keys2, values2, '0x1234', addr],
+        },
+        {
+          func: 'safeMintSLDToResolver',
+          funcSig:
+            'safeMintSLDToResolver(address,string,string[],string[],bytes,address)',
+          params: [accounts[0], 't1-q5-', keys5, values5, '0x1234', addr],
+        },
+        {
+          func: 'safeMintSLDToResolver',
+          funcSig:
+            'safeMintSLDToResolver(address,string,string[],string[],bytes,address)',
+          params: [accounts[0], 't1-q10-', keys10, values10, '0x1234', addr],
+        },
+      ]
+    }
+
+    it('Consumption', async () => {
+      const result = []
+
+      const cases = getCases()
+      for (let i = 0; i < cases.length; i++) {
+        const {func, funcSig, params} = cases[i]
+        const [acc, token, ...rest] = params
+        const relayParams = [acc, token + 'r', ...rest]
+
+        const callData = getCallData(whitelistedMinter, funcSig, ...relayParams)
+        const signature = await calcSignature(callData)
+        const {receipt: relayReceipt} = await whitelistedMinter.relay(
+          callData,
+          signature,
+          {
+            from: accounts[1],
+          },
+        )
+
+        const tx = await whitelistedMinter[func](...params)
+        result.push({
+          funcSig,
+          records: Array.isArray(params[2]) ? params[2].length : '-',
+          send: tx.receipt.gasUsed,
+          relay: relayReceipt.gasUsed,
+          increase:
+            percDiff(tx.receipt.gasUsed, relayReceipt.gasUsed).toFixed(2) +
+            ' %',
+        })
+      }
+      console.table(result)
     })
   })
 })
