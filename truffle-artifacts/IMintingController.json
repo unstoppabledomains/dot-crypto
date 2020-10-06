@@ -67,32 +67,32 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"label\",\"type\":\"string\"}],\"name\":\"mintSLD\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"label\",\"type\":\"string\"}],\"name\":\"safeMintSLD\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"label\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"safeMintSLD\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"mintSLD(address,string)\":{\"details\":\"Minter function that mints a Second Level Domain (SLD).\",\"params\":{\"label\":\"SLD label to mint.\",\"to\":\"address to mint the new SLD to.\"}},\"safeMintSLD(address,string)\":{\"details\":\"Minter function that safely mints a Second Level Domain (SLD). Implements a ERC721Reciever check unlike mintSLD.\",\"params\":{\"label\":\"SLD label to mint.\",\"to\":\"address to mint the new SLD to.\"}},\"safeMintSLD(address,string,bytes)\":{\"details\":\"Minter function that safely mints a Second Level Domain (SLD). Implements a ERC721Reciever check unlike mintSLD.\",\"params\":{\"_data\":\"bytes data to send along with a safe transfer check\",\"label\":\"SLD label to mint.\",\"to\":\"address to mint the new SLD to.\"}}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/derain/Projects/un-dot-crypto/contracts/controllers/IMintingController.sol\":\"IMintingController\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/derain/Projects/un-dot-crypto/contracts/controllers/IMintingController.sol\":{\"keccak256\":\"0xd6017c2f3510db0b1ddeb4d41bd4d33582e4bf5730cebae68279c61584ae0e74\",\"urls\":[\"bzz-raw://5bda55d8f3f9ff01929cdd15dbfb03593935ae7883139c53c9d5f34ed4ce1554\",\"dweb:/ipfs/QmP7dpbSEVGxr1CyZuDNsPada6yeXLnfTGAtnDnKtnkzdY\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"label\",\"type\":\"string\"}],\"name\":\"mintSLD\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"label\",\"type\":\"string\"}],\"name\":\"safeMintSLD\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"label\",\"type\":\"string\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"safeMintSLD\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"mintSLD(address,string)\":{\"details\":\"Minter function that mints a Second Level Domain (SLD).\",\"params\":{\"label\":\"SLD label to mint.\",\"to\":\"address to mint the new SLD to.\"}},\"safeMintSLD(address,string)\":{\"details\":\"Minter function that safely mints a Second Level Domain (SLD). Implements a ERC721Reciever check unlike mintSLD.\",\"params\":{\"label\":\"SLD label to mint.\",\"to\":\"address to mint the new SLD to.\"}},\"safeMintSLD(address,string,bytes)\":{\"details\":\"Minter function that safely mints a Second Level Domain (SLD). Implements a ERC721Reciever check unlike mintSLD.\",\"params\":{\"_data\":\"bytes data to send along with a safe transfer check\",\"label\":\"SLD label to mint.\",\"to\":\"address to mint the new SLD to.\"}}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/controllers/IMintingController.sol\":\"IMintingController\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/controllers/IMintingController.sol\":{\"keccak256\":\"0xd6017c2f3510db0b1ddeb4d41bd4d33582e4bf5730cebae68279c61584ae0e74\",\"urls\":[\"bzz-raw://5bda55d8f3f9ff01929cdd15dbfb03593935ae7883139c53c9d5f34ed4ce1554\",\"dweb:/ipfs/QmP7dpbSEVGxr1CyZuDNsPada6yeXLnfTGAtnDnKtnkzdY\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity 0.5.12;\n\ninterface IMintingController {\n\n    /**\n     * @dev Minter function that mints a Second Level Domain (SLD).\n     * @param to address to mint the new SLD to.\n     * @param label SLD label to mint.\n     */\n    function mintSLD(address to, string calldata label) external;\n\n    /**\n     * @dev Minter function that safely mints a Second Level Domain (SLD).\n     * Implements a ERC721Reciever check unlike mintSLD.\n     * @param to address to mint the new SLD to.\n     * @param label SLD label to mint.\n     */\n    function safeMintSLD(address to, string calldata label) external;\n\n    /**\n     * @dev Minter function that safely mints a Second Level Domain (SLD).\n     * Implements a ERC721Reciever check unlike mintSLD.\n     * @param to address to mint the new SLD to.\n     * @param label SLD label to mint.\n     * @param _data bytes data to send along with a safe transfer check\n     */\n    function safeMintSLD(address to, string calldata label, bytes calldata _data) external;\n\n}\n",
-  "sourcePath": "/Users/derain/Projects/un-dot-crypto/contracts/controllers/IMintingController.sol",
+  "sourcePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/controllers/IMintingController.sol",
   "ast": {
-    "absolutePath": "/Users/derain/Projects/un-dot-crypto/contracts/controllers/IMintingController.sol",
+    "absolutePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/controllers/IMintingController.sol",
     "exportedSymbols": {
       "IMintingController": [
-        1985
+        2739
       ]
     },
-    "id": 1986,
+    "id": 2740,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1961,
+        "id": 2715,
         "literals": [
           "solidity",
           "0.5",
           ".12"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:5"
+        "src": "0:23:11"
       },
       {
         "baseContracts": [],
@@ -100,9 +100,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 1985,
+        "id": 2739,
         "linearizedBaseContracts": [
-          1985
+          2739
         ],
         "name": "IMintingController",
         "nodeType": "ContractDefinition",
@@ -110,23 +110,23 @@
           {
             "body": null,
             "documentation": "@dev Minter function that mints a Second Level Domain (SLD).\n@param to address to mint the new SLD to.\n@param label SLD label to mint.",
-            "id": 1968,
+            "id": 2722,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "mintSLD",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1966,
+              "id": 2720,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1963,
+                  "id": 2717,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1968,
-                  "src": "250:10:5",
+                  "scope": 2722,
+                  "src": "250:10:11",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -134,10 +134,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1962,
+                    "id": 2716,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "250:7:5",
+                    "src": "250:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -149,11 +149,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1965,
+                  "id": 2719,
                   "name": "label",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1968,
-                  "src": "262:21:5",
+                  "scope": 2722,
+                  "src": "262:21:11",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -161,10 +161,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1964,
+                    "id": 2718,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "262:6:5",
+                    "src": "262:6:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -174,16 +174,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "249:35:5"
+              "src": "249:35:11"
             },
             "returnParameters": {
-              "id": 1967,
+              "id": 2721,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "293:0:5"
+              "src": "293:0:11"
             },
-            "scope": 1985,
-            "src": "233:61:5",
+            "scope": 2739,
+            "src": "233:61:11",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -191,23 +191,23 @@
           {
             "body": null,
             "documentation": "@dev Minter function that safely mints a Second Level Domain (SLD).\nImplements a ERC721Reciever check unlike mintSLD.\n@param to address to mint the new SLD to.\n@param label SLD label to mint.",
-            "id": 1975,
+            "id": 2729,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "safeMintSLD",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1973,
+              "id": 2727,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1970,
+                  "id": 2724,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1975,
-                  "src": "557:10:5",
+                  "scope": 2729,
+                  "src": "557:10:11",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -215,10 +215,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1969,
+                    "id": 2723,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "557:7:5",
+                    "src": "557:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -230,11 +230,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1972,
+                  "id": 2726,
                   "name": "label",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1975,
-                  "src": "569:21:5",
+                  "scope": 2729,
+                  "src": "569:21:11",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -242,10 +242,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1971,
+                    "id": 2725,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "569:6:5",
+                    "src": "569:6:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -255,16 +255,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "556:35:5"
+              "src": "556:35:11"
             },
             "returnParameters": {
-              "id": 1974,
+              "id": 2728,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "600:0:5"
+              "src": "600:0:11"
             },
-            "scope": 1985,
-            "src": "536:65:5",
+            "scope": 2739,
+            "src": "536:65:11",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -272,23 +272,23 @@
           {
             "body": null,
             "documentation": "@dev Minter function that safely mints a Second Level Domain (SLD).\nImplements a ERC721Reciever check unlike mintSLD.\n@param to address to mint the new SLD to.\n@param label SLD label to mint.\n@param _data bytes data to send along with a safe transfer check",
-            "id": 1984,
+            "id": 2738,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "safeMintSLD",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1982,
+              "id": 2736,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1977,
+                  "id": 2731,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1984,
-                  "src": "936:10:5",
+                  "scope": 2738,
+                  "src": "936:10:11",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -296,10 +296,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1976,
+                    "id": 2730,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "936:7:5",
+                    "src": "936:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -311,11 +311,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1979,
+                  "id": 2733,
                   "name": "label",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1984,
-                  "src": "948:21:5",
+                  "scope": 2738,
+                  "src": "948:21:11",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -323,10 +323,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1978,
+                    "id": 2732,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "948:6:5",
+                    "src": "948:6:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -337,11 +337,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1981,
+                  "id": 2735,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1984,
-                  "src": "971:20:5",
+                  "scope": 2738,
+                  "src": "971:20:11",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -349,10 +349,10 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1980,
+                    "id": 2734,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
-                    "src": "971:5:5",
+                    "src": "971:5:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes_storage_ptr",
                       "typeString": "bytes"
@@ -362,46 +362,46 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "935:57:5"
+              "src": "935:57:11"
             },
             "returnParameters": {
-              "id": 1983,
+              "id": 2737,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1001:0:5"
+              "src": "1001:0:11"
             },
-            "scope": 1985,
-            "src": "915:87:5",
+            "scope": 2739,
+            "src": "915:87:11",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 1986,
-        "src": "25:980:5"
+        "scope": 2740,
+        "src": "25:980:11"
       }
     ],
-    "src": "0:1006:5"
+    "src": "0:1006:11"
   },
   "legacyAST": {
-    "absolutePath": "/Users/derain/Projects/un-dot-crypto/contracts/controllers/IMintingController.sol",
+    "absolutePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/controllers/IMintingController.sol",
     "exportedSymbols": {
       "IMintingController": [
-        1985
+        2739
       ]
     },
-    "id": 1986,
+    "id": 2740,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1961,
+        "id": 2715,
         "literals": [
           "solidity",
           "0.5",
           ".12"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:5"
+        "src": "0:23:11"
       },
       {
         "baseContracts": [],
@@ -409,9 +409,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 1985,
+        "id": 2739,
         "linearizedBaseContracts": [
-          1985
+          2739
         ],
         "name": "IMintingController",
         "nodeType": "ContractDefinition",
@@ -419,23 +419,23 @@
           {
             "body": null,
             "documentation": "@dev Minter function that mints a Second Level Domain (SLD).\n@param to address to mint the new SLD to.\n@param label SLD label to mint.",
-            "id": 1968,
+            "id": 2722,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "mintSLD",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1966,
+              "id": 2720,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1963,
+                  "id": 2717,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1968,
-                  "src": "250:10:5",
+                  "scope": 2722,
+                  "src": "250:10:11",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -443,10 +443,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1962,
+                    "id": 2716,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "250:7:5",
+                    "src": "250:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -458,11 +458,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1965,
+                  "id": 2719,
                   "name": "label",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1968,
-                  "src": "262:21:5",
+                  "scope": 2722,
+                  "src": "262:21:11",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -470,10 +470,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1964,
+                    "id": 2718,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "262:6:5",
+                    "src": "262:6:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -483,16 +483,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "249:35:5"
+              "src": "249:35:11"
             },
             "returnParameters": {
-              "id": 1967,
+              "id": 2721,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "293:0:5"
+              "src": "293:0:11"
             },
-            "scope": 1985,
-            "src": "233:61:5",
+            "scope": 2739,
+            "src": "233:61:11",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -500,23 +500,23 @@
           {
             "body": null,
             "documentation": "@dev Minter function that safely mints a Second Level Domain (SLD).\nImplements a ERC721Reciever check unlike mintSLD.\n@param to address to mint the new SLD to.\n@param label SLD label to mint.",
-            "id": 1975,
+            "id": 2729,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "safeMintSLD",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1973,
+              "id": 2727,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1970,
+                  "id": 2724,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1975,
-                  "src": "557:10:5",
+                  "scope": 2729,
+                  "src": "557:10:11",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -524,10 +524,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1969,
+                    "id": 2723,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "557:7:5",
+                    "src": "557:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -539,11 +539,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1972,
+                  "id": 2726,
                   "name": "label",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1975,
-                  "src": "569:21:5",
+                  "scope": 2729,
+                  "src": "569:21:11",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -551,10 +551,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1971,
+                    "id": 2725,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "569:6:5",
+                    "src": "569:6:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -564,16 +564,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "556:35:5"
+              "src": "556:35:11"
             },
             "returnParameters": {
-              "id": 1974,
+              "id": 2728,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "600:0:5"
+              "src": "600:0:11"
             },
-            "scope": 1985,
-            "src": "536:65:5",
+            "scope": 2739,
+            "src": "536:65:11",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -581,23 +581,23 @@
           {
             "body": null,
             "documentation": "@dev Minter function that safely mints a Second Level Domain (SLD).\nImplements a ERC721Reciever check unlike mintSLD.\n@param to address to mint the new SLD to.\n@param label SLD label to mint.\n@param _data bytes data to send along with a safe transfer check",
-            "id": 1984,
+            "id": 2738,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "safeMintSLD",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1982,
+              "id": 2736,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1977,
+                  "id": 2731,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1984,
-                  "src": "936:10:5",
+                  "scope": 2738,
+                  "src": "936:10:11",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -605,10 +605,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1976,
+                    "id": 2730,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "936:7:5",
+                    "src": "936:7:11",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -620,11 +620,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1979,
+                  "id": 2733,
                   "name": "label",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1984,
-                  "src": "948:21:5",
+                  "scope": 2738,
+                  "src": "948:21:11",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -632,10 +632,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1978,
+                    "id": 2732,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "948:6:5",
+                    "src": "948:6:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -646,11 +646,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1981,
+                  "id": 2735,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1984,
-                  "src": "971:20:5",
+                  "scope": 2738,
+                  "src": "971:20:11",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -658,10 +658,10 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1980,
+                    "id": 2734,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
-                    "src": "971:5:5",
+                    "src": "971:5:11",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes_storage_ptr",
                       "typeString": "bytes"
@@ -671,34 +671,34 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "935:57:5"
+              "src": "935:57:11"
             },
             "returnParameters": {
-              "id": 1983,
+              "id": 2737,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1001:0:5"
+              "src": "1001:0:11"
             },
-            "scope": 1985,
-            "src": "915:87:5",
+            "scope": 2739,
+            "src": "915:87:11",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 1986,
-        "src": "25:980:5"
+        "scope": 2740,
+        "src": "25:980:11"
       }
     ],
-    "src": "0:1006:5"
+    "src": "0:1006:11"
   },
   "compiler": {
     "name": "solc",
     "version": "0.5.12+commit.7709ece9.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.16",
-  "updatedAt": "2020-05-21T10:43:06.668Z",
+  "schemaVersion": "3.2.5",
+  "updatedAt": "2020-10-05T14:41:20.159Z",
   "devdoc": {
     "methods": {
       "mintSLD(address,string)": {
