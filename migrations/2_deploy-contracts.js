@@ -8,7 +8,7 @@ const SignatureController = artifacts.require(
 const MintingController = artifacts.require('controller/MintingController.sol')
 const WhitelistedMinter = artifacts.require('util/WhitelistedMinter.sol')
 const Resolver = artifacts.require('Resolver.sol')
-const Simple = artifacts.require('util/Simple.sol')
+const Simple = artifacts.require('test-helpers/Simple.sol')
 
 module.exports = (deployer, network, accounts) => {
   deployer.deploy(Registry).then(async registry => {

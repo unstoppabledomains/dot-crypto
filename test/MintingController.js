@@ -1,6 +1,6 @@
 const Registry = artifacts.require('registry/Registry.sol')
 const MintingController = artifacts.require('controller/MintingController.sol')
-const Simple = artifacts.require('util/Simple.sol')
+const Simple = artifacts.require('test-helpers/Simple.sol')
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
