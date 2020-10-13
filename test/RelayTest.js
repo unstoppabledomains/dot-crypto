@@ -2,7 +2,7 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const Web3 = require('web3')
 
-const RelayTest = artifacts.require('util/RelayTest.sol')
+const RelayTest = artifacts.require('test-helpers/RelayTest.sol')
 const expectRevert = require('./helpers/expectRevert.js')
 
 chai.use(chaiAsPromised)
