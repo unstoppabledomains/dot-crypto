@@ -1,5 +1,8 @@
 import chalk from 'chalk'
-import yargs = require('yargs')
+import yargs from 'yargs'
+
+export {ContractsConfig} from './network-config/network-config'
+
 const pkg = require('../package.json')
 
 yargs.parserConfiguration({

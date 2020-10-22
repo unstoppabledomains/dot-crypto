@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
+    "target": "es6",
+    "moduleResolution": "node",
+    "lib": ["es6"],
     "strict": true,
     "noImplicitAny": false,
+    "strictPropertyInitialization": false,
     "resolveJsonModule": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "build",
     "rootDirs": ["src", "abi"],
