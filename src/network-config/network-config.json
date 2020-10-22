@@ -1,0 +1,48 @@
+{
+    "version": "1.0.0",
+    "networks": {
+        "1": {
+            "contracts": {
+                "Registry": {
+                    "address": "0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe",
+                    "legacyAddresses": []
+                },
+                "SignatureController": {
+                    "address": "0x82EF94294C95aD0930055f31e53A34509227c5f7",
+                    "legacyAddresses": []
+                },
+                "MintingController": {
+                    "address": "0xb0EE56339C3253361730F50c08d3d7817ecD60Ca",
+                    "legacyAddresses": []
+                },
+                "WhitelistedMinter": {
+                    "address": "0xd3fF3377b0ceade1303dAF9Db04068ef8a650757",
+                    "legacyAddresses": []
+                },
+                "URIPrefixController": {
+                    "address": "0x09B091492759737C03da9dB7eDF1CD6BCC3A9d91",
+                    "legacyAddresses": []
+                },
+                "DomainZoneController": {
+                    "address": "0xeA70777e28E00E81f58b8921fC47F78B8a72eFE7",
+                    "legacyAddresses": []
+                },
+                "Resolver": {
+                    "address": "0xb66DcE2DA6afAAa98F2013446dBCB0f4B0ab2842",
+                    "legacyAddresses": [
+                        "0xa1cac442be6673c49f8e74ffc7c4fd746f3cbd0d",
+                        "0x878bc2f3f717766ab69c0a5f9a6144931e61aed3"
+                    ]
+                },
+                "ProxyReader": {
+                    "address": "0x7ea9Ee21077F84339eDa9C80048ec6db678642B1",
+                    "legacyAddresses": []
+                },
+                "TwitterValidationOperator": {
+                    "address": "0xbb486C6E9cF1faA86a6E3eAAFE2e5665C0507855",
+                    "legacyAddresses": []
+                }
+            }
+        }
+    }
+}
