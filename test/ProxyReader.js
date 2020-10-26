@@ -16,11 +16,11 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
     const domainName = 'test_42';
     const keys = ['test.key1', 'test.key2'];
     const values = ['test.value1', 'test.value2'];
-    let registry, resolver, proxy, tokenId;
+    let registry, resolver, proxy, tokenId, mintingController;
 
     before(async () => {
         registry = await Registry.deployed();
-        const mintingController = await MintingController.deployed();
+        mintingController = await MintingController.deployed();
         resolver = await Resolver.deployed();
         await mintingController.mintSLD(coinbase, domainName);
         tokenId = await registry.childIdOf(await registry.root(), domainName);
@@ -74,8 +74,8 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         });
 
         it('should proxy childIdOf call', async () => {
-            const result = await proxy.childIdOf(tokenId, "t1");
-            const expected = await registry.childIdOf(tokenId, "t1");
+            const result = await proxy.childIdOf(tokenId, 't1');
+            const expected = await registry.childIdOf(tokenId, 't1');
             assert.equal(result.toString(), expected.toString());
         });
 
@@ -92,7 +92,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         });
 
         it('should proxy ownerOf call', async () => {
-            const result = await proxy.ownerOf(tokenId);
+            const result = await proxy.ownerOf.call(tokenId);
             const expected = await registry.ownerOf(tokenId);
             assert.equal(result, expected);
         });
@@ -191,34 +191,235 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
 
     describe('IDataReader', () => {
         it('should support IDataReader interface', async () => {
-            const isSupport = await proxy.supportsInterface('0x9229583e');
+            const isSupport = await proxy.supportsInterface('0x9fc67265');
             assert.isTrue(isSupport);
         });
 
-        it('should revert when resolver not found', async () => {
-            const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
-            await expectRevert.unspecified(proxy.getData([keys[0]], unknownTokenId));
+        describe('getData', () => {
+            it('should return empty data when resolver not found', async () => {
+                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+                const data = await proxy.getData.call([], unknownTokenId)
+
+                assert.equal(data.resolver, ZERO_ADDRESS);
+                assert.equal(data.owner, ZERO_ADDRESS);
+                assert.deepEqual(data.values, []);
+            });
+
+            it('should return empty resolver when resolver is not set', async () => {
+                // arrange
+                const _domainName = 'hey_hoy_1qw'
+                await mintingController.mintSLD(coinbase, _domainName);
+                const _tokenId = await registry.childIdOf(await registry.root(), _domainName);
+
+                // act
+                const data = await proxy.getData.call([], _tokenId);
+
+                // assert
+                assert.equal(data.resolver, ZERO_ADDRESS);
+                assert.equal(data.owner, coinbase);
+                assert.deepEqual(data.values, []);
+            });
+
+            it('should return data by keys', async () => {
+                // arrange
+                const _domainName = 'hey_hoy_121'
+                await mintingController.mintSLD(coinbase, _domainName);
+                const _tokenId = await registry.childIdOf(await registry.root(), _domainName);
+                await registry.resolveTo(resolver.address, _tokenId);
+
+                // act
+                const data = await proxy.getData.call(keys, _tokenId);
+
+                // assert
+                assert.equal(data.resolver, resolver.address);
+                assert.equal(data.owner, coinbase);
+                assert.deepEqual(data.values, ['','']);
+            });
         });
 
-        it('should return data by keys', async () => {
-            const data = await proxy.getData(keys, tokenId);
-            assert.equal(data.resolver, resolver.address);
-            assert.equal(data.owner, coinbase);
-            assert.deepEqual(data.values, values);
+        describe('getData[]', () => {
+            it('should return empty lists for empty list of tokens', async () => {
+                const data = await proxy.methods['getData(string[],uint256[])'].call([], [])
+
+                assert.deepEqual(data.resolvers, []);
+                assert.deepEqual(data.owners, []);
+                assert.deepEqual(data.values, []);
+            });
+
+            it('should return empty data when resolver not found', async () => {
+                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+                const data = await proxy.methods['getData(string[],uint256[])'].call([], [unknownTokenId])
+
+                assert.deepEqual(data.resolvers, [ZERO_ADDRESS]);
+                assert.deepEqual(data.owners, [ZERO_ADDRESS]);
+                assert.deepEqual(data.values, [[]]);
+            });
+
+            it('should return data for multiple tokens', async () => {
+                // arrange
+                const _domainName = 'test_1291'
+                await mintingController.mintSLD(accounts[0], _domainName);
+                const _tokenId = await registry.childIdOf(await registry.root(), _domainName);
+                for (let i = 0; i < keys.length; i++) {
+                    await resolver.set(keys[i], values[i], tokenId);
+                }
+
+                // act
+                const data = await proxy.methods['getData(string[],uint256[])'].call(keys, [tokenId, _tokenId]);
+                
+                // assert
+                assert.deepEqual(data.resolvers, [resolver.address, ZERO_ADDRESS]);
+                assert.deepEqual(data.owners, [coinbase, accounts[0]]);
+                assert.deepEqual(data.values, [['test.value1', 'test.value2'], []]);
+            });
+
+            it('should return owners for multiple tokens (including unknown)', async () => {
+                // arrange
+                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+
+                // act
+                const data = await proxy.methods['getData(string[],uint256[])'].call([], [tokenId, unknownTokenId]);
+                
+                // assert
+                assert.deepEqual(data.resolvers, [resolver.address, ZERO_ADDRESS]);
+                assert.deepEqual(data.owners, [coinbase, ZERO_ADDRESS]);
+                assert.deepEqual(data.values, [[], []]);
+            });
         });
 
-        it('should return data by hashes', async () => {
-            // arrange
-            const hashes = keys.map(utils.keccak256);
-            for (let i = 0; i < keys.length; i++) {
-                await resolver.set(keys[i], values[i], tokenId);
-            }
+        describe('getDataByHash', () => {
+            it('should return empty data when resolver not found', async () => {
+                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+                const data = await proxy.methods['getDataByHash(uint256[],uint256)'].call([], unknownTokenId)
 
-            const data = await proxy.getDataByHash(hashes, tokenId);
-            assert.equal(data.resolver, resolver.address);
-            assert.equal(data.owner, coinbase);
-            assert.deepEqual(data.keys, keys);
-            assert.deepEqual(data.values, values);
+                assert.equal(data.resolver, ZERO_ADDRESS);
+                assert.equal(data.owner, ZERO_ADDRESS);
+                assert.deepEqual(data.values, []);
+            });
+
+            it('should return empty resolver when resolver is not set', async () => {
+                // arrange
+                const _domainName = 'hey_hoy_faw'
+                await mintingController.mintSLD(coinbase, _domainName);
+                const _tokenId = await registry.childIdOf(await registry.root(), _domainName);
+
+                // act
+                const data = await proxy.methods['getDataByHash(uint256[],uint256)'].call([], _tokenId);
+
+                // assert
+                assert.equal(data.resolver, ZERO_ADDRESS);
+                assert.equal(data.owner, coinbase);
+                assert.deepEqual(data.values, []);
+            });
+
+            it('should return data by hashes', async () => {
+                // arrange
+                const hashes = keys.map(utils.keccak256);
+                for (let i = 0; i < keys.length; i++) {
+                    await resolver.set(keys[i], values[i], tokenId);
+                }
+
+                // act
+                const data = await proxy.methods['getDataByHash(uint256[],uint256)'].call(hashes, tokenId);
+
+                // assert
+                assert.equal(data.resolver, resolver.address);
+                assert.equal(data.owner, coinbase);
+                assert.deepEqual(data.keys, keys);
+                assert.deepEqual(data.values, values);
+            });
+        });
+
+        describe('getDataByHash[]', () => {
+            it('should return empty lists for empty list of tokens', async () => {
+                const data = await proxy.methods['getDataByHash(uint256[],uint256[])'].call([], [])
+
+                assert.deepEqual(data.resolvers, []);
+                assert.deepEqual(data.owners, []);
+                assert.deepEqual(data.keys, []);
+                assert.deepEqual(data.values, []);
+            });
+
+            it('should return empty data when resolver not found', async () => {
+                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+                const data = await proxy.methods['getDataByHash(uint256[],uint256[])'].call([], [unknownTokenId])
+
+                assert.deepEqual(data.resolvers, [ZERO_ADDRESS]);
+                assert.deepEqual(data.owners, [ZERO_ADDRESS]);
+                assert.deepEqual(data.keys, [[]]);
+                assert.deepEqual(data.values, [[]]);
+            });
+
+            it('should return data for multiple tokens', async () => {
+                // arrange
+                const _domainName = 'test_1082'
+                await mintingController.mintSLD(accounts[0], _domainName);
+                const _tokenId = await registry.childIdOf(await registry.root(), _domainName);
+                const hashes = keys.map(utils.keccak256);
+                for (let i = 0; i < keys.length; i++) {
+                    await resolver.set(keys[i], values[i], tokenId);
+                }
+
+                // act
+                const data = await proxy.methods['getDataByHash(uint256[],uint256[])'].call(hashes, [tokenId, _tokenId]);
+                
+                // assert
+                assert.deepEqual(data.resolvers, [resolver.address, ZERO_ADDRESS]);
+                assert.deepEqual(data.owners, [coinbase, accounts[0]]);
+                assert.deepEqual(data.keys, [['test.key1', 'test.key2'], []]);
+                assert.deepEqual(data.values, [['test.value1', 'test.value2'], []]);
+            });
+
+            it('should return owners for multiple tokens (including unknown)', async () => {
+                // arrange
+                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+
+                // act
+                const data = await proxy.methods['getDataByHash(uint256[],uint256[])'].call([], [tokenId, unknownTokenId]);
+                
+                // assert
+                assert.deepEqual(data.resolvers, [resolver.address, ZERO_ADDRESS]);
+                assert.deepEqual(data.owners, [coinbase, ZERO_ADDRESS]);
+                assert.deepEqual(data.keys, [[], []]);
+                assert.deepEqual(data.values, [[], []]);
+            });
+        });
+
+        describe('ownerOf[]', () => {
+            it('should return empty owner for unknown token', async () => {
+                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+                const owners = await proxy.methods['ownerOf(uint256[])'].call([unknownTokenId]);
+                assert.deepEqual(owners, [ZERO_ADDRESS]);
+            });
+
+            it('should return empty list for empty list of tokens', async () => {
+                const owners = await proxy.methods['ownerOf(uint256[])'].call([]);
+                assert.deepEqual(owners, []);
+            });
+
+            it('should return owners for multiple tokens', async () => {
+                // arrange
+                const _domainName = 'test_1211'
+                await mintingController.mintSLD(accounts[0], _domainName);
+                const _tokenId = await registry.childIdOf(await registry.root(), _domainName);
+
+                // act
+                const owners = await proxy.methods['ownerOf(uint256[])'].call([tokenId, _tokenId]);
+                
+                // assert
+                assert.deepEqual(owners, [coinbase, accounts[0]]);
+            });
+
+            it('should return owners for multiple tokens (including unknown)', async () => {
+                // arrange
+                const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
+
+                // act
+                const owners = await proxy.methods['ownerOf(uint256[])'].call([tokenId, unknownTokenId]);
+                
+                // assert
+                assert.deepEqual(owners, [coinbase, ZERO_ADDRESS]);
+            });
         });
     });
 });
