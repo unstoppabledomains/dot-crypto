@@ -210,13 +210,7 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
         values = new string[][](tokenIds.length);
 
         for (uint256 i = 0; i < tokenIds.length; i++) {
-            resolvers[i] = _resolverOf(tokenIds[i]);
-            owners[i] = _ownerOf(tokenIds[i]);
-
-            if(resolvers[i] != address(0x0)) {
-                Resolver resolverContract = Resolver(resolvers[i]);
-                values[i] = resolverContract.getMany(keys, tokenIds[i]);
-            }
+            (resolvers[i], owners[i], values[i]) = this.getData(keys, tokenIds[i]);
         }
     }
 
@@ -253,13 +247,7 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
         values = new string[][](tokenIds.length);
 
         for (uint256 i = 0; i < tokenIds.length; i++) {
-            resolvers[i] = _resolverOf(tokenIds[i]);
-            owners[i] = _ownerOf(tokenIds[i]);
-
-            if(resolvers[i] != address(0x0)) {
-                Resolver resolverContract = Resolver(resolvers[i]);
-                (keys[i], values[i]) = resolverContract.getManyByHash(keyHashes, tokenIds[i]);
-            }
+            (resolvers[i], owners[i], keys[i], values[i]) = this.getDataByHash(keyHashes, tokenIds[i]);
         }
     }
 
