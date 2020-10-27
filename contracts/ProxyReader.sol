@@ -11,7 +11,7 @@ import './Resolver.sol';
 
 contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
     string public constant NAME = 'Unstoppable Proxy Reader';
-    string public constant VERSION = '0.1.0';
+    string public constant VERSION = '0.2.0';
 
     Registry private _registry;
 
@@ -55,11 +55,15 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
 
     /*
      * bytes4(keccak256(abi.encodePacked('getData(string[],uint256)'))) == 0x91015f6b
+     * bytes4(keccak256(abi.encodePacked('getDataForMany(string[],uint256[])'))) == 0x933c051d
      * bytes4(keccak256(abi.encodePacked('getDataByHash(uint256[],uint256)'))) == 0x03280755
+     * bytes4(keccak256(abi.encodePacked('getDataByHashForMany(uint256[],uint256[])'))) == 0x869b8884
+     * bytes4(keccak256(abi.encodePacked('ownerOfForMany(uint256[])'))) == 0xc15ae7cf
      *
-     * => 0x91015f6b ^ 0x03280755 == 0x9229583e
+     * => 0x91015f6b ^ 0x933c051d ^ 0x03280755 ^
+     *    0x869b8884 ^ 0xc15ae7cf == 0x46d43268
      */
-    bytes4 private constant _INTERFACE_ID_DATA_READER = 0x9229583e;
+    bytes4 private constant _INTERFACE_ID_DATA_READER = 0x46d43268;
 
     constructor(Registry registry) public {
         require(address(registry) != address(0), 'Registry is empty');
@@ -178,23 +182,40 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
 
     function getData(string[] calldata keys, uint256 tokenId)
         external
-        view
         returns (
             address resolver,
             address owner,
             string[] memory values
         )
     {
-        resolver = _registry.resolverOf(tokenId);
-        owner = _registry.ownerOf(tokenId);
+        resolver = _resolverOf(tokenId);
+        owner = _ownerOf(tokenId);
 
-        Resolver resolverContract = Resolver(resolver);
-        values = resolverContract.getMany(keys, tokenId);
+        if(resolver != address(0x0)) {
+            Resolver resolverContract = Resolver(resolver);
+            values = resolverContract.getMany(keys, tokenId);
+        }
+    }
+
+    function getDataForMany(string[] calldata keys, uint256[] calldata tokenIds)
+        external
+        returns (
+            address[] memory resolvers,
+            address[] memory owners,
+            string[][] memory values
+        )
+    {
+        resolvers = new address[](tokenIds.length);
+        owners = new address[](tokenIds.length);
+        values = new string[][](tokenIds.length);
+
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            (resolvers[i], owners[i], values[i]) = this.getData(keys, tokenIds[i]);
+        }
     }
 
     function getDataByHash(uint256[] calldata keyHashes, uint256 tokenId)
         external
-        view
         returns (
             address resolver,
             address owner,
@@ -202,10 +223,61 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
             string[] memory values
         )
     {
-        resolver = _registry.resolverOf(tokenId);
-        owner = _registry.ownerOf(tokenId);
+        resolver = _resolverOf(tokenId);
+        owner = _ownerOf(tokenId);
 
-        Resolver resolverContract = Resolver(resolver);
-        (keys, values) = resolverContract.getManyByHash(keyHashes, tokenId);
+        if(resolver != address(0x0)) {
+            Resolver resolverContract = Resolver(resolver);
+            (keys, values) = resolverContract.getManyByHash(keyHashes, tokenId);
+        }
+    }
+
+    function getDataByHashForMany(uint256[] calldata keyHashes, uint256[] calldata tokenIds)
+        external
+        returns (
+            address[] memory resolvers,
+            address[] memory owners,
+            string[][] memory keys,
+            string[][] memory values
+        )
+    {
+        resolvers = new address[](tokenIds.length);
+        owners = new address[](tokenIds.length);
+        keys = new string[][](tokenIds.length);
+        values = new string[][](tokenIds.length);
+
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            (resolvers[i], owners[i], keys[i], values[i]) = this.getDataByHash(keyHashes, tokenIds[i]);
+        }
+    }
+
+    function ownerOfForMany(uint256[] calldata tokenIds)
+        external
+        returns (address[] memory owners)
+    {
+        owners = new address[](tokenIds.length);
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            owners[i] = _ownerOf(tokenIds[i]);
+        }
+    }
+
+    // bytes4(keccak256(abi.encodePacked('ownerOf(uint256)'))) == 0x6352211e
+    function _ownerOf(uint256 tokenId) private returns (address) {
+        (bool success, bytes memory result) = address(this).call(abi.encodeWithSelector(0x6352211e, tokenId));
+        if (success == true) {
+            (address _owner) = abi.decode(result, (address));
+            return _owner;
+        }
+        return address(0x0);
+    }
+
+    // bytes4(keccak256(abi.encodePacked('resolverOf(uint256)'))) == 0xb3f9e4cb
+    function _resolverOf(uint256 tokenId) private returns (address) {
+        (bool success, bytes memory result) = address(this).call(abi.encodeWithSelector(0xb3f9e4cb, tokenId));
+        if (success == true) {
+            (address _resolver) = abi.decode(result, (address));
+            return _resolver;
+        }
+        return address(0x0);
     }
 }
