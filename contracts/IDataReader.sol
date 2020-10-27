@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 interface IDataReader {
     /**
      * @dev Function to get resolver address, owner address and requested records.
-     * @param keys The keys to query the value of.
+     * @param keys Keys to query values.
      * @param tokenId The token id to fetch.
      * @return Resolver address, owner address and values.
      */
@@ -18,7 +18,7 @@ interface IDataReader {
 
     /**
      * @dev Function to get resolver address, owner address and requested records for array of tokens.
-     * @param keys The keys to query the value of.
+     * @param keys Keys to query values.
      * @param tokenIds Array of token ids to fetch.
      * @return Resolver address, owner address and values for array of tokens.
      */
@@ -32,7 +32,7 @@ interface IDataReader {
 
     /**
      * @dev Function to get resolver address, owner address and requested records.
-     * @param keyHashes Key hashes to query the value of.
+     * @param keyHashes Key hashes to query values.
      * @param tokenId The token id to fetch.
      * @return Resolver address, owner address, keys and values.
      */
@@ -47,7 +47,7 @@ interface IDataReader {
 
     /**
      * @dev Function to get resolver address, owner address and requested records for array of tokens.
-     * @param keyHashes Key hashes to query the value of.
+     * @param keyHashes Key hashes to query values.
      * @param tokenIds Array of token ids to fetch.
      * @return Resolver address, owner address and values for array of tokens.
      */
