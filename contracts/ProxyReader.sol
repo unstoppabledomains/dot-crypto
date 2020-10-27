@@ -55,15 +55,15 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
 
     /*
      * bytes4(keccak256(abi.encodePacked('getData(string[],uint256)'))) == 0x91015f6b
-     * bytes4(keccak256(abi.encodePacked('getData(string[],uint256[])'))) == 0x1719eaf6
+     * bytes4(keccak256(abi.encodePacked('getDataForMany(string[],uint256[])'))) == 0x933c051d
      * bytes4(keccak256(abi.encodePacked('getDataByHash(uint256[],uint256)'))) == 0x03280755
-     * bytes4(keccak256(abi.encodePacked('getDataByHash(uint256[],uint256[])'))) == 0x5dafd198
-     * bytes4(keccak256(abi.encodePacked('ownerOf(uint256[])'))) == 0x47591135
+     * bytes4(keccak256(abi.encodePacked('getDataByHashForMany(uint256[],uint256[])'))) == 0x869b8884
+     * bytes4(keccak256(abi.encodePacked('ownerOfForMany(uint256[])'))) == 0xc15ae7cf
      *
-     * => 0x91015f6b ^ 0x1719eaf6 ^ 0x03280755 ^
-     *    0x5dafd198 ^ 0x47591135 == 0x9fc67265
+     * => 0x91015f6b ^ 0x933c051d ^ 0x03280755 ^
+     *    0x869b8884 ^ 0xc15ae7cf == 0x46d43268
      */
-    bytes4 private constant _INTERFACE_ID_DATA_READER = 0x9fc67265;
+    bytes4 private constant _INTERFACE_ID_DATA_READER = 0x46d43268;
 
     constructor(Registry registry) public {
         require(address(registry) != address(0), 'Registry is empty');
@@ -197,7 +197,7 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
         }
     }
 
-    function getData(string[] calldata keys, uint256[] calldata tokenIds)
+    function getDataForMany(string[] calldata keys, uint256[] calldata tokenIds)
         external
         returns (
             address[] memory resolvers,
@@ -232,7 +232,7 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
         }
     }
 
-    function getDataByHash(uint256[] calldata keyHashes, uint256[] calldata tokenIds)
+    function getDataByHashForMany(uint256[] calldata keyHashes, uint256[] calldata tokenIds)
         external
         returns (
             address[] memory resolvers,
@@ -251,7 +251,7 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
         }
     }
 
-    function ownerOf(uint256[] calldata tokenIds)
+    function ownerOfForMany(uint256[] calldata tokenIds)
         external
         returns (address[] memory owners)
     {

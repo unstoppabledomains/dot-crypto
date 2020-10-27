@@ -22,7 +22,7 @@ interface IDataReader {
      * @param tokenIds Array of token ids to fetch.
      * @return Resolver address, owner address and values for array of tokens.
      */
-    function getData(string[] calldata keys, uint256[] calldata tokenIds)
+    function getDataForMany(string[] calldata keys, uint256[] calldata tokenIds)
         external
         returns (
             address[] memory resolvers,
@@ -51,7 +51,7 @@ interface IDataReader {
      * @param tokenIds Array of token ids to fetch.
      * @return Resolver address, owner address and values for array of tokens.
      */
-    function getDataByHash(uint256[] calldata keyHashes, uint256[] calldata tokenIds)
+    function getDataByHashForMany(uint256[] calldata keyHashes, uint256[] calldata tokenIds)
         external
         returns (
             address[] memory resolvers,
@@ -64,7 +64,7 @@ interface IDataReader {
      * @param tokenIds Array of token ids to fetch.
      * @return Array of owner addresses.
      */
-    function ownerOf(uint256[] calldata tokenIds)
+    function ownerOfForMany(uint256[] calldata tokenIds)
         external
         returns (address[] memory owners);
 }
