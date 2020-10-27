@@ -43,6 +43,46 @@
                     "legacyAddresses": []
                 }
             }
+        },
+        "4": {
+            "contracts": {
+                "Registry": {
+                    "address": "0x90bAb77911d4faF00E6CE4FdFd038B3B65d0662d",
+                    "legacyAddresses": []
+                },
+                "SignatureController": {
+                    "address": "0x5D9Ca9434c38D1C76705962c9a0a788600250973",
+                    "legacyAddresses": []
+                },
+                "MintingController": {
+                    "address": "0x4BD9B88172786b7FBb6028B1d9da3456099aF1E1",
+                    "legacyAddresses": []
+                },
+                "WhitelistedMinter": {
+                    "address": "0x274c063C3Ecedf8f9CaDF11091140D4C5A055651",
+                    "legacyAddresses": []
+                },
+                "URIPrefixController": {
+                    "address": "0x0A85c88A36F73DDe5c90E732A3064c9F3BF24413",
+                    "legacyAddresses": []
+                },
+                "DomainZoneController": {
+                    "address": "",
+                    "legacyAddresses": []
+                },
+                "Resolver": {
+                    "address": "0x298658f4e90CFde09F4b5f763A4e8bbA0E526B39",
+                    "legacyAddresses": []
+                },
+                "ProxyReader": {
+                    "address": "0x80D5f44244F8A1A148B7E19442432791111AB03d",
+                    "legacyAddresses": []
+                },
+                "TwitterValidationOperator": {
+                    "address": "",
+                    "legacyAddresses": []
+                }
+            }
         }
     }
 }
