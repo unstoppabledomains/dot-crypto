@@ -46,7 +46,7 @@ interface IDataReader {
         );
 
     /**
-     * @dev Function to get resolver address, owner address and requested records.
+     * @dev Function to get resolver address, owner address and requested records for array of tokens.
      * @param keyHashes Key hashes to query the value of.
      * @param tokenIds Array of token ids to fetch.
      * @return Resolver address, owner address and values for array of tokens.
