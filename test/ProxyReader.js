@@ -23,8 +23,10 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         mintingController = await MintingController.deployed();
         resolver = await Resolver.deployed();
         await mintingController.mintSLD(coinbase, domainName);
+
         tokenId = await registry.childIdOf(await registry.root(), domainName);
         await registry.resolveTo(resolver.address, tokenId);
+        
         proxy = await ProxyReader.new(registry.address);
     });
 
@@ -92,7 +94,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         });
 
         it('should proxy ownerOf call', async () => {
-            const result = await proxy.ownerOf.call(tokenId);
+            const result = await proxy.ownerOf(tokenId);
             const expected = await registry.ownerOf(tokenId);
             assert.equal(result, expected);
         });
@@ -135,7 +137,6 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
             });
 
             it('should return list with single value', async () => {
-                // arrange
                 const [key] = keys;
                 const [value] = values;
                 await resolver.set(key, value, tokenId);
@@ -146,7 +147,6 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
             });
 
             it('should return list with multiple values', async () => {
-                // arrange
                 for (let i = 0; i < keys.length; i++) {
                     await resolver.set(keys[i], values[i], tokenId);
                 }
@@ -239,7 +239,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
 
         describe('getDataForMany', () => {
             it('should return empty lists for empty list of tokens', async () => {
-                const data = await proxy.methods['getDataForMany(string[],uint256[])'].call([], [])
+                const data = await proxy.getDataForMany.call([], [])
 
                 assert.deepEqual(data.resolvers, []);
                 assert.deepEqual(data.owners, []);
@@ -248,7 +248,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
 
             it('should return empty data when resolver not found', async () => {
                 const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
-                const data = await proxy.methods['getDataForMany(string[],uint256[])'].call([], [unknownTokenId])
+                const data = await proxy.getDataForMany.call([], [unknownTokenId])
 
                 assert.deepEqual(data.resolvers, [ZERO_ADDRESS]);
                 assert.deepEqual(data.owners, [ZERO_ADDRESS]);
@@ -265,7 +265,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 }
 
                 // act
-                const data = await proxy.methods['getDataForMany(string[],uint256[])'].call(keys, [tokenId, _tokenId]);
+                const data = await proxy.getDataForMany.call(keys, [tokenId, _tokenId]);
                 
                 // assert
                 assert.deepEqual(data.resolvers, [resolver.address, ZERO_ADDRESS]);
@@ -278,7 +278,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
 
                 // act
-                const data = await proxy.methods['getDataForMany(string[],uint256[])'].call([], [tokenId, unknownTokenId]);
+                const data = await proxy.getDataForMany.call([], [tokenId, unknownTokenId]);
                 
                 // assert
                 assert.deepEqual(data.resolvers, [resolver.address, ZERO_ADDRESS]);
@@ -290,7 +290,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         describe('getDataByHash', () => {
             it('should return empty data when resolver not found', async () => {
                 const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
-                const data = await proxy.methods['getDataByHash(uint256[],uint256)'].call([], unknownTokenId)
+                const data = await proxy.getDataByHash.call([], unknownTokenId)
 
                 assert.equal(data.resolver, ZERO_ADDRESS);
                 assert.equal(data.owner, ZERO_ADDRESS);
@@ -304,7 +304,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 const _tokenId = await registry.childIdOf(await registry.root(), _domainName);
 
                 // act
-                const data = await proxy.methods['getDataByHash(uint256[],uint256)'].call([], _tokenId);
+                const data = await proxy.getDataByHash.call([], _tokenId);
 
                 // assert
                 assert.equal(data.resolver, ZERO_ADDRESS);
@@ -320,7 +320,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 }
 
                 // act
-                const data = await proxy.methods['getDataByHash(uint256[],uint256)'].call(hashes, tokenId);
+                const data = await proxy.getDataByHash.call(hashes, tokenId);
 
                 // assert
                 assert.equal(data.resolver, resolver.address);
@@ -332,7 +332,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
 
         describe('getDataByHashForMany', () => {
             it('should return empty lists for empty list of tokens', async () => {
-                const data = await proxy.methods['getDataByHashForMany(uint256[],uint256[])'].call([], [])
+                const data = await proxy.getDataByHashForMany.call([], [])
 
                 assert.deepEqual(data.resolvers, []);
                 assert.deepEqual(data.owners, []);
@@ -342,7 +342,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
 
             it('should return empty data when resolver not found', async () => {
                 const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
-                const data = await proxy.methods['getDataByHashForMany(uint256[],uint256[])'].call([], [unknownTokenId])
+                const data = await proxy.getDataByHashForMany.call([], [unknownTokenId])
 
                 assert.deepEqual(data.resolvers, [ZERO_ADDRESS]);
                 assert.deepEqual(data.owners, [ZERO_ADDRESS]);
@@ -361,7 +361,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 }
 
                 // act
-                const data = await proxy.methods['getDataByHashForMany(uint256[],uint256[])'].call(hashes, [tokenId, _tokenId]);
+                const data = await proxy.getDataByHashForMany.call(hashes, [tokenId, _tokenId]);
                 
                 // assert
                 assert.deepEqual(data.resolvers, [resolver.address, ZERO_ADDRESS]);
@@ -375,7 +375,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
 
                 // act
-                const data = await proxy.methods['getDataByHashForMany(uint256[],uint256[])'].call([], [tokenId, unknownTokenId]);
+                const data = await proxy.getDataByHashForMany.call([], [tokenId, unknownTokenId]);
                 
                 // assert
                 assert.deepEqual(data.resolvers, [resolver.address, ZERO_ADDRESS]);
@@ -388,12 +388,12 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
         describe('ownerOfForMany', () => {
             it('should return empty owner for unknown token', async () => {
                 const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
-                const owners = await proxy.methods['ownerOfForMany(uint256[])'].call([unknownTokenId]);
+                const owners = await proxy.ownerOfForMany.call([unknownTokenId]);
                 assert.deepEqual(owners, [ZERO_ADDRESS]);
             });
 
             it('should return empty list for empty list of tokens', async () => {
-                const owners = await proxy.methods['ownerOfForMany(uint256[])'].call([]);
+                const owners = await proxy.ownerOfForMany.call([]);
                 assert.deepEqual(owners, []);
             });
 
@@ -404,7 +404,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 const _tokenId = await registry.childIdOf(await registry.root(), _domainName);
 
                 // act
-                const owners = await proxy.methods['ownerOfForMany(uint256[])'].call([tokenId, _tokenId]);
+                const owners = await proxy.ownerOfForMany.call([tokenId, _tokenId]);
                 
                 // assert
                 assert.deepEqual(owners, [coinbase, accounts[0]]);
@@ -415,7 +415,7 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 const unknownTokenId = await registry.childIdOf(await registry.root(), 'unknown');
 
                 // act
-                const owners = await proxy.methods['ownerOfForMany(uint256[])'].call([tokenId, unknownTokenId]);
+                const owners = await proxy.ownerOfForMany.call([tokenId, unknownTokenId]);
                 
                 // assert
                 assert.deepEqual(owners, [coinbase, ZERO_ADDRESS]);
