@@ -51,6 +51,7 @@
     "sol-merger": "^3.1.0",
     "solc": "0.5.12",
     "truffle": "^5.0.39",
+    "verify-on-etherscan": "^1.2.1",
     "typescript": "^3.6.3",
     "@chainlink/contracts": "^0.0.10",
     "@openzeppelin/contracts": "2.3.0",
@@ -61,7 +62,6 @@
     "solidity-coverage": "0.7.10",
     "web3": "1",
     "yargs": "^14.0.0"
-    "verify-on-etherscan": "^1.2.1"
   },
   "dependencies": {
   }
