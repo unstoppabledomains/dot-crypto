@@ -1,5 +1,4 @@
 const Web3 = require('web3')
-const verify = require('verify-on-etherscan')
 
 const whitelistedMinterContract = require('../../truffle-artifacts/WhitelistedMinter.json')
 const mintingControllerContract = require('../../truffle-artifacts/MintingController.json')
@@ -184,18 +183,6 @@ async function verifyMint(options) {
     }
   },
 */
-async function verifyContract({web3, config}) {
-  const {etherscanApiKey} = config
-  const data = {
-    artifacts: ['./truffle-artifacts/WhitelistedMinter.json'],
-    apiKey: etherscanApiKey,
-    web3,
-    optimizer: {enabled: false, runs: 200},
-    verbose: true,
-  }
-  const result = await verify(data)
-  console.log(result)
-}
 
 async function renounceAdmin({web3, account, contract, config}) {
   console.log('Renouncing admin...', account.address)
@@ -322,7 +309,6 @@ let gasUsed
     await verifyMint(relayOptions)
   }
 
-  // await verifyContract(options)
   // await renounceAdmin(options)
 
   console.log('Completed migration')

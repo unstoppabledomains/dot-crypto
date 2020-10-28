@@ -39,30 +39,28 @@
     "check:size": "./scripts/erc170_check.sh"
   },
   "devDependencies": {
+    "@chainlink/contracts": "^0.0.10",
+    "@openzeppelin/contracts": "2.3.0",
     "@truffle/hdwallet-provider": "^1.1.0",
     "@types/mocha": "^5.2.7",
+    "@types/web3": "^1.0.20",
+    "@types/yargs": "^13.0.3",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    "chalk": "^2.4.2",
     "eth-gas-reporter": "^0.2.17",
     "ganache-cli": "^6.7.0",
+    "ganache-core": "^2.8.0",
     "markdown-link-check": "^3.8.1",
     "node-fetch": "^2.6.0",
     "prettier": "^1.18.2",
     "sol-merger": "^3.1.0",
     "solc": "0.5.12",
+    "solidity-coverage": "0.7.10",
     "truffle": "^5.0.39",
     "typescript": "^3.6.3",
-    "verify-on-etherscan": "^1.2.1"
-  },
-  "dependencies": {
-    "@chainlink/contracts": "^0.0.10",
-    "@openzeppelin/contracts": "2.3.0",
-    "@types/web3": "^1.0.20",
-    "@types/yargs": "^13.0.3",
-    "chalk": "^2.4.2",
-    "ganache-core": "^2.8.0",
-    "solidity-coverage": "0.7.10",
     "web3": "1",
     "yargs": "^14.0.0"
-  }
+  },
+  "dependencies": {}
 }
