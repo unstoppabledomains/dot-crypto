@@ -1,0 +1,11 @@
+-> % node migrations/ProxyReader_v0.2.0/index.js
+Start migration
+Deploying ProxyReader contract...
+ProxyReader contract 0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5
+Completed migration
+
+Summary
+=======
+Gas price: 36000000000 wei
+Gas used: 3078022
+Final cost: 0.110808792 ETH
