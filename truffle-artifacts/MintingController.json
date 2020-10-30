@@ -4962,9 +4962,44 @@
     "name": "solc",
     "version": "0.5.12+commit.7709ece9.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "4": {
+      "events": {
+        "0x6ae172837ea30b801fbfcdd4108aa1d5bf8ff775444fd70256b44e6bf3dfc3f6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "MinterAdded",
+          "type": "event"
+        },
+        "0xe94479a9f7e1952cc78f2d6baab678adc1b772d936c6583def489e524cb66692": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "MinterRemoved",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xB4e24F6f2e8f4b52F74Aeb0c1153116015D8a522",
+      "transactionHash": "0x1be1d4a5c9ad7d0b851ef7a22460c8ee84b2dfb57236dd64379b0749b3d9ba9a"
+    }
+  },
   "schemaVersion": "3.2.5",
-  "updatedAt": "2020-10-05T14:41:20.162Z",
+  "updatedAt": "2020-10-30T15:42:09.170Z",
+  "networkType": "ethereum",
   "devdoc": {
     "details": "Defines the functions for distribution of Second Level Domains (SLD)s.",
     "methods": {},

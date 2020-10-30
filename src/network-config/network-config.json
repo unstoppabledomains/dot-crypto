@@ -49,35 +49,35 @@
         "4": {
             "contracts": {
                 "Registry": {
-                    "address": "0x90bAb77911d4faF00E6CE4FdFd038B3B65d0662d",
+                    "address": "0x34897B084F167693f16c00CE27D43DFf28f02DD3",
                     "legacyAddresses": []
                 },
                 "SignatureController": {
-                    "address": "0x5D9Ca9434c38D1C76705962c9a0a788600250973",
+                    "address": "0x2FcB7e3e87d7905AFf592A5eA8C6dcdbaE58d665",
                     "legacyAddresses": []
                 },
                 "MintingController": {
-                    "address": "0x4BD9B88172786b7FBb6028B1d9da3456099aF1E1",
+                    "address": "0xB4e24F6f2e8f4b52F74Aeb0c1153116015D8a522",
                     "legacyAddresses": []
                 },
                 "WhitelistedMinter": {
-                    "address": "0x274c063C3Ecedf8f9CaDF11091140D4C5A055651",
+                    "address": "0x7526a60232C4418602a4615A56A9C43398F0864f",
                     "legacyAddresses": []
                 },
                 "URIPrefixController": {
-                    "address": "0x0A85c88A36F73DDe5c90E732A3064c9F3BF24413",
+                    "address": "0x80429Eca32e1409e31Fc607A6DA1826A02d42475",
                     "legacyAddresses": []
                 },
                 "DomainZoneController": {
-                    "address": "",
+                    "address": "0xD42781178FAC13e15A5d3998BF27DEDe0A3c5c65",
                     "legacyAddresses": []
                 },
                 "Resolver": {
-                    "address": "0x298658f4e90CFde09F4b5f763A4e8bbA0E526B39",
+                    "address": "0x698f0AC3769598B5f956261d589ff7eEcA018B43",
                     "legacyAddresses": []
                 },
                 "ProxyReader": {
-                    "address": "0x80D5f44244F8A1A148B7E19442432791111AB03d",
+                    "address": "0x1cca3fa561241c8201f0175e714d2a5fa89ed858",
                     "legacyAddresses": []
                 },
                 "TwitterValidationOperator": {
