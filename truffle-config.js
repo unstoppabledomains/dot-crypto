@@ -50,7 +50,10 @@ module.exports = {
     },
   },
   contracts_build_directory: 'truffle-artifacts',
-  plugins: ['solidity-coverage'],
+  plugins: [
+    'solidity-coverage',
+    'truffle-plugin-verify',
+  ],
   mocha: {
     reporter: 'eth-gas-reporter',
     reporterOptions: {
@@ -59,5 +62,8 @@ module.exports = {
       showMethodSig: true,
       showTimeSpent: true,
     },
+  },
+  api_keys: {
+    etherscan: process.env.ETHERSCAN_API_KEY
   },
 }
