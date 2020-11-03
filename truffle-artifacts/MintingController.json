@@ -4993,12 +4993,12 @@
         }
       },
       "links": {},
-      "address": "0xB4e24F6f2e8f4b52F74Aeb0c1153116015D8a522",
-      "transactionHash": "0x1be1d4a5c9ad7d0b851ef7a22460c8ee84b2dfb57236dd64379b0749b3d9ba9a"
+      "address": "0x51765307AeB3Df2E647014a2C501d5324212467c",
+      "transactionHash": "0xbd4645a5addedaeb01eaf4c6eb5b1e0143c2a01f4214fccecfda4e45a88bd2d4"
     }
   },
   "schemaVersion": "3.2.5",
-  "updatedAt": "2020-10-30T15:42:09.170Z",
+  "updatedAt": "2020-11-03T16:12:47.331Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Defines the functions for distribution of Second Level Domains (SLD)s.",

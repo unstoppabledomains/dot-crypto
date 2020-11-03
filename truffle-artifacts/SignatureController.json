@@ -13073,12 +13073,12 @@
     "4": {
       "events": {},
       "links": {},
-      "address": "0x2FcB7e3e87d7905AFf592A5eA8C6dcdbaE58d665",
-      "transactionHash": "0x07faa2686147a179f4ded739ec7c974f4f0fae61e1d90e1b21e2db6345ee9f30"
+      "address": "0x66a5e3e2C27B4ce4F46BBd975270BE154748D164",
+      "transactionHash": "0x1f0518635ddf7ed5f8abe738085182d4b6b53281511df9ebcd05e43a08279bfe"
     }
   },
   "schemaVersion": "3.2.5",
-  "updatedAt": "2020-10-30T15:42:09.166Z",
+  "updatedAt": "2020-11-03T16:12:47.325Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "The SignatureController allows any account to submit select management transactions on behalf of a token owner.",

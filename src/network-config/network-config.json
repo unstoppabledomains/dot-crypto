@@ -49,39 +49,39 @@
         "4": {
             "contracts": {
                 "Registry": {
-                    "address": "0x34897B084F167693f16c00CE27D43DFf28f02DD3",
+                    "address": "0xAad76bea7CFEc82927239415BB18D2e93518ecBB",
                     "legacyAddresses": []
                 },
                 "SignatureController": {
-                    "address": "0x2FcB7e3e87d7905AFf592A5eA8C6dcdbaE58d665",
+                    "address": "0x66a5e3e2C27B4ce4F46BBd975270BE154748D164",
                     "legacyAddresses": []
                 },
                 "MintingController": {
-                    "address": "0xB4e24F6f2e8f4b52F74Aeb0c1153116015D8a522",
+                    "address": "0x51765307AeB3Df2E647014a2C501d5324212467c",
                     "legacyAddresses": []
                 },
                 "WhitelistedMinter": {
-                    "address": "0x7526a60232C4418602a4615A56A9C43398F0864f",
+                    "address": "0xbcB32f13f90978a9e059E8Cb40FaA9e6619d98e7",
                     "legacyAddresses": []
                 },
                 "URIPrefixController": {
-                    "address": "0x80429Eca32e1409e31Fc607A6DA1826A02d42475",
+                    "address": "0xe1d2e4B9f0518CA5c803073C3dFa886470627237",
                     "legacyAddresses": []
                 },
                 "DomainZoneController": {
-                    "address": "0xD42781178FAC13e15A5d3998BF27DEDe0A3c5c65",
+                    "address": "0x6f8F96A566663C1d4fEe70edD37E9b62Fe39dE5D",
                     "legacyAddresses": []
                 },
                 "Resolver": {
-                    "address": "0x698f0AC3769598B5f956261d589ff7eEcA018B43",
+                    "address": "0x95AE1515367aa64C462c71e87157771165B1287A",
                     "legacyAddresses": []
                 },
                 "ProxyReader": {
-                    "address": "0x1cca3fa561241c8201f0175e714d2a5fa89ed858",
+                    "address": "0x3A2e74CF832cbA3d77E72708d55370119E4323a6",
                     "legacyAddresses": []
                 },
                 "TwitterValidationOperator": {
-                    "address": "",
+                    "address": "0x1CB337b3b208dc29a6AcE8d11Bb591b66c5Dd83d",
                     "legacyAddresses": []
                 }
             }

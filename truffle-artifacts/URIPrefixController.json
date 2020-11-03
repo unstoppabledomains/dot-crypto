@@ -1311,12 +1311,12 @@
         }
       },
       "links": {},
-      "address": "0x80429Eca32e1409e31Fc607A6DA1826A02d42475",
-      "transactionHash": "0x167dd1c65d44d9d4a139183aa2f96ec3c1bd4488960f0c636e7dfd687c43b9d7"
+      "address": "0xe1d2e4B9f0518CA5c803073C3dFa886470627237",
+      "transactionHash": "0x58aed70dfa407d6df1765ff9d33d7e97a25a540748498f2229d6fba60cb63d39"
     }
   },
   "schemaVersion": "3.2.5",
-  "updatedAt": "2020-10-30T15:42:09.161Z",
+  "updatedAt": "2020-11-03T16:12:47.321Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Defines the functions for distribution of Second Level Domains (SLD)s.",

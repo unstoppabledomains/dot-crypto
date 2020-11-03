@@ -20744,12 +20744,12 @@
         }
       },
       "links": {},
-      "address": "0x34897B084F167693f16c00CE27D43DFf28f02DD3",
-      "transactionHash": "0xcc34b7a5ae710538c71849d611fb6d515e98e0b57f2c383ad24bec39a9379462"
+      "address": "0xAad76bea7CFEc82927239415BB18D2e93518ecBB",
+      "transactionHash": "0x8317e7420480406fbdacbe715b7164605a5d4171ec20a36f8599f0a49d6f99a3"
     }
   },
   "schemaVersion": "3.2.5",
-  "updatedAt": "2020-10-30T15:42:29.206Z",
+  "updatedAt": "2020-11-03T16:12:47.313Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "An ERC721 Token see https://eips.ethereum.org/EIPS/eip-721. With additional functions so other trusted contracts to interact with the tokens.",
