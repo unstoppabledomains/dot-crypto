@@ -13069,9 +13069,17 @@
     "name": "solc",
     "version": "0.5.12+commit.7709ece9.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x66a5e3e2C27B4ce4F46BBd975270BE154748D164",
+      "transactionHash": "0x1f0518635ddf7ed5f8abe738085182d4b6b53281511df9ebcd05e43a08279bfe"
+    }
+  },
   "schemaVersion": "3.2.5",
-  "updatedAt": "2020-10-05T14:41:20.166Z",
+  "updatedAt": "2020-11-03T16:12:47.325Z",
+  "networkType": "ethereum",
   "devdoc": {
     "details": "The SignatureController allows any account to submit select management transactions on behalf of a token owner.",
     "methods": {

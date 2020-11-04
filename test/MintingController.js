@@ -66,7 +66,7 @@ contract('MintingController', ([coinbase, ...accounts]) => {
       mintingController.safeMintSLD(mintingController.address, 'label'),
     )
 
-    const simple = await Simple.deployed()
+    const simple = await Simple.new()
 
     await mintingController.safeMintSLD(simple.address, 'label')
 
