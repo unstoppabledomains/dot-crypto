@@ -1,21 +1,34 @@
-import json from './network-config.json';
+import json from './network-config.json'
 
-type ChainId = number;
+export type ChainId = number
 
-type ContractName = 'Registry' | 'SignatureController' | 'MintingController' | 'WhitelistedMinter'
-    | 'URIPrefixController' | 'DomainZoneController' | 'Resolver' | 'ProxyReader' | 'TwitterValidationOperator';
+export type ContractName =
+  | 'Registry'
+  | 'SignatureController'
+  | 'MintingController'
+  | 'WhitelistedMinter'
+  | 'URIPrefixController'
+  | 'DomainZoneController'
+  | 'Resolver'
+  | 'ProxyReader'
+  | 'TwitterValidationOperator'
 
-type Address = string;
+export type Address = string
 
-type NetworkConfig = Readonly<{
-    contracts: Readonly<Record<ContractName, { address: Address, legacyAddresses: ReadonlyArray<Address> }>>,
-}>;
+export type NetworkConfig = Readonly<{
+  contracts: Readonly<
+    Record<
+      ContractName,
+      {address: Address; legacyAddresses: ReadonlyArray<Address>}
+    >
+  >
+}>
 
-type Config = Readonly<{
-    version: string,
-    networks: Readonly<Record<ChainId, NetworkConfig>>,
-}>;
+export type Config = Readonly<{
+  version: string
+  networks: Readonly<Record<ChainId, NetworkConfig>>
+}>
 
-const configCheck: Config = json;
+const configCheck: Config = json
 
-export const ContractsConfig = json;
+export const ContractsConfig = json
