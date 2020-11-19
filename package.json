@@ -36,7 +36,8 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "check:links": "find . -type f -name '*.md' ! -path './node_modules/*' | xargs -l yarn markdown-link-check",
-    "check:size": "./scripts/erc170_check.sh"
+    "check:size": "./scripts/erc170_check.sh",
+    "rinkeby:verify": "truffle run verify Registry SignatureController MintingController WhitelistedMinter URIPrefixController DomainZoneController Resolver ProxyReader TwitterValidationOperator --network rinkeby",
   },
   "devDependencies": {
     "@chainlink/contracts": "^0.0.10",
