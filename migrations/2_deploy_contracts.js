@@ -10,6 +10,7 @@ const DomainZoneController = artifacts.require('controller/DomainZoneController.
 const WhitelistedMinter = artifacts.require('util/WhitelistedMinter.sol')
 const Resolver = artifacts.require('Resolver.sol')
 const ProxyReader = artifacts.require('ProxyReader.sol')
+const FreeDomainsMinter = artifacts.require('util/FreeDomainsMinter.sol')
 const TwitterValidationOperator = artifacts.require('operators/TwitterValidationOperator.sol')
 
 const rinkebyAccounts = {
@@ -86,9 +87,11 @@ module.exports = (deployer, network) => {
       await mintingController.renounceMinter()
     }
 
-    await deployer.deploy(Resolver, registry.address, mintingController.address)
+    const resolver = await deployer.deploy(Resolver, registry.address, mintingController.address)
     await deployer.deploy(ProxyReader, registry.address)
 
+    const freeDomainsMinter = await deployer.deploy(FreeDomainsMinter, mintingController.address, resolver.address, registry.address)
+    await mintingController.addMinter(freeDomainsMinter.address)
     if (network === 'rinkeby') {
       await deployer.deploy(
         TwitterValidationOperator,
