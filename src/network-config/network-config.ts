@@ -29,6 +29,4 @@ export type Config = Readonly<{
   networks: Readonly<Record<ChainId, NetworkConfig>>
 }>
 
-const configCheck: Config = json
-
-export const ContractsConfig = json
+export const ContractsConfig: Config = json
