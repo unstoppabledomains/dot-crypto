@@ -1,15 +1,14 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/access/roles/WhitelistedRole.sol";
 import "../IResolver.sol";
 import "../IRegistryReader.sol";
 import "../controllers/MintingController.sol";
 
-contract FreeDomainsMinter is WhitelistedRole {
+contract FreeDomainsMinter {
     string public constant NAME = 'Unstoppable Free Domains Minter';
     string public constant VERSION = '0.1.0';
-    string private constant DOMAIN_NAME_PREFIX = 'unstoppable-development-';
+    string private constant DOMAIN_NAME_PREFIX = 'udtestdev-';
 
     MintingController private mintingController;
     IResolver private resolver;
@@ -21,28 +20,20 @@ contract FreeDomainsMinter is WhitelistedRole {
         registry = _registry;
     }
 
-    function claimDomain(string calldata _label) external {
+    function claim(string calldata _label) external {
         mintSLD(_label, msg.sender);
     }
 
-    function claimDomain(string calldata _label, address _receiver) external {
+    function claim(string calldata _label, address _receiver) external {
         mintSLD(_label, _receiver);
     }
 
-    function claimDomain(string calldata _label, address _receiver, string[] calldata _keys, string[] calldata _values) external {
+    function claim(string calldata _label, address _receiver, string[] calldata _keys, string[] calldata _values) external {
         string memory labelWithPrefix = mintSLD(_label, _receiver);
         if (_keys.length == 0) {
             return;
         }
         resolver.preconfigure(_keys, _values, registry.childIdOf(registry.root(), labelWithPrefix));
-    }
-
-    function setDefaultResolver(address _resolver) external onlyWhitelistAdmin {
-        resolver = IResolver(_resolver);
-    }
-
-    function getDefaultResolver() external view returns (address) {
-        return address(resolver);
     }
 
     function mintSLD(string memory _label, address _receiver) private returns (string memory) {
