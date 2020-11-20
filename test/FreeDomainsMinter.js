@@ -4,18 +4,20 @@ chai.use(chaiAsPromised)
 const {assert} = chai
 
 const FreeDomainsMinter = artifacts.require('util/FreeDomainsMinter.sol')
-const Registry = artifacts.require('registry/Registry.sol')
+const Registry = artifacts.require('Registry.sol')
 const Resolver = artifacts.require('Resolver.sol')
+const MintingController = artifacts.require('controllers/MintingController.sol')
 
-const DomainNamePrefix = 'unstoppable-development-';
+const DomainNamePrefix = 'unstoppable-development-'
 
-contract('FreeDomainsMinter', function([, developer, receiver]) {
-  let freeDomainsMinter, registry, resolver, domainSuffix
+contract('FreeDomainsMinter', function([coinbase, developer, receiver]) {
+  let freeDomainsMinter, registry, resolver, mintingController, domainSuffix
 
   before(async () => {
     freeDomainsMinter = await FreeDomainsMinter.deployed()
     registry = await Registry.deployed()
     resolver = await Resolver.deployed()
+    mintingController = await MintingController.deployed()
   })
 
   beforeEach(() => {
@@ -33,7 +35,7 @@ contract('FreeDomainsMinter', function([, developer, receiver]) {
     it('should send domain to requester', async () => {
       await freeDomainsMinter.methods['claimDomain(string)'](domainSuffix, {from: developer})
       const tokenId = await registry.childIdOf(await registry.root(), `${DomainNamePrefix}${domainSuffix}`)
-      const owner = await registry.ownerOf(tokenId);
+      const owner = await registry.ownerOf(tokenId)
       assert.equal(owner, developer)
     })
 
@@ -45,7 +47,7 @@ contract('FreeDomainsMinter', function([, developer, receiver]) {
       } catch (e) {
         assert.equal(e.reason, 'ERC721: token already minted')
       }
-    });
+    })
   })
 
   describe('FreeDomainsMinter.claimDomain(string calldata _label, address _receiver)', () => {
@@ -67,4 +69,30 @@ contract('FreeDomainsMinter', function([, developer, receiver]) {
       assert.deepEqual(values, ['value'])
     })
   })
-});
+
+  describe('Set default resolver', async () => {
+    it('should set new default resolver', async () => {
+      const oldResolverAddress = await freeDomainsMinter.getDefaultResolver()
+      const newDefaultResolver = await Resolver.new(
+        registry.address,
+        mintingController.address,
+        {
+          from: coinbase,
+        },
+      )
+      await freeDomainsMinter.setDefaultResolver(newDefaultResolver.address, {from: coinbase})
+      const newResolverAddress = await freeDomainsMinter.getDefaultResolver()
+      assert.equal(newResolverAddress, newDefaultResolver.address)
+      assert.notEqual(oldResolverAddress, newResolverAddress)
+    })
+
+    it('should throw error if setting resolver from non-admin account', async () => {
+      try {
+        await freeDomainsMinter.setDefaultResolver(resolver.address, {from: developer})
+        assert.fail('setDefaultResolver function should fail when trying to set from non-admin account')
+      } catch (e) {
+        assert.equal(e.reason, 'WhitelistAdminRole: caller does not have the WhitelistAdmin role')
+      }
+    })
+  })
+})
