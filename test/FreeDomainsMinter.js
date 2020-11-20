@@ -36,6 +36,16 @@ contract('FreeDomainsMinter', function([, developer, receiver]) {
       const owner = await registry.ownerOf(tokenId);
       assert.equal(owner, developer)
     })
+
+    it('should not allow to mint the same domain twice', async () => {
+      await freeDomainsMinter.methods['claimDomain(string)'](domainSuffix, {from: developer})
+      try {
+        await freeDomainsMinter.methods['claimDomain(string)'](domainSuffix, {from: developer})
+        assert.fail('claimDomain function should fail when trying claim already claimed domain')
+      } catch (e) {
+        assert.equal(e.reason, 'ERC721: token already minted')
+      }
+    });
   })
 
   describe('FreeDomainsMinter.claimDomain(string calldata _label, address _receiver)', () => {
