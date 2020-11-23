@@ -5,7 +5,7 @@ import "../IResolver.sol";
 import "../IRegistryReader.sol";
 import "../controllers/MintingController.sol";
 
-contract FreeDomainsMinter {
+contract FreeMinter {
     string public constant NAME = 'Unstoppable Free Domains Minter';
     string public constant VERSION = '0.1.0';
     string private constant DOMAIN_NAME_PREFIX = 'udtestdev-';
@@ -33,7 +33,8 @@ contract FreeDomainsMinter {
         if (_keys.length == 0) {
             return;
         }
-        resolver.preconfigure(_keys, _values, registry.childIdOf(registry.root(), labelWithPrefix));
+        uint256 tokenId = registry.childIdOf(registry.root(), labelWithPrefix);
+        resolver.preconfigure(_keys, _values, tokenId);
     }
 
     function mintSLD(string memory _label, address _receiver) private returns (string memory) {
