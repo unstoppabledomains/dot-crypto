@@ -86,7 +86,9 @@ module.exports = (deployer, network) => {
       await mintingController.renounceMinter()
     }
 
-    await deployer.deploy(Resolver, registry.address, mintingController.address)
+    const resolver = await deployer.deploy(Resolver, registry.address, mintingController.address)
+    await whitelistedMinter.setDefaultResolver(resolver.address)
+
     await deployer.deploy(ProxyReader, registry.address)
     if (network === 'rinkeby') {
       await deployer.deploy(
