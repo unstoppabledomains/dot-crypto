@@ -47,6 +47,7 @@ These libraries are only set to read data from crypto registry making them light
 | Resolver **(legacy)**                                                            | [0xa1cac442be6673c49f8e74ffc7c4fd746f3cbd0d](https://etherscan.io/address/0xa1cac442be6673c49f8e74ffc7c4fd746f3cbd0d) <br>  [0x878bc2f3f717766ab69c0a5f9a6144931e61aed3](https://etherscan.io/address/0x878bc2f3f717766ab69c0a5f9a6144931e61aed3) |
 | [ProxyReader](./contracts/ProxyReader.sol)                                       | [0x7ea9Ee21077F84339eDa9C80048ec6db678642B1](https://etherscan.io/address/0x7ea9Ee21077F84339eDa9C80048ec6db678642B1)                                                                                                                             |
 | [TwitterValidationOperator](./contracts/operators/TwitterValidationOperator.sol) | [0xbb486C6E9cF1faA86a6E3eAAFE2e5665C0507855](https://etherscan.io/address/0xbb486C6E9cF1faA86a6E3eAAFE2e5665C0507855)                                                                                                                             |
+| [FreeMinter](./contracts/util/FreeMinter.sol)                                    | [0x1fC985cAc641ED5846b631f96F35d9b48Bc3b834](https://etherscan.io/address/0x1fc985cac641ed5846b631f96f35d9b48bc3b834)                                                                                                                             |
 
 ## Pre-requirements
 
