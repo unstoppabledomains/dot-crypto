@@ -11,6 +11,14 @@ contract IResolver {
     function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public;
 
     /**
+    * @dev Set all domain records for newly minted domain
+    * @param keys New record keys
+    * @param values New record values
+    * @param tokenId ERC-721 token id of the domain
+    */
+    function preconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public;
+
+    /**
      * @dev Set or update domain records
      * @param keys New record keys
      * @param values New record values

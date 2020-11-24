@@ -1,0 +1,11 @@
+-> % node migrations/FreeMinter_v0.1.0/index.js
+Start migration
+Deploying FreeMinter contract...
+Deploying contract 0x1fc985cac641ed5846b631f96f35d9b48bc3b834
+Completed migration
+
+Summary
+=======
+Gas price: 70000000000 wei
+Gas used: 794276
+Final cost: 0.05559932 ETH
