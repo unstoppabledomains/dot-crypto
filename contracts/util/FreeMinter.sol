@@ -24,11 +24,11 @@ contract FreeMinter {
         mintSLD(label, msg.sender);
     }
 
-    function claim(string calldata label, address receiver) external {
+    function claimTo(string calldata label, address receiver) external {
         mintSLD(label, receiver);
     }
 
-    function claim(string calldata label, address receiver, string[] calldata keys, string[] calldata values) external {
+    function claimToWithRecords(string calldata label, address receiver, string[] calldata keys, string[] calldata values) external {
         string memory labelWithPrefix = mintSLD(label, receiver);
         if (keys.length == 0) {
             return;
