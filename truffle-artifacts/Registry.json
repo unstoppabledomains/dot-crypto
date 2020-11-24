@@ -20749,7 +20749,7 @@
     }
   },
   "schemaVersion": "3.2.5",
-  "updatedAt": "2020-11-03T16:12:47.313Z",
+  "updatedAt": "2020-11-24T18:54:37.604Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "An ERC721 Token see https://eips.ethereum.org/EIPS/eip-721. With additional functions so other trusted contracts to interact with the tokens.",

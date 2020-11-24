@@ -4998,7 +4998,7 @@
     }
   },
   "schemaVersion": "3.2.5",
-  "updatedAt": "2020-11-03T16:12:47.331Z",
+  "updatedAt": "2020-11-24T18:54:37.614Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Defines the functions for distribution of Second Level Domains (SLD)s.",

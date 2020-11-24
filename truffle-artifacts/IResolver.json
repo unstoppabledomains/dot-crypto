@@ -45,6 +45,31 @@
           "type": "uint256"
         }
       ],
+      "name": "preconfigure",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "string[]",
+          "name": "keys",
+          "type": "string[]"
+        },
+        {
+          "internalType": "string[]",
+          "name": "values",
+          "type": "string[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
       "name": "setMany",
       "outputs": [],
       "payable": false,
@@ -92,25 +117,25 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"keys\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"values\",\"type\":\"string[]\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"reconfigure\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"reset\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"value\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"set\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"keys\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"values\",\"type\":\"string[]\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"setMany\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"reconfigure(string[],string[],uint256)\":{\"details\":\"Reset all domain records and set new ones\",\"params\":{\"keys\":\"New record keys\",\"tokenId\":\"ERC-721 token id of the domain\",\"values\":\"New record values\"}},\"reset(uint256)\":{\"details\":\"Function to reset all existing records on a domain.\",\"params\":{\"tokenId\":\"ERC-721 token id to set.\"}},\"set(string,string,uint256)\":{\"details\":\"Function to set record.\",\"params\":{\"key\":\"The key set the value of.\",\"tokenId\":\"ERC-721 token id to set.\",\"value\":\"The value to set key to.\"}},\"setMany(string[],string[],uint256)\":{\"details\":\"Set or update domain records\",\"params\":{\"keys\":\"New record keys\",\"tokenId\":\"ERC-721 token id of the domain\",\"values\":\"New record values\"}}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolver.sol\":\"IResolver\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolver.sol\":{\"keccak256\":\"0x9aa3ec8c828a98f245807ef02bbf90c9fdbd6cbff70155d736184d46fe562fe2\",\"urls\":[\"bzz-raw://3672d3241090af85e4ab1ab7c57019c95667eece5aa765a4313c1f437f726b61\",\"dweb:/ipfs/QmU5uybBzxz17tGVBzVLog9Po8GCBrY4g4QVLvzoBfP5os\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"keys\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"values\",\"type\":\"string[]\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"preconfigure\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"keys\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"values\",\"type\":\"string[]\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"reconfigure\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"reset\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"value\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"set\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"keys\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"values\",\"type\":\"string[]\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"setMany\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"preconfigure(string[],string[],uint256)\":{\"details\":\"Set all domain records for newly minted domain\",\"params\":{\"keys\":\"New record keys\",\"tokenId\":\"ERC-721 token id of the domain\",\"values\":\"New record values\"}},\"reconfigure(string[],string[],uint256)\":{\"details\":\"Reset all domain records and set new ones\",\"params\":{\"keys\":\"New record keys\",\"tokenId\":\"ERC-721 token id of the domain\",\"values\":\"New record values\"}},\"reset(uint256)\":{\"details\":\"Function to reset all existing records on a domain.\",\"params\":{\"tokenId\":\"ERC-721 token id to set.\"}},\"set(string,string,uint256)\":{\"details\":\"Function to set record.\",\"params\":{\"key\":\"The key set the value of.\",\"tokenId\":\"ERC-721 token id to set.\",\"value\":\"The value to set key to.\"}},\"setMany(string[],string[],uint256)\":{\"details\":\"Set or update domain records\",\"params\":{\"keys\":\"New record keys\",\"tokenId\":\"ERC-721 token id of the domain\",\"values\":\"New record values\"}}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolver.sol\":\"IResolver\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolver.sol\":{\"keccak256\":\"0x207d84662ce27aa8514cb39f5fd0fb37e39fa01565d67a39e555e49f26535f4e\",\"urls\":[\"bzz-raw://13319d818205b09955e242f3464c6c644caf82a0ea4ee309685e497f09b469dd\",\"dweb:/ipfs/QmPMuKpCtuJVbGHWaDXAYxhD5wMNx7JdEZRNefTuqhwzPh\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity 0.5.12;\npragma experimental ABIEncoderV2;\n\ncontract IResolver {\n    /**\n     * @dev Reset all domain records and set new ones\n     * @param keys New record keys\n     * @param values New record values\n     * @param tokenId ERC-721 token id of the domain\n     */\n    function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public;\n\n    /**\n     * @dev Set or update domain records\n     * @param keys New record keys\n     * @param values New record values\n     * @param tokenId ERC-721 token id of the domain\n     */\n    function setMany(string[] memory keys, string[] memory values, uint256 tokenId) public;\n\n    /**\n     * @dev Function to set record.\n     * @param key The key set the value of.\n     * @param value The value to set key to.\n     * @param tokenId ERC-721 token id to set.\n     */\n    function set(string calldata key, string calldata value, uint256 tokenId) external;\n\n    /**\n     * @dev Function to reset all existing records on a domain.\n     * @param tokenId ERC-721 token id to set.\n     */\n    function reset(uint256 tokenId) external;\n}\n",
+  "source": "pragma solidity 0.5.12;\npragma experimental ABIEncoderV2;\n\ncontract IResolver {\n    /**\n     * @dev Reset all domain records and set new ones\n     * @param keys New record keys\n     * @param values New record values\n     * @param tokenId ERC-721 token id of the domain\n     */\n    function reconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public;\n\n    /**\n    * @dev Set all domain records for newly minted domain\n    * @param keys New record keys\n    * @param values New record values\n    * @param tokenId ERC-721 token id of the domain\n    */\n    function preconfigure(string[] memory keys, string[] memory values, uint256 tokenId) public;\n\n    /**\n     * @dev Set or update domain records\n     * @param keys New record keys\n     * @param values New record values\n     * @param tokenId ERC-721 token id of the domain\n     */\n    function setMany(string[] memory keys, string[] memory values, uint256 tokenId) public;\n\n    /**\n     * @dev Function to set record.\n     * @param key The key set the value of.\n     * @param value The value to set key to.\n     * @param tokenId ERC-721 token id to set.\n     */\n    function set(string calldata key, string calldata value, uint256 tokenId) external;\n\n    /**\n     * @dev Function to reset all existing records on a domain.\n     * @param tokenId ERC-721 token id to set.\n     */\n    function reset(uint256 tokenId) external;\n}\n",
   "sourcePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolver.sol",
   "ast": {
     "absolutePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolver.sol",
     "exportedSymbols": {
       "IResolver": [
-        329
+        391
       ]
     },
-    "id": 330,
+    "id": 392,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 291,
+        "id": 342,
         "literals": [
           "solidity",
           "0.5",
@@ -120,7 +145,7 @@
         "src": "0:23:3"
       },
       {
-        "id": 292,
+        "id": 343,
         "literals": [
           "experimental",
           "ABIEncoderV2"
@@ -134,9 +159,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 329,
+        "id": 391,
         "linearizedBaseContracts": [
-          329
+          391
         ],
         "name": "IResolver",
         "nodeType": "ContractDefinition",
@@ -144,22 +169,22 @@
           {
             "body": null,
             "documentation": "@dev Reset all domain records and set new ones\n@param keys New record keys\n@param values New record values\n@param tokenId ERC-721 token id of the domain",
-            "id": 303,
+            "id": 354,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "reconfigure",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 301,
+              "id": 352,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 295,
+                  "id": 346,
                   "name": "keys",
                   "nodeType": "VariableDeclaration",
-                  "scope": 303,
+                  "scope": 354,
                   "src": "302:20:3",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -169,7 +194,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 293,
+                      "id": 344,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
                       "src": "302:6:3",
@@ -178,7 +203,7 @@
                         "typeString": "string"
                       }
                     },
-                    "id": 294,
+                    "id": 345,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "302:8:3",
@@ -192,10 +217,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 298,
+                  "id": 349,
                   "name": "values",
                   "nodeType": "VariableDeclaration",
-                  "scope": 303,
+                  "scope": 354,
                   "src": "324:22:3",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -205,7 +230,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 296,
+                      "id": 347,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
                       "src": "324:6:3",
@@ -214,7 +239,7 @@
                         "typeString": "string"
                       }
                     },
-                    "id": 297,
+                    "id": 348,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "324:8:3",
@@ -228,10 +253,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 300,
+                  "id": 351,
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 303,
+                  "scope": 354,
                   "src": "348:15:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -240,7 +265,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 299,
+                    "id": 350,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "348:7:3",
@@ -256,12 +281,12 @@
               "src": "301:63:3"
             },
             "returnParameters": {
-              "id": 302,
+              "id": 353,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "371:0:3"
             },
-            "scope": 329,
+            "scope": 391,
             "src": "281:91:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -269,24 +294,24 @@
           },
           {
             "body": null,
-            "documentation": "@dev Set or update domain records\n@param keys New record keys\n@param values New record values\n@param tokenId ERC-721 token id of the domain",
-            "id": 314,
+            "documentation": "@dev Set all domain records for newly minted domain\n@param keys New record keys\n@param values New record values\n@param tokenId ERC-721 token id of the domain",
+            "id": 365,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "setMany",
+            "name": "preconfigure",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 312,
+              "id": 363,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 306,
+                  "id": 357,
                   "name": "keys",
                   "nodeType": "VariableDeclaration",
-                  "scope": 314,
-                  "src": "579:20:3",
+                  "scope": 365,
+                  "src": "597:20:3",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -295,19 +320,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 304,
+                      "id": 355,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
-                      "src": "579:6:3",
+                      "src": "597:6:3",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage_ptr",
                         "typeString": "string"
                       }
                     },
-                    "id": 305,
+                    "id": 356,
                     "length": null,
                     "nodeType": "ArrayTypeName",
-                    "src": "579:8:3",
+                    "src": "597:8:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
                       "typeString": "string[]"
@@ -318,11 +343,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 309,
+                  "id": 360,
                   "name": "values",
                   "nodeType": "VariableDeclaration",
-                  "scope": 314,
-                  "src": "601:22:3",
+                  "scope": 365,
+                  "src": "619:22:3",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -331,19 +356,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 307,
+                      "id": 358,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
-                      "src": "601:6:3",
+                      "src": "619:6:3",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage_ptr",
                         "typeString": "string"
                       }
                     },
-                    "id": 308,
+                    "id": 359,
                     "length": null,
                     "nodeType": "ArrayTypeName",
-                    "src": "601:8:3",
+                    "src": "619:8:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
                       "typeString": "string[]"
@@ -354,11 +379,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 311,
+                  "id": 362,
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 314,
-                  "src": "625:15:3",
+                  "scope": 365,
+                  "src": "643:15:3",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -366,10 +391,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 310,
+                    "id": 361,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "625:7:3",
+                    "src": "643:7:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -379,16 +404,142 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "578:63:3"
+              "src": "596:63:3"
             },
             "returnParameters": {
-              "id": 313,
+              "id": 364,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "648:0:3"
+              "src": "666:0:3"
             },
-            "scope": 329,
-            "src": "562:87:3",
+            "scope": 391,
+            "src": "575:92:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Set or update domain records\n@param keys New record keys\n@param values New record values\n@param tokenId ERC-721 token id of the domain",
+            "id": 376,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setMany",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 374,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 368,
+                  "name": "keys",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "874:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 366,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "874:6:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 367,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "874:8:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 371,
+                  "name": "values",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "896:22:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 369,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "896:6:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 370,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "896:8:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 373,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "920:15:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 372,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "920:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "873:63:3"
+            },
+            "returnParameters": {
+              "id": 375,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "943:0:3"
+            },
+            "scope": 391,
+            "src": "857:87:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -396,23 +547,23 @@
           {
             "body": null,
             "documentation": "@dev Function to set record.\n@param key The key set the value of.\n@param value The value to set key to.\n@param tokenId ERC-721 token id to set.",
-            "id": 323,
+            "id": 385,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "set",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 321,
+              "id": 383,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 316,
+                  "id": 378,
                   "name": "key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 323,
-                  "src": "856:19:3",
+                  "scope": 385,
+                  "src": "1151:19:3",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -420,10 +571,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 315,
+                    "id": 377,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "856:6:3",
+                    "src": "1151:6:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -434,11 +585,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 318,
+                  "id": 380,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 323,
-                  "src": "877:21:3",
+                  "scope": 385,
+                  "src": "1172:21:3",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -446,10 +597,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 317,
+                    "id": 379,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "877:6:3",
+                    "src": "1172:6:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -460,11 +611,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 320,
+                  "id": 382,
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 323,
-                  "src": "900:15:3",
+                  "scope": 385,
+                  "src": "1195:15:3",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -472,10 +623,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 319,
+                    "id": 381,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "900:7:3",
+                    "src": "1195:7:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -485,16 +636,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "855:61:3"
+              "src": "1150:61:3"
             },
             "returnParameters": {
-              "id": 322,
+              "id": 384,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "925:0:3"
+              "src": "1220:0:3"
             },
-            "scope": 329,
-            "src": "843:83:3",
+            "scope": 391,
+            "src": "1138:83:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -502,23 +653,23 @@
           {
             "body": null,
             "documentation": "@dev Function to reset all existing records on a domain.\n@param tokenId ERC-721 token id to set.",
-            "id": 328,
+            "id": 390,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "reset",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 326,
+              "id": 388,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 325,
+                  "id": 387,
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 328,
-                  "src": "1074:15:3",
+                  "scope": 390,
+                  "src": "1369:15:3",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -526,10 +677,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 324,
+                    "id": 386,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1074:7:3",
+                    "src": "1369:7:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -539,39 +690,39 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1073:17:3"
+              "src": "1368:17:3"
             },
             "returnParameters": {
-              "id": 327,
+              "id": 389,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1099:0:3"
+              "src": "1394:0:3"
             },
-            "scope": 329,
-            "src": "1059:41:3",
+            "scope": 391,
+            "src": "1354:41:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 330,
-        "src": "59:1043:3"
+        "scope": 392,
+        "src": "59:1338:3"
       }
     ],
-    "src": "0:1103:3"
+    "src": "0:1398:3"
   },
   "legacyAST": {
     "absolutePath": "/Users/aquila/Documents/GitHub/dot-crypto/contracts/IResolver.sol",
     "exportedSymbols": {
       "IResolver": [
-        329
+        391
       ]
     },
-    "id": 330,
+    "id": 392,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 291,
+        "id": 342,
         "literals": [
           "solidity",
           "0.5",
@@ -581,7 +732,7 @@
         "src": "0:23:3"
       },
       {
-        "id": 292,
+        "id": 343,
         "literals": [
           "experimental",
           "ABIEncoderV2"
@@ -595,9 +746,9 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 329,
+        "id": 391,
         "linearizedBaseContracts": [
-          329
+          391
         ],
         "name": "IResolver",
         "nodeType": "ContractDefinition",
@@ -605,22 +756,22 @@
           {
             "body": null,
             "documentation": "@dev Reset all domain records and set new ones\n@param keys New record keys\n@param values New record values\n@param tokenId ERC-721 token id of the domain",
-            "id": 303,
+            "id": 354,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "reconfigure",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 301,
+              "id": 352,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 295,
+                  "id": 346,
                   "name": "keys",
                   "nodeType": "VariableDeclaration",
-                  "scope": 303,
+                  "scope": 354,
                   "src": "302:20:3",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -630,7 +781,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 293,
+                      "id": 344,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
                       "src": "302:6:3",
@@ -639,7 +790,7 @@
                         "typeString": "string"
                       }
                     },
-                    "id": 294,
+                    "id": 345,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "302:8:3",
@@ -653,10 +804,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 298,
+                  "id": 349,
                   "name": "values",
                   "nodeType": "VariableDeclaration",
-                  "scope": 303,
+                  "scope": 354,
                   "src": "324:22:3",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -666,7 +817,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 296,
+                      "id": 347,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
                       "src": "324:6:3",
@@ -675,7 +826,7 @@
                         "typeString": "string"
                       }
                     },
-                    "id": 297,
+                    "id": 348,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "324:8:3",
@@ -689,10 +840,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 300,
+                  "id": 351,
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 303,
+                  "scope": 354,
                   "src": "348:15:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -701,7 +852,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 299,
+                    "id": 350,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "348:7:3",
@@ -717,12 +868,12 @@
               "src": "301:63:3"
             },
             "returnParameters": {
-              "id": 302,
+              "id": 353,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "371:0:3"
             },
-            "scope": 329,
+            "scope": 391,
             "src": "281:91:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -730,24 +881,24 @@
           },
           {
             "body": null,
-            "documentation": "@dev Set or update domain records\n@param keys New record keys\n@param values New record values\n@param tokenId ERC-721 token id of the domain",
-            "id": 314,
+            "documentation": "@dev Set all domain records for newly minted domain\n@param keys New record keys\n@param values New record values\n@param tokenId ERC-721 token id of the domain",
+            "id": 365,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "setMany",
+            "name": "preconfigure",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 312,
+              "id": 363,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 306,
+                  "id": 357,
                   "name": "keys",
                   "nodeType": "VariableDeclaration",
-                  "scope": 314,
-                  "src": "579:20:3",
+                  "scope": 365,
+                  "src": "597:20:3",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -756,19 +907,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 304,
+                      "id": 355,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
-                      "src": "579:6:3",
+                      "src": "597:6:3",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage_ptr",
                         "typeString": "string"
                       }
                     },
-                    "id": 305,
+                    "id": 356,
                     "length": null,
                     "nodeType": "ArrayTypeName",
-                    "src": "579:8:3",
+                    "src": "597:8:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
                       "typeString": "string[]"
@@ -779,11 +930,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 309,
+                  "id": 360,
                   "name": "values",
                   "nodeType": "VariableDeclaration",
-                  "scope": 314,
-                  "src": "601:22:3",
+                  "scope": 365,
+                  "src": "619:22:3",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -792,19 +943,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 307,
+                      "id": 358,
                       "name": "string",
                       "nodeType": "ElementaryTypeName",
-                      "src": "601:6:3",
+                      "src": "619:6:3",
                       "typeDescriptions": {
                         "typeIdentifier": "t_string_storage_ptr",
                         "typeString": "string"
                       }
                     },
-                    "id": 308,
+                    "id": 359,
                     "length": null,
                     "nodeType": "ArrayTypeName",
-                    "src": "601:8:3",
+                    "src": "619:8:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
                       "typeString": "string[]"
@@ -815,11 +966,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 311,
+                  "id": 362,
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 314,
-                  "src": "625:15:3",
+                  "scope": 365,
+                  "src": "643:15:3",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -827,10 +978,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 310,
+                    "id": 361,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "625:7:3",
+                    "src": "643:7:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -840,16 +991,142 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "578:63:3"
+              "src": "596:63:3"
             },
             "returnParameters": {
-              "id": 313,
+              "id": 364,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "648:0:3"
+              "src": "666:0:3"
             },
-            "scope": 329,
-            "src": "562:87:3",
+            "scope": 391,
+            "src": "575:92:3",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Set or update domain records\n@param keys New record keys\n@param values New record values\n@param tokenId ERC-721 token id of the domain",
+            "id": 376,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setMany",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 374,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 368,
+                  "name": "keys",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "874:20:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 366,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "874:6:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 367,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "874:8:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 371,
+                  "name": "values",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "896:22:3",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_string_memory_$dyn_memory_ptr",
+                    "typeString": "string[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 369,
+                      "name": "string",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "896:6:3",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_string_storage_ptr",
+                        "typeString": "string"
+                      }
+                    },
+                    "id": 370,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "896:8:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_string_storage_$dyn_storage_ptr",
+                      "typeString": "string[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 373,
+                  "name": "tokenId",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "920:15:3",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 372,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "920:7:3",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "873:63:3"
+            },
+            "returnParameters": {
+              "id": 375,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "943:0:3"
+            },
+            "scope": 391,
+            "src": "857:87:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
@@ -857,23 +1134,23 @@
           {
             "body": null,
             "documentation": "@dev Function to set record.\n@param key The key set the value of.\n@param value The value to set key to.\n@param tokenId ERC-721 token id to set.",
-            "id": 323,
+            "id": 385,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "set",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 321,
+              "id": 383,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 316,
+                  "id": 378,
                   "name": "key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 323,
-                  "src": "856:19:3",
+                  "scope": 385,
+                  "src": "1151:19:3",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -881,10 +1158,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 315,
+                    "id": 377,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "856:6:3",
+                    "src": "1151:6:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -895,11 +1172,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 318,
+                  "id": 380,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 323,
-                  "src": "877:21:3",
+                  "scope": 385,
+                  "src": "1172:21:3",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -907,10 +1184,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 317,
+                    "id": 379,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "877:6:3",
+                    "src": "1172:6:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -921,11 +1198,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 320,
+                  "id": 382,
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 323,
-                  "src": "900:15:3",
+                  "scope": 385,
+                  "src": "1195:15:3",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -933,10 +1210,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 319,
+                    "id": 381,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "900:7:3",
+                    "src": "1195:7:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -946,16 +1223,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "855:61:3"
+              "src": "1150:61:3"
             },
             "returnParameters": {
-              "id": 322,
+              "id": 384,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "925:0:3"
+              "src": "1220:0:3"
             },
-            "scope": 329,
-            "src": "843:83:3",
+            "scope": 391,
+            "src": "1138:83:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -963,23 +1240,23 @@
           {
             "body": null,
             "documentation": "@dev Function to reset all existing records on a domain.\n@param tokenId ERC-721 token id to set.",
-            "id": 328,
+            "id": 390,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "reset",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 326,
+              "id": 388,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 325,
+                  "id": 387,
                   "name": "tokenId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 328,
-                  "src": "1074:15:3",
+                  "scope": 390,
+                  "src": "1369:15:3",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -987,10 +1264,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 324,
+                    "id": 386,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1074:7:3",
+                    "src": "1369:7:3",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1000,26 +1277,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1073:17:3"
+              "src": "1368:17:3"
             },
             "returnParameters": {
-              "id": 327,
+              "id": 389,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1099:0:3"
+              "src": "1394:0:3"
             },
-            "scope": 329,
-            "src": "1059:41:3",
+            "scope": 391,
+            "src": "1354:41:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 330,
-        "src": "59:1043:3"
+        "scope": 392,
+        "src": "59:1338:3"
       }
     ],
-    "src": "0:1103:3"
+    "src": "0:1398:3"
   },
   "compiler": {
     "name": "solc",
@@ -1027,9 +1304,17 @@
   },
   "networks": {},
   "schemaVersion": "3.2.5",
-  "updatedAt": "2020-10-05T14:41:20.132Z",
+  "updatedAt": "2020-11-24T18:51:57.357Z",
   "devdoc": {
     "methods": {
+      "preconfigure(string[],string[],uint256)": {
+        "details": "Set all domain records for newly minted domain",
+        "params": {
+          "keys": "New record keys",
+          "tokenId": "ERC-721 token id of the domain",
+          "values": "New record values"
+        }
+      },
       "reconfigure(string[],string[],uint256)": {
         "details": "Reset all domain records and set new ones",
         "params": {
