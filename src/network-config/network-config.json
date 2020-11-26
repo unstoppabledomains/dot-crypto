@@ -43,6 +43,10 @@
                 "TwitterValidationOperator": {
                     "address": "0xbb486C6E9cF1faA86a6E3eAAFE2e5665C0507855",
                     "legacyAddresses": []
+                },
+                "FreeMinter": {
+                    "address": "0x1fC985cAc641ED5846b631f96F35d9b48Bc3b834",
+                    "legacyAddresses": []
                 }
             }
         },
@@ -82,6 +86,10 @@
                 },
                 "TwitterValidationOperator": {
                     "address": "0x1CB337b3b208dc29a6AcE8d11Bb591b66c5Dd83d",
+                    "legacyAddresses": []
+                },
+                "FreeMinter": {
+                    "address": "0x84214215904cDEbA9044ECf95F3eBF009185AAf4",
                     "legacyAddresses": []
                 }
             }
