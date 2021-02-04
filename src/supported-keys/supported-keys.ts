@@ -8,8 +8,11 @@ type KeyConfig = Readonly<{
   deprecated?: boolean
 }>
 
-type Config = Readonly<Record<Key, KeyConfig>>
+type Config = Readonly<{
+  version: string,
+  keys: Readonly<Record<Key, KeyConfig>>,
+}>;
 
 const configCheck: Config = json
 
-export const ContractsConfig = json
+export const SupportedKeys = json

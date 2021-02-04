@@ -2,6 +2,7 @@ import chalk from 'chalk'
 import yargs from 'yargs'
 
 export {ContractsConfig} from './network-config/network-config'
+export {SupportedKeys} from './supported-keys/supported-keys'
 
 const pkg = require('../package.json')
 
