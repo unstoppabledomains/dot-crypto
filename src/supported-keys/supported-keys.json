@@ -2,16 +2,20 @@
     "version": "1.1.0",
     "keys": {
         "crypto.BTC.address": {
-            "deprecatedKeyName": "BTC"
+            "deprecatedKeyName": "BTC",
+            "validationRegex": "^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$"
         },
         "crypto.ETH.address": {
-            "deprecatedKeyName": "ETH"
+            "deprecatedKeyName": "ETH",
+            "validationRegex": "^0x[a-fA-F0-9]{40}$"
         },
         "crypto.ZIL.address": {
-            "deprecatedKeyName": "ZIL"
+            "deprecatedKeyName": "ZIL",
+            "validationRegex": "^0x[a-fA-F0-9]{40}$|^zil1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{38}$"
         },
         "crypto.LTC.address": {
-            "deprecatedKeyName": "LTC"
+            "deprecatedKeyName": "LTC",
+            "validationRegex": "^[LM3][a-km-zA-HJ-NP-Z1-9]{26,33}$"
         },
         "crypto.ETC.address": {
             "deprecatedKeyName": "ETC",
@@ -312,17 +316,20 @@
             "validationRegex": "^[a-z][a-z1-5.]{10}[a-z1-5]$"
         },
         "crypto.USDT.version.ERC20.address": {
-            "deprecatedKeyName": "USDT_ERC20"
+            "deprecatedKeyName": "USDT_ERC20",
+            "validationRegex": "^0x[a-fA-F0-9]{40}$"
         },
         "crypto.USDT.version.TRON.address": {
-            "deprecatedKeyName": "USDT_TRON"
+            "deprecatedKeyName": "USDT_TRON",
+            "validationRegex": "^[T][a-zA-HJ-NP-Z0-9]{33}$"
         },
         "crypto.USDT.version.EOS.address": {
             "deprecatedKeyName": "USDT_EOS",
             "validationRegex": "^[a-z][a-z1-5.]{10}[a-z1-5]$"
         },
         "crypto.USDT.version.OMNI.address": {
-            "deprecatedKeyName": "USDT_OMNI"
+            "deprecatedKeyName": "USDT_OMNI",
+            "validationRegex": "^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$"
         },
         "social.payid.name": {
             "deprecatedKeyName": "payid",
