@@ -5,6 +5,7 @@ const { utils } = require('web3');
 const Registry = artifacts.require('Registry.sol');
 const Resolver = artifacts.require('Resolver.sol');
 const MintingController = artifacts.require('controller/MintingController.sol');
+const Simple = artifacts.require('controller/test-helpers/Simple.sol');
 const ProxyReader = artifacts.require('ProxyReader.sol');
 const expectRevert = require('./helpers/expectRevert.js');
 const { ZERO_ADDRESS } = require('./helpers/constants.js');
@@ -421,5 +422,17 @@ contract('ProxyReader', ([coinbase, ...accounts]) => {
                 assert.deepEqual(owners, [coinbase, ZERO_ADDRESS]);
             });
         });
+    });
+
+    it('should revert when resolver is invalid', async () => {
+        const _domainName = 'test_rosolver_invalid';
+
+        const invalidResolver = await Simple.new();
+        await mintingController.mintSLD(coinbase, _domainName);
+
+        const _tokenId = await registry.childIdOf(await registry.root(), _domainName);
+        await registry.resolveTo(invalidResolver.address, _tokenId);
+
+        await expectRevert.unspecified(proxy.getData.call([], _tokenId));
     });
 });
