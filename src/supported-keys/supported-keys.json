@@ -416,6 +416,21 @@
             "validationRegex": "^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$",
             "deprecated": false
         },
+        "crypto.FTM.version.ERC20.address" : {
+            "deprecatedKeyName": "FTM_ERC20",
+            "validationRegex": "^0x[a-fA-F0-9]{40}$",
+            "deprecated": false
+        },
+        "crypto.FTM.version.BEP2.address" : {
+            "deprecatedKeyName": "FTM_BEP2",
+            "validationRegex": "^(bnb|tbnb)[a-zA-HJ-NP-Z0-9]{39}$",
+            "deprecated": false
+        },
+        "crypto.FTM.version.OPERA.address" : {
+            "deprecatedKeyName": "FTM_OPERA",
+            "validationRegex": "^0x[a-fA-F0-9]{40}$",
+            "deprecated": false
+        },
         "social.payid.name": {
             "deprecatedKeyName": "payid",
             "validationRegex": "^[0-9a-zA-Z]+\\$[0-9a-zA-Z]+\\.[0-9a-zA-Z]+$",
