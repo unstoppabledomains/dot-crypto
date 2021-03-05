@@ -396,6 +396,11 @@
             "validationRegex": "^[a-z][a-z1-5.]{10}[a-z1-5]$",
             "deprecated": false
         },
+        "crypto.XDC.address": {
+            "deprecatedKeyName:": "XDC",
+            "validationRegex": "^xdc[a-fA-F0-9]{40}$",
+            "deprecated": false
+        },
         "crypto.USDT.version.ERC20.address": {
             "deprecatedKeyName": "USDT_ERC20",
             "validationRegex": "^0x[a-fA-F0-9]{40}$",
