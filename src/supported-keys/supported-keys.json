@@ -472,12 +472,12 @@
             "deprecated": false
         },
         "dweb.ipfs.hash": {
-            "deprecatedKeyName": "dweb_ipfs_hash",
+            "deprecatedKeyName": "dweb_hash",
             "validationRegex": ".{0,100}",
             "deprecated": false
         },
         "browser.redirect_url": {
-            "deprecatedKeyName": "browser_redirect_url",
+            "deprecatedKeyName": "browser_redirect",
             "validationRegex": ".{0,253}",
             "deprecated": false
         },
