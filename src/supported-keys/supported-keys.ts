@@ -3,7 +3,7 @@ import json from './supported-keys.json'
 type Key = string
 
 type KeyConfig = Readonly<{
-  deprecatedKeyName: string | null
+  deprecatedKeyName: string
   validationRegex: string | null
   deprecated: boolean
 }>
