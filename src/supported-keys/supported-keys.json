@@ -194,7 +194,7 @@
         "crypto.DGB.address": {
             "deprecatedKeyName": "DGB",
             "deprecated": false,
-            "validationRegex": "^[a-km-zA-HJ-NP-Z1-9]{34}$|^[a-zA-Z1-9]{42}$"
+            "validationRegex": "(^[a-km-zA-HJ-NP-Z1-9]{34}$)|(^[a-zA-Z1-9]{42}$)|(^dgb1[a-zA-Z0-9]{39}$)"
         },
         "crypto.XZC.address": {
             "deprecatedKeyName": "XZC",
