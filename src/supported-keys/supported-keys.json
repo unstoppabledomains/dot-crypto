@@ -19,7 +19,7 @@
         "crypto.LTC.address": {
             "deprecatedKeyName": "LTC",
             "deprecated": false,
-            "validationRegex": "^[LM3][a-km-zA-HJ-NP-Z1-9]{26,33}$}$|^(ltc1)[a-zA-HJ-NP-Z0-9]{25,39}$"
+            "validationRegex": "^[LM3][a-km-zA-HJ-NP-Z1-9]{26,33}$|^(ltc1)[a-zA-HJ-NP-Z0-9]{25,39}$"
         },
         "crypto.ETC.address": {
             "deprecatedKeyName": "ETC",
