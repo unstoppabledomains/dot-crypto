@@ -516,6 +516,11 @@
       "validationRegex": null,
       "deprecated": false
     },
+    "forwarding.url": {
+      "deprecatedKeyName": "forwarding_url",
+      "validationRegex": "^(https?)://[^\\s/$.?#].[^\\s]*$",
+      "deprecated": false
+    },
     "dns.ttl": {
       "deprecatedKeyName": "dns_ttl",
       "validationRegex": null,
