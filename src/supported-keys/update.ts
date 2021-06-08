@@ -124,7 +124,7 @@ const getAssetPlatformsList = async (): Promise<CoinGeckoPlatformDetail[]> => {
   })
 }
 
-const getFilteredCoins = async (upTo: number): Promise<CoinGeckoCoinDetailResponse[]> => {
+const getFilteredCoins = async (upTo?: number): Promise<CoinGeckoCoinDetailResponse[]> => {
   const coins = await getAllCoins();
   const coinsWithRating: CoinGeckoCoinDetailResponse[] =  []
   console.log("Fetching coins details");
