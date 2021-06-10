@@ -33,7 +33,7 @@ type MultiChainMeta = {
 const main = async (): Promise<void> => {
   const coins = await getFilteredCoins();
   const assetPlatforms = await getAssetPlatformsList();
-  
+
   const updatedSuppKeys = getUpdatedKeysFromCoins(coins, assetPlatforms);
   console.log(`Was ${Object.keys(SupportedKeys.keys).length} supported keys records`);
   console.log(`Become ${Object.keys(updatedSuppKeys).length} supported keys records`);
@@ -105,6 +105,11 @@ const getAssetPlatformsList = async (): Promise<CoinGeckoPlatformDetail[]> => {
         return {
           ...platform,
           shortname: 'BEP20'
+        }
+      case 'harmony-shard-0':
+        return {
+          ...platform,
+          shortname: 'HRC20'
         }
       default: 
         return platform
