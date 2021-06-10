@@ -996,1168 +996,1158 @@
       "validationRegex": null,
       "deprecated": false
     },
-    "crypto.ETH.version.BSC.address": {
-      "deprecatedKeyName":  null,
-      "validationRegex": null,
+    "crypto.ETH.version.BEP20.address": {
+      "deprecatedKeyName": "ETH_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.ETH.version.HECO.address": {
-      "deprecatedKeyName":  null,
-      "validationRegex": null,
-      "deprecated": false
-    },
-    "crypto.DOGE.version.BSC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ETH_HECO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.LINK.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "LINK_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.LINK.version.BSC.address": {
-      "deprecatedKeyName":  null,
-      "validationRegex": null,
+    "crypto.LINK.version.BEP20.address": {
+      "deprecatedKeyName": "LINK_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.LINK.version.HECO.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "LINK_HECO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.LINK.version.MATIC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "LINK_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.LINK.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "LINK_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.LINK.version.XDAI.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "LINK_XDAI",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SOL.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SOL",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.MATIC.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "MATIC_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.MATIC.version.MATIC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "MATIC_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.MATIC.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
-      "validationRegex": null,
-      "deprecated": false
-    },
-    "crypto.ZIL.version.BSC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "MATIC_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.CRO.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "CRO_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.CRO.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "CRO_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.BAT.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "BAT_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.BAT.version.MATIC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "BAT_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.BAT.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "BAT_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.GRT.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "GRT_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.GRT.version.MATIC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "GRT_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.GRT.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "GRT_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.THETA.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "THETA",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.AVAX.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "AVAX",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.MKR.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "MKR",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.ICP.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ICP",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.EGLD.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "EGLD",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.IOST.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "IOST",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.CKB.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "CKB",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SNT.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SNT",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.MINA.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "MINA",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ZRX.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ZRX_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.ZRX.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ZRX_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.STORJ.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "STORJ_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.STORJ.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "STORJ_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SNX.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SNX_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.SNX.version.HECO.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SNX_HECO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SNX.version.MATIC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SNX_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SNX.version.FANTOM.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SNX_FANTOM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SNX.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SNX_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.HOT.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "HOT_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.HOT.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "HOT_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.USDC.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "USDC_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.USDC.version.BSC.address": {
-      "deprecatedKeyName":  null,
-      "validationRegex": null,
+    "crypto.USDC.version.BEP20.address": {
+      "deprecatedKeyName": "USDC_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.USDC.version.SOLANA.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "USDC_SOLANA",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.USDC.version.MATIC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "USDC_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.USDC.version.FANTOM.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "USDC_FANTOM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.USDC.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "USDC_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.USDC.version.XDAI.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "USDC_XDAI",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.LRC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "LRC",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.BNT.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "BNT",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.LBC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "LBC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SUSD.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SUSD_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.SUSD.version.FANTOM.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SUSD_FANTOM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.OMG.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "OMG",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.ZEN.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ZEN",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.KNCL.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "KNCL_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.KNCL.version.FANTOM.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "KNCL_FANTOM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.KNCL.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "KNCL_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ELF.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ELF",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.MANA.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "MANA_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.MANA.version.MATIC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "MANA_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.KLAY.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "KLAY",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.FTM.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "FTM_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ENJ.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ENJ_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.ENJ.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ENJ_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.AAVE.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "AAVE_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.AAVE.version.HECO.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "AAVE_HECO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.AAVE.version.MATIC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "AAVE_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.AAVE.version.FANTOM.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "AAVE_FANTOM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.AAVE.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "AAVE_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SBD.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SBD",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "SC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.OGN.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "OGN",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.BAND.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "BAND_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.BAND.version.FANTOM.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "BAND_FANTOM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.BEAM.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "BEAM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.YFI.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "YFI_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.YFI.version.HECO.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "YFI_HECO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.YFI.version.MATIC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "YFI_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.YFI.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "YFI_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.YFI.version.XDAI.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "YFI_XDAI",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.NEAR.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "NEAR",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.KNC.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "KNC",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.ERG.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ERG",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ANT.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "ANT",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.TUSD.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "TUSD_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.TUSD.version.BSC.address": {
-      "deprecatedKeyName":  null,
-      "validationRegex": null,
+    "crypto.TUSD.version.BEP20.address": {
+      "deprecatedKeyName": "TUSD_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.TUSD.version.AVAX.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "TUSD_AVAX",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.TUSD.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "TUSD_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
-    "crypto.TUSD.version.BINANCECOIN.address": {
-      "deprecatedKeyName":  null,
-      "validationRegex": null,
+    "crypto.TUSD.version.BEP2.address": {
+      "deprecatedKeyName": "TUSD_BEP2",
+      "validationRegex": "^(bnb|tbnb)[a-zA-HJ-NP-Z0-9]{39}$",
       "deprecated": false
     },
     "crypto.TUSD.version.TRON.address": {
-      "deprecatedKeyName":  null,
-      "validationRegex": null,
+      "deprecatedKeyName": "TUSD_TRON",
+      "validationRegex": "^[T][a-zA-HJ-NP-Z0-9]{33}$",
       "deprecated": false
     },
     "crypto.OXT.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "OXT",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.CRV.version.ERC20.address": {
-      "deprecatedKeyName":  null,
+      "deprecatedKeyName": "CRV_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.CRV.version.MATIC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "CRV_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.CRV.version.FANTOM.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "CRV_FANTOM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.BTS.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "BTS",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.UMA.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "UMA",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.BTM.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "BTM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SYS.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SYS",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.AION.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "AION",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.LPT.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "LPT_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.LPT.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "LPT_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.API3.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "API3",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.PIVX.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "PIVX",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.MAID.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+      "deprecatedKeyName": "MAID",
+      "validationRegex": "^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$",
       "deprecated": false
     },
     "crypto.NMR.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "NMR",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.RLC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "RLC",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.KEY.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "KEY",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.KAVA.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "KAVA",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.RDN.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "RDN",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.ARRR.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "ARRR",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.DUSK.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "DUSK",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.NULS.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "NULS",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.GXC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "GXC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.POND.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "POND",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.DNT.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "DNT",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.QKC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "QKC",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.RENBTC.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "RENBTC_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.RENBTC.version.BSC.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+    "crypto.RENBTC.version.BEP20.address": {
+      "deprecatedKeyName": "RENBTC_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.RENBTC.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "RENBTC_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.MONA.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "MONA",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.POLY.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "POLY",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.KEEP.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "KEEP_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.KEEP.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "KEEP_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.RUNE.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+      "deprecatedKeyName": "RUNE",
+      "validationRegex": "^(bnb|tbnb)[a-zA-HJ-NP-Z0-9]{39}$",
       "deprecated": false
     },
     "crypto.STRAX.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "STRAX",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.STEEM.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "STEEM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.OCEAN.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "OCEAN",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.DATA.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "DATA",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.TRAC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "TRAC",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.COMP.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "COMP_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.COMP.version.MATIC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "COMP_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.COMP.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "COMP_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.TOMO.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "TOMO",
       "validationRegex": null,
       "deprecated": false
     },
-    "crypto.SAFEMOON.version.BSC.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+    "crypto.SAFEMOON.version.BEP20.address": {
+      "deprecatedKeyName": "SAFEMOON_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.SAFEMOON.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SAFEMOON_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SKY.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SKY",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.AKT.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "AKT",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.IQ.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "IQ_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.IQ.version.BSC.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+    "crypto.IQ.version.BEP20.address": {
+      "deprecatedKeyName": "IQ_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.IQ.version.MATIC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "IQ_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.CELO.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "CELO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.NKN.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "NKN",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.NAS.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "NAS",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.RDD.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "RDD",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SHIB.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SHIB_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.SHIB.version.MATIC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SHIB_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SHIB.version.FANTOM.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SHIB_FANTOM",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.FET.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "FET",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.VITE.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "VITE",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.RPL.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "RPL",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.STX.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "STX",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.DOT.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "DOT",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.HNS.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "HNS",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ETN.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "ETN",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.GLM.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "GLM",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.USDT.version.BSC.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+    "crypto.USDT.version.BEP20.address": {
+      "deprecatedKeyName": "USDT_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.USDT.version.SOLANA.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "USDT_SOLANA",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.USDT.version.HECO.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "USDT_HECO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.USDT.version.MATIC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "USDT_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.USDT.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "USDT_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.CTSI.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "CTSI_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.CTSI.version.BSC.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+    "crypto.CTSI.version.BEP20.address": {
+      "deprecatedKeyName": "CTSI_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.CTSI.version.MATIC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "CTSI_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.PNK.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "PNK",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.SCRT.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SCRT",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.OXEN.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "OXEN",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.BAL.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "BAL_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.BAL.version.HECO.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "BAL_HECO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.BAL.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "BAL_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.NXT.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "NXT",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.HOPR.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "HOPR",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.UNI.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "UNI_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.UNI.version.BSC.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+    "crypto.UNI.version.BEP20.address": {
+      "deprecatedKeyName": "UNI_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.UNI.version.HECO.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "UNI_HECO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.UNI.version.MATIC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "UNI_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.UNI.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "UNI_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.UNI.version.XDAI.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "UNI_XDAI",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ACT.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "ACT",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.XVS.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+      "deprecatedKeyName": "XVS",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.ZXC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "ZXC",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.PPC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "PPC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ANKR.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "ANKR",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.TRTL.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "TRTL",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SNM.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SNM",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.NAV.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "NAV",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.REN.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "REN_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.REN.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "REN_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ADX.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "ADX",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.RCN.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "RCN",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.GRC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "GRC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.DAG.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "DAG",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.TRIBE.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "TRIBE",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.SUMO.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SUMO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.BTT.version.TRON.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+      "deprecatedKeyName": "BTT_TRON",
+      "validationRegex": "^[T][a-zA-HJ-NP-Z0-9]{33}$",
       "deprecated": false
     },
-    "crypto.BTT.version.BSC.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+    "crypto.BTT.version.BEP20.address": {
+      "deprecatedKeyName": "BTT_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.NMC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "NMC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.LOOMOLD.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "LOOMOLD",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.PAX.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "PAX",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.GNO.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "GNO",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.BIP.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "BIP",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.XPRT.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "XPRT",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.DAI.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "DAI_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.DAI.version.BSC.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+    "crypto.DAI.version.BEP20.address": {
+      "deprecatedKeyName": "DAI_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.DAI.version.MATIC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "DAI_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.DAI.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "DAI_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.VTC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "VTC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ALPACA.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+      "deprecatedKeyName": "ALPACA",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.DRGN.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "DRGN",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.TEL.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "TEL_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.TEL.version.MATIC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "TEL_MATIC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.BLZ.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "BLZ_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
-    "crypto.BLZ.version.BSC.address": {
-      "deprecatedKeyName": null,
-      "validationRegex": null,
+    "crypto.BLZ.version.BEP20.address": {
+      "deprecatedKeyName": "BLZ_BEP20",
+      "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.BAN.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "BAN",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.CLO.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "CLO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.VITAE.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "VITAE",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.GBYTE.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "GBYTE",
       "validationRegex": null,
       "deprecated": false
     },
-    "crypto.ELA.version.HECO.address": {
-      "deprecatedKeyName": null,
+    "crypto.ELA.address": {
+      "deprecatedKeyName": "ELA",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.QLC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "QLC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.CTXC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "CTXC",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.MIOTA.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "MIOTA",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.GO.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "GO",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.NXS.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "NXS",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ETP.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "ETP",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.HT.version.ERC20.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "HT_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.HT.version.HARMONYSHARD0.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "HT_HARMONYSHARD0",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.TFUEL.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "TFUEL",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.PART.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "PART",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SOUL.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SOUL",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     },
     "crypto.WICC.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "WICC",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.ONION.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "ONION",
       "validationRegex": null,
       "deprecated": false
     },
     "crypto.SAI.address": {
-      "deprecatedKeyName": null,
+      "deprecatedKeyName": "SAI",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
       "deprecated": false
     }
