@@ -48,7 +48,7 @@ const getFilteredCoins = async (): Promise<CoinGeckoDetailCoin[]> => {
 }
 
 const getCoinsSortedByScore = async (): Promise<CoinGeckoCoin[]> => {
-  const params = 'vs_currency=usd&order=gecko_desc&per_page=200&page=1&sparkline=false';
+  const params = 'vs_currency=usd&order=gecko_desc&per_page=250&page=1&sparkline=false';
   const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?${params}`);
   if (response.status !== 200) {
     console.error(await response.json());
@@ -199,6 +199,7 @@ const getValidationRegex = (version: string): string | undefined => {
     'TRON': '^[T][a-zA-HJ-NP-Z0-9]{33}$',
     'BEP20': '^0x[a-fA-F0-9]{40}$',
     'ERC20': '^0x[a-fA-F0-9]{40}$',
+    'HRC20': '^0x[a-fA-F0-9]{40}$',
     'OPERA': '^0x[a-fA-F0-9]{40}$',
     'FUSE': '^0x[a-fA-F0-9]{40}$',
   }
