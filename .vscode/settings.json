@@ -1,0 +1,3 @@
+{
+  "solidity.compileUsingLocalVersion": "/usr/local/bin/solc"
+}
