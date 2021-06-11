@@ -1001,16 +1001,6 @@
       "validationRegex": null,
       "deprecated": false
     },
-    "crypto.ETH.version.BEP20.address": {
-      "deprecatedKeyName": "ETH_BEP20",
-      "validationRegex": "^0x[a-fA-F0-9]{40}$",
-      "deprecated": false
-    },
-    "crypto.ETH.version.HECO.address": {
-      "deprecatedKeyName": "ETH_HECO",
-      "validationRegex": null,
-      "deprecated": false
-    },
     "crypto.LINK.version.ERC20.address": {
       "deprecatedKeyName": "LINK_ERC20",
       "validationRegex": "^0x[a-fA-F0-9]{40}$",
