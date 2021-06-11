@@ -6,9 +6,10 @@ type ContractName = 'Registry' | 'SignatureController' | 'MintingController' | '
     | 'URIPrefixController' | 'DomainZoneController' | 'Resolver' | 'ProxyReader' | 'TwitterValidationOperator' | 'FreeMinter';
 
 type Address = string;
+type BlockNumber = string;
 
 type NetworkConfig = Readonly<{
-    contracts: Readonly<Record<ContractName, { address: Address, legacyAddresses: ReadonlyArray<Address> }>>,
+    contracts: Readonly<Record<ContractName, { address: Address, legacyAddresses: ReadonlyArray<Address>, deploymentBlock: BlockNumber }>>,
 }>;
 
 type Config = Readonly<{
