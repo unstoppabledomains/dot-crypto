@@ -29,16 +29,23 @@ type MultiChainMeta = {
   validationRegex: string | undefined;
 }
 
+type UpdatesMetaObject = {
+  updatedKeys: Record<string, {validationRegex: string | null, deprecatedKeyName: string, deprecated: boolean}>,
+  conflicts: Record<string, CoinGeckoDetailCoin>,
+  newKeys: Record<string, {validationRegex: string | null, deprecatedKeyName: string, deprecated: boolean}>
+}
+
 
 const main = async (): Promise<void> => {
   const coins = await getFilteredCoins();
   const assetPlatforms = await getAssetPlatformsList();
 
-  const updatedSuppKeys = getUpdatedKeysFromCoins(coins, assetPlatforms);
+  const updates = getUpdatedKeysFromCoins(coins, assetPlatforms);
   console.log(`Was ${Object.keys(SupportedKeys.keys).length} supported keys records`);
-  console.log(`Become ${Object.keys(updatedSuppKeys).length} supported keys records`);
+  console.log(`Become ${Object.keys(updates.updatedKeys).length} supported keys records`);
+  console.log(`Total added keys: ${Object.keys(updates.newKeys).length}`);
 
-  saveUpdates(updatedSuppKeys);
+  saveUpdates(updates);
 }
 
 const getFilteredCoins = async (): Promise<CoinGeckoDetailCoin[]> => {
@@ -48,7 +55,15 @@ const getFilteredCoins = async (): Promise<CoinGeckoDetailCoin[]> => {
 }
 
 const getCoinsSortedByScore = async (): Promise<CoinGeckoCoin[]> => {
-  const params = 'vs_currency=usd&order=gecko_desc&per_page=250&page=1&sparkline=false';
+  // make 2 request to get the 500 coins
+  return (await Promise.all([
+    getCoinGeckoMarketsPage(0),
+    getCoinGeckoMarketsPage(1)
+  ])).reduce((a,v) => a.concat(v));
+}
+
+const getCoinGeckoMarketsPage = async (page: number): Promise<CoinGeckoCoin[]> => {
+  const params = `vs_currency=usd&order=market_cap_desc&per_page=250&page=${page}&sparkline=false`;
   const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?${params}`);
   if (response.status !== 200) {
     console.error(await response.json());
@@ -118,10 +133,20 @@ const getAssetPlatformsList = async (): Promise<CoinGeckoPlatformDetail[]> => {
 }
 
 
-const getUpdatedKeysFromCoins = (coins: CoinGeckoDetailCoin[], assetPlatforms: CoinGeckoPlatformDetail[]): any => {
+const getUpdatedKeysFromCoins = (coins: CoinGeckoDetailCoin[], assetPlatforms: CoinGeckoPlatformDetail[]): UpdatesMetaObject => {
   let updatedKeys = {...SupportedKeys.keys};
+  const newKeys = {};
+  const conflicts = {};
+  let coinCounter = 0;
+  
   for (const coin of coins) {
     if (isMultiChainCoin(coin)) {
+      const isExist = Object.keys(updatedKeys).find(key => key.includes(coin.symbol.toUpperCase()));
+      if (isExist) {
+        conflicts[coin.symbol] = coin;
+        continue ;
+      }
+      coinCounter++;
       const multiChainMeta = getMultiChainMeta(coin, assetPlatforms);
       multiChainMeta.forEach(metaData => {
         if (updatedKeys[metaData.key] !== undefined) {
@@ -133,10 +158,12 @@ const getUpdatedKeysFromCoins = (coins: CoinGeckoDetailCoin[], assetPlatforms: C
           "validationRegex": metaData.validationRegex ?? null,
           "deprecated": false
         }
+        newKeys[metaData.key] = updatedKeys[metaData.key];
       })
     } else {
       const key = `crypto.${coin.symbol.toUpperCase()}.address`;
       if (updatedKeys[key] !== undefined) {
+        conflicts[coin.symbol] = coin;
         continue;
       }
 
@@ -150,9 +177,12 @@ const getUpdatedKeysFromCoins = (coins: CoinGeckoDetailCoin[], assetPlatforms: C
         "validationRegex": validationRegex ?? null,
         "deprecated": false
       }
+      newKeys[key] = updatedKeys[key];
+      coinCounter++;
     }
   }
-  return updatedKeys;
+  console.log(`added ${coinCounter} new coins`);
+  return {updatedKeys, conflicts, newKeys};
 }
 
 const isMultiChainCoin = (coin: CoinGeckoDetailCoin): boolean => {
@@ -207,10 +237,9 @@ const getValidationRegex = (version: string): string | undefined => {
   return versionToRegexMap[version];
 }
 
-const saveUpdates = (updatedKeys: {
-  [key in string]: {
-    deprecatedKeyName: string, validationRegex: string | null, deprecated: boolean
-  }}) => {
+const saveUpdates = (updates: UpdatesMetaObject) => {
+  const  { updatedKeys, conflicts } = updates;
+
   const versionParts = SupportedKeys.version.split('.');
   versionParts[2] = (Number(versionParts[2]) + 1).toString();
   const version = versionParts.join('.');
@@ -219,6 +248,11 @@ const saveUpdates = (updatedKeys: {
     keys: updatedKeys
   };
   fs.writeFileSync("./src/supported-keys/supported-keys.json", JSON.stringify(newFile));
+
+  if (Object.keys(conflicts).length > 0) {
+    console.log(`Found ${Object.keys(conflicts).length} conflicts, storing them under conflicts.json`);
+    fs.writeFileSync("./src/supported-keys/conflicts.json", JSON.stringify(conflicts));
+  }
 }
 
 main();
