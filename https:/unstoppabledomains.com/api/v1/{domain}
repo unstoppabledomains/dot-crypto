@@ -1,0 +1,20 @@
+{
+  "addresses": {
+    "ADA": "DdzFFzCqrhskNiNkkTLe9QDmGQc1t6u6kcB6cJ5i2UN6NWdQYRaRmwe9Kd78gX8T9Xv2dAyRxN8RhGnckgU3zFrUYVHGVGtm1uCLTSA4",
+    "BTC": null,
+    "EOS": null,
+    "ETH": "0x89a8f5f337304EaA7caEd7AA1D88b791f3d8B51D",
+    "XLM": "r3kmLJN5D28dHuH8vZNUZpMC43pEHpaocV",
+    "XRP": "r3kmLJN5D28dHuH8vZNUZpMC43pEHpaocV",
+    "ZIL": "0x177FFbD0366097C8A0DB7De1E81217dE3883a4B3"
+  },
+  "ipfs": {
+    "html": "Qme54oEzRkgooJbCDr78vzKAWcv6DDEZqRhhDyDtzgrZP6",
+    "redirect_domain": "https://abbfe6z95qov3d40hf6j30g7auo7afhp.mypinata.cloud/ipfs/Qme54oEzRkgooJbCDr78vzKAWcv6DDEZqRhhDyDtzgrZP6"
+  },
+  "meta": {
+    "owner": "0x033dc48B5dB4CA62861643e9D2C411D9eb6D1975",
+    "type": "ens",
+    "ttl": 0
+  }
+}
