@@ -1,6 +1,6 @@
 const TwitterValidationOperator = artifacts.require('operators/TwitterValidationOperator.sol')
 const LinkTokenMock = artifacts.require('mocks/LinkTokenMock.sol')
-const Registry = artifacts.require('registry/Registry.sol')
+const Registry = artifacts.require('CNSRegistry.sol')
 const Resolver = artifacts.require('Resolver.sol')
 const MintingController = artifacts.require('controller/MintingController.sol')
 

@@ -2,16 +2,16 @@ pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
 import "../util/BulkWhitelistedRole.sol";
-import "../IRegistry.sol";
+import "../ICNSRegistry.sol";
 import "../IResolver.sol";
 
 contract DomainZoneController is BulkWhitelistedRole {
 
     event MintChild(uint256 indexed tokenId, uint256 indexed parentTokenId, string label);
 
-    IRegistry internal _registry;
+    ICNSRegistry internal _registry;
 
-    constructor (IRegistry registry, address[] memory accounts) public {
+    constructor (ICNSRegistry registry, address[] memory accounts) public {
         _registry = registry;
         for (uint256 index = 0; index < accounts.length; index++) {
             _addWhitelisted(accounts[index]);

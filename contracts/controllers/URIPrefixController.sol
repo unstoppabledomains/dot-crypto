@@ -2,7 +2,7 @@ pragma solidity 0.5.12;
 
 import "@openzeppelin/contracts/access/roles/WhitelistedRole.sol";
 import "./IURIPrefixController.sol";
-import "../Registry.sol";
+import "../CNSRegistry.sol";
 
 /**
  * @title URIPrefixController
@@ -10,9 +10,9 @@ import "../Registry.sol";
  */
 contract URIPrefixController is IURIPrefixController, WhitelistedRole {
 
-    Registry internal _registry;
+    CNSRegistry internal _registry;
 
-    constructor (Registry registry) public {
+    constructor (CNSRegistry registry) public {
         _registry = registry;
     }
 

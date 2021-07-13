@@ -1,7 +1,7 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
-import './Registry.sol';
+import './CNSRegistry.sol';
 import './util/SignatureUtil.sol';
 import './controllers/MintingController.sol';
 import './IResolver.sol';
@@ -25,7 +25,7 @@ contract Resolver is IResolverReader, SignatureUtil, IResolver {
 
     MintingController internal _mintingController;
 
-    constructor(Registry registry, MintingController mintingController) public SignatureUtil(registry) {
+    constructor(CNSRegistry registry, MintingController mintingController) public SignatureUtil(registry) {
         require(address(registry) == mintingController.registry());
         _mintingController = mintingController;
     }
@@ -63,7 +63,7 @@ contract Resolver is IResolverReader, SignatureUtil, IResolver {
     }
 
     /**
-     * @dev Function to get key by provided hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @dev Function to get key by provided hash. Keys hashes can be found in Sync event emitted by CNSRegistry.sol contract.
      * @param keyHash The key to query the value of.
      * @return The key string.
      */
@@ -72,7 +72,7 @@ contract Resolver is IResolverReader, SignatureUtil, IResolver {
     }
 
     /**
-     * @dev Function to get keys by provided key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @dev Function to get keys by provided key hashes. Keys hashes can be found in Sync event emitted by CNSRegistry.sol contract.
      * @param hashes The key to query the value of.
      * @return Keys
      */
@@ -87,7 +87,7 @@ contract Resolver is IResolverReader, SignatureUtil, IResolver {
     }
 
     /**
-     * @dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by CNSRegistry.sol contract.
      * @param keyHash The key to query the value of.
      * @param tokenId The token id to set.
      * @return Key and value.
@@ -98,7 +98,7 @@ contract Resolver is IResolverReader, SignatureUtil, IResolver {
     }
 
     /**
-     * @dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by CNSRegistry.sol contract.
      * @param keyHashes The key to query the value of.
      * @param tokenId The token id to set.
      * @return Keys and values.

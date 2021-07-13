@@ -37,7 +37,7 @@ interface IResolverReader {
         returns (string[] memory);
 
     /**
-     * @dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @dev Function get value by provied key hash. Keys hashes can be found in Sync event emitted by CNSRegistry.sol contract.
      * @param keyHash The key to query the value of.
      * @param tokenId The token id to set.
      * @return Key and value.
@@ -48,7 +48,7 @@ interface IResolverReader {
         returns (string memory key, string memory value);
 
     /**
-     * @dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by Registry.sol contract.
+     * @dev Function get values by provied key hashes. Keys hashes can be found in Sync event emitted by CNSRegistry.sol contract.
      * @param keyHashes The key to query the value of.
      * @param tokenId The token id to set.
      * @return Keys and values.

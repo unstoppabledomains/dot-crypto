@@ -5,7 +5,7 @@ const {assert} = chai
 const expectRevert = require('./helpers/expectRevert.js')
 
 const FreeMinter = artifacts.require('util/FreeMinter.sol')
-const Registry = artifacts.require('Registry.sol')
+const Registry = artifacts.require('CNSRegistry.sol')
 const Resolver = artifacts.require('Resolver.sol')
 
 const DomainNamePrefix = 'udtestdev-'

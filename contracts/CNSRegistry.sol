@@ -1,17 +1,17 @@
 pragma solidity 0.5.12;
 
-import "./IRegistry.sol";
+import "./ICNSRegistry.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
 import "./util/ControllerRole.sol";
 
 // solium-disable no-empty-blocks,error-reason
 
 /**
- * @title Registry
+ * @title CNS Registry
  * @dev An ERC721 Token see https://eips.ethereum.org/EIPS/eip-721. With
  * additional functions so other trusted contracts to interact with the tokens.
  */
-contract Registry is IRegistry, ControllerRole, ERC721Burnable {
+contract CNSRegistry is ICNSRegistry, ControllerRole, ERC721Burnable {
 
     // Optional mapping for token URIs
     mapping(uint256 => string) internal _tokenURIs;

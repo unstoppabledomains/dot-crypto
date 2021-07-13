@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const { utils } = require('web3');
 
-const Registry = artifacts.require('Registry.sol');
+const Registry = artifacts.require('CNSRegistry.sol');
 const Resolver = artifacts.require('Resolver.sol');
 const MintingController = artifacts.require('controller/MintingController.sol');
 const Simple = artifacts.require('controller/test-helpers/Simple.sol');

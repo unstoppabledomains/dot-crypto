@@ -1,4 +1,4 @@
-const Registry = artifacts.require('registry/Registry.sol')
+const Registry = artifacts.require('CNSRegistry.sol')
 const MintingController = artifacts.require('controller/MintingController.sol')
 const Simple = artifacts.require('test-helpers/Simple.sol')
 

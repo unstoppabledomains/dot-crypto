@@ -2,7 +2,7 @@ pragma solidity 0.5.12;
 
 import "./ISignatureController.sol";
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
-import "../Registry.sol";
+import "../CNSRegistry.sol";
 import "../util/SignatureUtil.sol";
 
 // solium-disable error-reason
@@ -14,7 +14,7 @@ import "../util/SignatureUtil.sol";
  */
 contract SignatureController is ISignatureController, SignatureUtil {
 
-    constructor (Registry registry) public SignatureUtil(registry) {}
+    constructor (CNSRegistry registry) public SignatureUtil(registry) {}
 
     /*
      * 0x23b872dd == bytes4(keccak256('transferFrom(address,address,uint256)'))

@@ -6,14 +6,14 @@ import '@openzeppelin/contracts/introspection/ERC165.sol';
 import './IRegistryReader.sol';
 import './IResolverReader.sol';
 import './IDataReader.sol';
-import './Registry.sol';
+import './CNSRegistry.sol';
 import './Resolver.sol';
 
 contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
     string public constant NAME = 'Unstoppable Proxy Reader';
     string public constant VERSION = '0.2.0';
 
-    Registry private _registry;
+    CNSRegistry private _registry;
 
     /*
      * bytes4(keccak256(abi.encodePacked('supportsInterface(bytes4)'))) == 0x01ffc9a7
@@ -65,7 +65,7 @@ contract ProxyReader is ERC165, IRegistryReader, IResolverReader, IDataReader {
      */
     bytes4 private constant _INTERFACE_ID_DATA_READER = 0x46d43268;
 
-    constructor(Registry registry) public {
+    constructor(CNSRegistry registry) public {
         require(address(registry) != address(0), 'Registry is empty');
         _registry = registry;
 

@@ -1,4 +1,4 @@
-const Registry = artifacts.require('registry/Registry.sol')
+const Registry = artifacts.require('CNSRegistry.sol')
 const SignatureController = artifacts.require(
   'controller/SignatureController.sol',
 )

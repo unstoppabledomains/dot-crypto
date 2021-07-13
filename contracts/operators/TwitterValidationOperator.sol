@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/roles/CapperRole.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@chainlink/contracts/src/v0.5/interfaces/LinkTokenInterface.sol";
 import "../util/ERC677Receiver.sol";
-import "../IRegistry.sol";
+import "../ICNSRegistry.sol";
 import "../IResolver.sol";
 
 contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receiver {
@@ -26,7 +26,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     uint256 private frozenTokens;
     uint256 private lastRequestId = 1;
     mapping(uint256 => uint256) private userRequests;
-    IRegistry private registry;
+    ICNSRegistry private registry;
     LinkTokenInterface private linkToken;
 
     /**
@@ -36,7 +36,7 @@ contract TwitterValidationOperator is WhitelistedRole, CapperRole, ERC677Receive
     * @param _linkToken The address of the LINK token
     * @param _paymentCappers Addresses allowed to update payment amount per validation
     */
-    constructor (IRegistry _registry, LinkTokenInterface _linkToken, address[] memory _paymentCappers) public {
+    constructor (ICNSRegistry _registry, LinkTokenInterface _linkToken, address[] memory _paymentCappers) public {
         require(address(_registry) != address(0), "TwitterValidationOperator: INVALID_REGISTRY_ADDRESS");
         require(address(_linkToken) != address(0), "TwitterValidationOperator: INVALID_LINK_TOKEN_ADDRESS");
         require(_paymentCappers.length > 0, "TwitterValidationOperator: NO_CAPPERS_PROVIDED");
