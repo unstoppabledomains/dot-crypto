@@ -2,7 +2,7 @@ pragma solidity 0.5.12;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Metadata.sol";
 
-contract IRegistry is IERC721Metadata {
+contract ICNSRegistry is IERC721Metadata {
 
     event NewURI(uint256 indexed tokenId, string uri);
 

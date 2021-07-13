@@ -1,4 +1,4 @@
-const Registry = artifacts.require('Registry.sol')
+const Registry = artifacts.require('CNSRegistry.sol')
 const MintingController = artifacts.require('controller/MintingController.sol')
 
 const chai = require('chai')

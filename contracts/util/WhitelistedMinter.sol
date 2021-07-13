@@ -5,7 +5,7 @@ import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 import "./BulkWhitelistedRole.sol";
 import "../controllers/IMintingController.sol";
 import "../controllers/MintingController.sol";
-import "../Registry.sol";
+import "../CNSRegistry.sol";
 import "../Resolver.sol";
 
 /**
@@ -22,7 +22,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
 
     MintingController internal _mintingController;
     Resolver internal _resolver;
-    Registry internal _registry;
+    CNSRegistry internal _registry;
 
     /*
      * bytes4(keccak256('mintSLD(address,string)')) == 0x4c0b0ed2
@@ -71,7 +71,7 @@ contract WhitelistedMinter is IMintingController, BulkWhitelistedRole {
 
     constructor(MintingController mintingController) public {
         _mintingController = mintingController;
-        _registry = Registry(mintingController.registry());
+        _registry = CNSRegistry(mintingController.registry());
         _addWhitelisted(address(this));
     }
 

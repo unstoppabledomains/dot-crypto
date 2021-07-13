@@ -1,6 +1,6 @@
 pragma solidity 0.5.12;
 
-import '../Registry.sol';
+import '../CNSRegistry.sol';
 import '@openzeppelin/contracts/cryptography/ECDSA.sol';
 
 // solium-disable error-reason
@@ -11,9 +11,9 @@ contract SignatureUtil {
     // Mapping from owner to a nonce
     mapping (uint256 => uint256) internal _nonces;
 
-    Registry internal _registry;
+    CNSRegistry internal _registry;
 
-    constructor(Registry registry) public {
+    constructor(CNSRegistry registry) public {
         _registry = registry;
     }
 
