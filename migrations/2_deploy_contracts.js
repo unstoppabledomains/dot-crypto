@@ -1,4 +1,4 @@
-const Registry = artifacts.require('Registry.sol')
+const Registry = artifacts.require('CNSRegistry.sol')
 const URIPrefixController = artifacts.require(
   'controller/URIPrefixController.sol',
 )

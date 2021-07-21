@@ -1,4 +1,4 @@
-const Registry = artifacts.require('Registry.sol')
+const Registry = artifacts.require('CNSRegistry.sol')
 const MintingController = artifacts.require('controller/MintingController.sol')
 const Resolver = artifacts.require('Resolver.sol')
 const FreeMinter = artifacts.require('util/FreeMinter.sol')
