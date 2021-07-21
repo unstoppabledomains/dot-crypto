@@ -1,9 +1,9 @@
 {
-    "version": "2.0.0",
+    "version": "1.1.0",
     "networks": {
         "1": {
             "contracts": {
-                "CNSRegistry": {
+                "Registry": {
                     "address": "0xD1E5b0FF1287aA9f9A268759062E4Ab08b9Dacbe",
                     "legacyAddresses": [],
                     "deploymentBlock": "0x8a958b"
@@ -62,7 +62,7 @@
         },
         "4": {
             "contracts": {
-                "CNSRegistry": {
+                "Registry": {
                     "address": "0xAad76bea7CFEc82927239415BB18D2e93518ecBB",
                     "legacyAddresses": [],
                     "deploymentBlock": "0x7232bc"
