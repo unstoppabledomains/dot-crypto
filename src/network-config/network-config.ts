@@ -2,7 +2,7 @@ import json from './network-config.json';
 
 type ChainId = number;
 
-type ContractName = 'CNSRegistry' | 'SignatureController' | 'MintingController' | 'WhitelistedMinter'
+type ContractName = 'Registry' | 'SignatureController' | 'MintingController' | 'WhitelistedMinter'
     | 'URIPrefixController' | 'DomainZoneController' | 'Resolver' | 'ProxyReader' | 'TwitterValidationOperator' | 'FreeMinter';
 
 type Address = string;
