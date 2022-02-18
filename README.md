@@ -1,5 +1,9 @@
 # .crypto
 
+## The repository is deprecated. 
+## Use [UNS Repository](https://github.com/unstoppabledomains/uns)
+
+
 [![Unstoppable Domains Documentation](https://img.shields.io/badge/docs-unstoppabledomains.com-blue)](https://docs.unstoppabledomains.com/)
 ![CI](https://github.com/unstoppabledomains/dot-crypto/workflows/CI/badge.svg?branch=master)
 
