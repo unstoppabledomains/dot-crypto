@@ -1,6 +1,6 @@
 pragma solidity 0.5.12;
 
-import '@openzeppelin/contracts/cryptography/ECDSA.sol';
+import '@openzeppelin/contracts-2.3/cryptography/ECDSA.sol';
 
 // {
 // 	"6d4ce63c": "get()",

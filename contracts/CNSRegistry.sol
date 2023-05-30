@@ -1,7 +1,7 @@
 pragma solidity 0.5.12;
 
 import "./ICNSRegistry.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721Burnable.sol";
+import "@openzeppelin/contracts-2.3/token/ERC721/ERC721Burnable.sol";
 import "./util/ControllerRole.sol";
 
 // solium-disable no-empty-blocks,error-reason

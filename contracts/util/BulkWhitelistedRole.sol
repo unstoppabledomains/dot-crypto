@@ -1,7 +1,7 @@
 pragma solidity 0.5.12;
 
-import "@openzeppelin/contracts/access/Roles.sol";
-import "@openzeppelin/contracts/access/roles/WhitelistedRole.sol";
+import "@openzeppelin/contracts-2.3/access/Roles.sol";
+import "@openzeppelin/contracts-2.3/access/roles/WhitelistedRole.sol";
 
 /**
  * @title BulkWhitelistedRole

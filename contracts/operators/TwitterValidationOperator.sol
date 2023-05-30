@@ -1,9 +1,9 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/access/roles/WhitelistedRole.sol";
-import "@openzeppelin/contracts/access/roles/CapperRole.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts-2.3/access/roles/WhitelistedRole.sol";
+import "@openzeppelin/contracts-2.3/access/roles/CapperRole.sol";
+import "@openzeppelin/contracts-2.3/math/SafeMath.sol";
 import "@chainlink/contracts/src/v0.5/interfaces/LinkTokenInterface.sol";
 import "../util/ERC677Receiver.sol";
 import "../ICNSRegistry.sol";

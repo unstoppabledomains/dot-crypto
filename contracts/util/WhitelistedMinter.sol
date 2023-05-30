@@ -1,7 +1,7 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
-import '@openzeppelin/contracts/cryptography/ECDSA.sol';
+import '@openzeppelin/contracts-2.3/cryptography/ECDSA.sol';
 import "./BulkWhitelistedRole.sol";
 import "../controllers/IMintingController.sol";
 import "../controllers/MintingController.sol";
