@@ -1,6 +1,6 @@
 pragma solidity 0.5.12;
 
-import "@openzeppelin/contracts/access/roles/WhitelistedRole.sol";
+import "@openzeppelin/contracts-2.3/access/roles/WhitelistedRole.sol";
 import "./IURIPrefixController.sol";
 import "../CNSRegistry.sol";
 

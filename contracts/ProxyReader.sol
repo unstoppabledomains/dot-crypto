@@ -1,7 +1,7 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
-import '@openzeppelin/contracts/introspection/ERC165.sol';
+import '@openzeppelin/contracts-2.3/introspection/ERC165.sol';
 
 import './IRegistryReader.sol';
 import './IResolverReader.sol';

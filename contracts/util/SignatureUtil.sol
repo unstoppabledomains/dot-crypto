@@ -1,7 +1,7 @@
 pragma solidity 0.5.12;
 
 import '../CNSRegistry.sol';
-import '@openzeppelin/contracts/cryptography/ECDSA.sol';
+import '@openzeppelin/contracts-2.3/cryptography/ECDSA.sol';
 
 // solium-disable error-reason
 

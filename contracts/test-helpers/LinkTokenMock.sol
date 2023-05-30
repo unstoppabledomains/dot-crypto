@@ -1,6 +1,6 @@
 pragma solidity 0.5.12;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20Mintable.sol";
+import "@openzeppelin/contracts-2.3/token/ERC20/ERC20Mintable.sol";
 import "../util/ERC677Receiver.sol";
 
 contract LinkTokenMock is ERC20Mintable {

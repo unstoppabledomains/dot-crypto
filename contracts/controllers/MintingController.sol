@@ -1,6 +1,6 @@
 pragma solidity 0.5.12;
 
-import "@openzeppelin/contracts/access/roles/MinterRole.sol";
+import "@openzeppelin/contracts-2.3/access/roles/MinterRole.sol";
 import "./IMintingController.sol";
 import "../CNSRegistry.sol";
 
