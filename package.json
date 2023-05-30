@@ -67,6 +67,6 @@
     "yargs": "^14.0.0"
   },
   "dependencies": {
-    "@openzeppelin/contracts-2.3": "npm:@openzeppelin/contracts@^2.3.0"
+    "@openzeppelin/contracts-2.3": "npm:@openzeppelin/contracts@2.3.0"
   }
 }
